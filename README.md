@@ -119,13 +119,13 @@ The pipeline records `data_as_of` to reflect this and uses cached data if the ca
 
 ---
 
-## Data Access Caveat (ACLED Licensing Changes)
+## Data Access
 
-ACLED has recently modified its data access policy, instituting a 12-month limit on disaggregated event-level data. This change means that detailed event data from the most recent year are no longer publicly accessible immediately upon release.
+ACLED has a 12-month limit on disaggregated event-level data.
 
 The current ETL design, indicator weighting, and modeling framework assume access to recent disaggregated ACLED data to capture acute and near-term violence trends critical for accurate risk prioritization at the ADM2 level.
 
-In response to this policy update, a contingency plan has been developed. Should access to recent disaggregated data remain restricted, the pipeline and model will be recalibrated to rely more heavily on longer-term violence trends and aggregated indicators, such as state-level forecasts and structural risk factors. This approach aims to preserve the model’s predictive integrity and utility for programmatic decision-making while complying with ACLED’s licensing constraints.
+The pipeline and model could be recalibrated to rely more heavily on longer-term violence trends and aggregated indicators, such as state-level forecasts and structural risk factors. This approach would aim to preserve the model’s predictive integrity and utility for programmatic decision-making.
 
 ---
 
