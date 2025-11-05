@@ -117,6 +117,21 @@ Minimal lookup (`adm1_name`, `adm2_name`, `adm2_code`, `lon`, `lat`) for lightwe
 **Important:** ACLED’s public “recency” restriction means recent events may be unavailable.  
 The pipeline records `data_as_of` to reflect this and uses cached data if the cap is unchanged.
 
+### Automated Daily Execution (GitHub Actions)
+
+A GitHub Actions workflow is configured to run the pipeline automatically every day at 2:00 AM UTC. The workflow:
+- Installs all required dependencies (Python packages and geospatial libraries)
+- Runs `pipeline.py` with fresh ACLED data pulls
+- Commits updated output files back to the repository
+
+**To enable automated runs:**
+1. Configure required repository secrets (see [`.github/workflows/README.md`](.github/workflows/README.md))
+   - `ACLED_USER`: Your ACLED API username
+   - `ACLED_PASS`: Your ACLED API password
+2. Optionally configure Google Sheets integration secrets if needed
+
+The workflow can also be triggered manually from the Actions tab in the repository.
+
 ---
 
 ## Data Access
