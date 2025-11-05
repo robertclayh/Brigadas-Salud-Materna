@@ -1,4 +1,4 @@
-# Brigadas-Salud-Materna — Data Pipeline (README)
+# Brigadas-Salud-Materna — Data Pipeline
 
 ## Overview
 
