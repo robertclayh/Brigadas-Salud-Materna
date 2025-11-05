@@ -71,7 +71,7 @@ jobs:
             printf 'FORCE_REBUILD_POP=false\n'
             printf 'ENABLE_SHEETS=%s\n' "$ENABLE_SHEETS"
             printf 'SHEET_NAME=%s\n' "$SHEET_NAME"
-            # Only write GOOGLE_CREDS_JSON if path is not empty
+            # Write GOOGLE_CREDS_JSON (empty string if not configured)
             if [ -n "$GOOGLE_CREDS_PATH" ]; then
               printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
             else
