@@ -15,7 +15,7 @@ To enable the daily pipeline, you must configure the following secrets in your G
 #### Optional Secrets (for Google Sheets integration):
 - **`ENABLE_SHEETS`**: Set to `true` to enable Google Sheets export (default: `false`)
 - **`SHEET_NAME`**: Name of the Google Sheet (default: `mx_brigadas_dashboard`)
-- **`GOOGLE_CREDS_JSON`**: Full path to Google service account credentials JSON file (if enabling Sheets)
+- **`GOOGLE_CREDS_JSON`**: The complete JSON content of your Google service account credentials file (paste the entire JSON as the secret value)
 
 ### How to Add Secrets
 

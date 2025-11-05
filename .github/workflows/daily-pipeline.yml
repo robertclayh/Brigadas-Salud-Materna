@@ -40,8 +40,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
+      - name: Create Google credentials file (if enabled)
+        if: ${{ secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != '' }}
+        run: |
+          mkdir -p ~/.config/gcloud
+          echo '${{ secrets.GOOGLE_CREDS_JSON }}' > ~/.config/gcloud/credentials.json
+      
       - name: Create .env file
         run: |
+          GOOGLE_CREDS_PATH=""
+          if [ "${{ secrets.ENABLE_SHEETS }}" = "true" ] && [ -f ~/.config/gcloud/credentials.json ]; then
+            GOOGLE_CREDS_PATH="$HOME/.config/gcloud/credentials.json"
+          fi
+          
           cat > .env << EOF
           ACLED_USER=${{ secrets.ACLED_USER }}
           ACLED_PASS=${{ secrets.ACLED_PASS }}
@@ -51,7 +62,7 @@ jobs:
           FORCE_REBUILD_POP=false
           ENABLE_SHEETS=${{ secrets.ENABLE_SHEETS || 'false' }}
           SHEET_NAME=${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
-          GOOGLE_CREDS_JSON=${{ secrets.GOOGLE_CREDS_JSON || '' }}
+          GOOGLE_CREDS_JSON=$GOOGLE_CREDS_PATH
           EOF
       
       - name: Run pipeline
@@ -65,7 +76,8 @@ jobs:
       
       - name: Commit and push changes
         run: |
-          git add out/*.csv out/*.json
+          # Add all files in the out directory (safer than using globs)
+          git add out/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
