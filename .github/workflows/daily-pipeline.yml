@@ -42,28 +42,37 @@ jobs:
       
       - name: Create Google credentials file (if enabled)
         if: ${{ secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != '' }}
+        env:
+          GOOGLE_CREDS_CONTENT: ${{ secrets.GOOGLE_CREDS_JSON }}
         run: |
           mkdir -p ~/.config/gcloud
-          echo '${{ secrets.GOOGLE_CREDS_JSON }}' > ~/.config/gcloud/credentials.json
+          # Write credentials using environment variable to avoid shell injection
+          printf '%s' "$GOOGLE_CREDS_CONTENT" > ~/.config/gcloud/credentials.json
       
       - name: Create .env file
+        env:
+          ACLED_USER: ${{ secrets.ACLED_USER }}
+          ACLED_PASS: ${{ secrets.ACLED_PASS }}
+          ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS || 'false' }}
+          SHEET_NAME: ${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
         run: |
           GOOGLE_CREDS_PATH=""
-          if [ "${{ secrets.ENABLE_SHEETS }}" = "true" ] && [ -f ~/.config/gcloud/credentials.json ]; then
+          if [ "$ENABLE_SHEETS" = "true" ] && [ -f ~/.config/gcloud/credentials.json ]; then
             GOOGLE_CREDS_PATH="$HOME/.config/gcloud/credentials.json"
           fi
           
-          cat > .env << EOF
-          ACLED_USER=${{ secrets.ACLED_USER }}
-          ACLED_PASS=${{ secrets.ACLED_PASS }}
-          SSL_VERIFY=true
-          ACLED_REFRESH=true
-          CAST_REFRESH=true
-          FORCE_REBUILD_POP=false
-          ENABLE_SHEETS=${{ secrets.ENABLE_SHEETS || 'false' }}
-          SHEET_NAME=${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
-          GOOGLE_CREDS_JSON=$GOOGLE_CREDS_PATH
-          EOF
+          # Use printf to safely write secrets to .env file
+          {
+            printf 'ACLED_USER=%s\n' "$ACLED_USER"
+            printf 'ACLED_PASS=%s\n' "$ACLED_PASS"
+            printf 'SSL_VERIFY=true\n'
+            printf 'ACLED_REFRESH=true\n'
+            printf 'CAST_REFRESH=true\n'
+            printf 'FORCE_REBUILD_POP=false\n'
+            printf 'ENABLE_SHEETS=%s\n' "$ENABLE_SHEETS"
+            printf 'SHEET_NAME=%s\n' "$SHEET_NAME"
+            printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
+          } > .env
       
       - name: Run pipeline
         run: |
@@ -76,8 +85,14 @@ jobs:
       
       - name: Commit and push changes
         run: |
-          # Add all files in the out directory (safer than using globs)
-          git add out/ || true
+          # Add all files in the out directory if it exists
+          if [ -d "out" ]; then
+            git add out/
+          else
+            echo "Warning: out/ directory does not exist"
+            exit 0
+          fi
+          
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
