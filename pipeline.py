@@ -1,5 +1,10 @@
 """
-Pipeline to build ADM2-level risk tables for Mexico. Daily step pulls ACLED events and CAST forecasts (subject to ACLED recency caps), merges static inputs (population, facilities, poverty), computes indicators, and writes CSVs. Caching is enabled by default to avoid redundant API calls. Google Sheets upload is disabled by default and can be enabled via environment variables. See # %% Configuration & environment for toggles.
+Pipeline to build ADM2-level risk tables for Mexico. 
+Daily step pulls ACLED events and CAST forecasts (subject to ACLED recency caps), 
+merges static inputs (population, facilities, poverty), computes indicators, and writes CSVs. 
+Caching is enabled by default to avoid redundant API calls. 
+Google Sheets upload is disabled by default and can be enabled via environment variables. 
+See # %% Configuration & environment for toggles.
 """
 # ----------------------------------------
 # Usage
