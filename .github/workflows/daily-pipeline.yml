@@ -41,7 +41,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Create Google credentials file (if enabled)
-        if: ${{ secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON }}
+        if: secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != ''
         env:
           GOOGLE_CREDS_CONTENT: ${{ secrets.GOOGLE_CREDS_JSON }}
         run: |
