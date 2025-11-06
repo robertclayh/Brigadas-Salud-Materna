@@ -37,9 +37,6 @@ rsconnect/
 parts1-3/
 brigadas-salud-materna-f3613cd11d81.json
 pipeline_checks.ipynb
-data/worldpop/
-data/mex_admbnda_govmex_20210618_SHP/
-*.tif
 
 # System files
 .DS_Store
