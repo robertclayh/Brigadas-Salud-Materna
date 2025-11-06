@@ -2,7 +2,6 @@ name: Daily Data Pipeline
 
 on:
   schedule:
-    # Run daily at 2:00 AM UTC
     - cron: '0 2 * * *'
   workflow_dispatch: {}
 
@@ -40,25 +39,37 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # FIX: wrap the condition in ${{ ... }} so 'secrets' context is recognized
+      # NEW: derive a safe flag from secrets without using them in `if:`
+      - name: Derive flags for creds step
+        id: flags
+        env:
+          ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS }}
+          GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
+        run: |
+          es="${ENABLE_SHEETS:-false}"
+          if [ "$es" = "true" ] && [ -n "$GOOGLE_CREDS_JSON" ]; then
+            echo "create_creds=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "create_creds=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Google credentials file (if enabled)
-        if: ${{ secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != '' }}
+        if: ${{ steps.flags.outputs.create_creds == 'true' }}
         env:
           GOOGLE_CREDS_CONTENT: ${{ secrets.GOOGLE_CREDS_JSON }}
         run: |
-          mkdir -p ~/.config/gcloud
-          # If your secret is base64-encoded, decode it; else write as-is.
+          mkdir -p "$HOME/.config/gcloud"
+          # Accept either raw JSON or base64-encoded JSON
           if echo "$GOOGLE_CREDS_CONTENT" | grep -q '"type": *"service_account"'; then
-            printf '%s' "$GOOGLE_CREDS_CONTENT" > ~/.config/gcloud/credentials.json
+            printf '%s' "$GOOGLE_CREDS_CONTENT" > "$HOME/.config/gcloud/credentials.json"
           else
-            echo "$GOOGLE_CREDS_CONTENT" | base64 -d > ~/.config/gcloud/credentials.json
+            echo "$GOOGLE_CREDS_CONTENT" | base64 -d > "$HOME/.config/gcloud/credentials.json"
           fi
 
       - name: Create .env file
         env:
           ACLED_USER: ${{ secrets.ACLED_USER }}
           ACLED_PASS: ${{ secrets.ACLED_PASS }}
-          # expression defaulting is fine here
           ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS || 'false' }}
           SHEET_NAME: ${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
         run: |
@@ -66,7 +77,6 @@ jobs:
           if [ "$ENABLE_SHEETS" = "true" ] && [ -f "$HOME/.config/gcloud/credentials.json" ]; then
             GOOGLE_CREDS_PATH="$HOME/.config/gcloud/credentials.json"
           fi
-
           {
             printf 'ACLED_USER=%s\n' "$ACLED_USER"
             printf 'ACLED_PASS=%s\n' "$ACLED_PASS"
@@ -94,13 +104,10 @@ jobs:
             echo "ERROR: out/ directory does not exist - pipeline may have failed"
             exit 1
           fi
-
           git add out/
-
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-
           git commit -m "Update data pipeline outputs - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           git push
