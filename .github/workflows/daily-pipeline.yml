@@ -4,7 +4,7 @@ on:
   schedule:
     # Run daily at 2:00 AM UTC
     - cron: '0 2 * * *'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -12,19 +12,19 @@ permissions:
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
-      
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -34,34 +34,39 @@ jobs:
             libgeos-dev \
             libproj-dev \
             libspatialindex-dev
-      
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
+
+      # FIX: wrap the condition in ${{ ... }} so 'secrets' context is recognized
       - name: Create Google credentials file (if enabled)
-        if: secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != ''
+        if: ${{ secrets.ENABLE_SHEETS == 'true' && secrets.GOOGLE_CREDS_JSON != '' }}
         env:
           GOOGLE_CREDS_CONTENT: ${{ secrets.GOOGLE_CREDS_JSON }}
         run: |
           mkdir -p ~/.config/gcloud
-          # Write credentials using environment variable to avoid shell injection
-          printf '%s' "$GOOGLE_CREDS_CONTENT" > ~/.config/gcloud/credentials.json
-      
+          # If your secret is base64-encoded, decode it; else write as-is.
+          if echo "$GOOGLE_CREDS_CONTENT" | grep -q '"type": *"service_account"'; then
+            printf '%s' "$GOOGLE_CREDS_CONTENT" > ~/.config/gcloud/credentials.json
+          else
+            echo "$GOOGLE_CREDS_CONTENT" | base64 -d > ~/.config/gcloud/credentials.json
+          fi
+
       - name: Create .env file
         env:
           ACLED_USER: ${{ secrets.ACLED_USER }}
           ACLED_PASS: ${{ secrets.ACLED_PASS }}
+          # expression defaulting is fine here
           ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS || 'false' }}
           SHEET_NAME: ${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
         run: |
           GOOGLE_CREDS_PATH=""
-          if [ "$ENABLE_SHEETS" = "true" ] && [ -f ~/.config/gcloud/credentials.json ]; then
+          if [ "$ENABLE_SHEETS" = "true" ] && [ -f "$HOME/.config/gcloud/credentials.json" ]; then
             GOOGLE_CREDS_PATH="$HOME/.config/gcloud/credentials.json"
           fi
-          
-          # Use printf to safely write secrets to .env file
+
           {
             printf 'ACLED_USER=%s\n' "$ACLED_USER"
             printf 'ACLED_PASS=%s\n' "$ACLED_PASS"
@@ -71,37 +76,31 @@ jobs:
             printf 'FORCE_REBUILD_POP=false\n'
             printf 'ENABLE_SHEETS=%s\n' "$ENABLE_SHEETS"
             printf 'SHEET_NAME=%s\n' "$SHEET_NAME"
-            # Write GOOGLE_CREDS_JSON (empty string if not configured)
-            if [ -n "$GOOGLE_CREDS_PATH" ]; then
-              printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
-            else
-              printf 'GOOGLE_CREDS_JSON=\n'
-            fi
+            printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
           } > .env
-      
+
       - name: Run pipeline
         run: |
           python pipeline.py
-      
+
       - name: Configure Git
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-      
+
       - name: Commit and push changes
         run: |
-          # Verify out directory exists (should be created by pipeline)
           if [ ! -d "out" ]; then
             echo "ERROR: out/ directory does not exist - pipeline may have failed"
             exit 1
           fi
-          
-          # Add all files in the out directory
+
           git add out/
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "Update data pipeline outputs - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-            git push
+            exit 0
           fi
+
+          git commit -m "Update data pipeline outputs - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          git push
