@@ -93,11 +93,13 @@ $$
 
 ### Accessibility blend definition
 
-Let A_distance be the winsorized (5–95%) and scaled 0–1 distance from the ADM2 centroid to the nearest filtered CLUES facility (higher = farther/worse), and A_density be the winsorized (5–95%) inverse of facilities per 100k WRA within the ADM2 (higher = fewer per‑capita/worse). The final accessibility term used in the model is:
+Let \(A_{\text{distance}}\) be the winsorized (5–95%) and scaled 0–1 distance (km) from the ADM2 centroid to the nearest filtered CLUES facility (higher = farther / worse), and \(A_{\text{density}}\) be the winsorized (5–95%) inverse of facilities per 100k WRA within the ADM2 (higher = fewer per‑capita / worse). The final accessibility term used in the model is:
 
-A = w * A_distance + (1 − w) * A_density, where w = `ACCESS_BLEND_W` (0–1, default 0.5).
+$$
+A = w\,A_{\text{distance}} + (1-w)\,A_{\text{density}}, \qquad w \in [0,1],\ w=\text{ACCESS\_BLEND\_W}=0.5\ \text{(default)}
+$$
 
-The same CLUES filters (public networks, active, non‑mobile, valid coordinates) are applied for both components to ensure consistency.
+Where both components use the same filtered CLUES facility set (public networks, active status, non-mobile, valid coordinates). All three ( \(A_{\text{distance}}, A_{\text{density}}, A\) ) are on 0–1 scale (higher = worse).
 
 ---
 
