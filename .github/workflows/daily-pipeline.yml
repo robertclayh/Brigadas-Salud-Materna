@@ -2,11 +2,15 @@ name: Daily Data Pipeline
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * *'   # daily at 02:00 UTC
   workflow_dispatch: {}
 
 permissions:
   contents: write
+
+concurrency:
+  group: data-pipeline-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   run-pipeline:
@@ -17,15 +21,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: true                           # <-- REQUIRED to fetch real .shp/.tif from LFS
+          lfs: true
 
-      # Optional but nice: limit what LFS pulls to your data folders
+      # Optional narrow checkout:
       # - name: Narrow checkout (optional)
       #   run: |
       #     git sparse-checkout init --cone
       #     git sparse-checkout set data out .github pipeline.py README.md requirements.txt
 
-      # Quick sanity check that LFS pulled real files (not pointer text)
       - name: Verify shapefile and raster are present (not LFS pointers)
         run: |
           set -euo pipefail
@@ -39,8 +42,7 @@ jobs:
               exit 1
             fi
             if head -n1 "$f" | grep -q "version https://git-lfs.github.com/spec/v1"; then
-              echo "ERROR: $f is a Git LFS pointer, not the real file."
-              echo "This usually means LFS quota wasn't available, or checkout didn't fetch LFS objects."
+              echo "ERROR: $f is a Git LFS pointer (not the real file)."
               exit 1
             fi
             if [ ! -s "$f" ]; then
@@ -71,7 +73,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Derive a safe flag from secrets without using them directly in `if:`
       - name: Derive flags for creds step
         id: flags
         env:
@@ -127,8 +128,9 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git config --local pull.rebase true
 
-      - name: Commit and push changes
+      - name: Stage and commit data artifacts
         run: |
           if [ ! -d "out" ]; then
             echo "ERROR: out/ directory does not exist - pipeline may have failed"
@@ -140,4 +142,27 @@ jobs:
             exit 0
           fi
           git commit -m "Update data pipeline outputs - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          git push
+
+      - name: Rebase on latest main and push (with retries)
+        run: |
+          set -e
+          git fetch origin main
+          git rebase origin/main || {
+            echo "Rebase failed; resolving by favoring generated artifacts in out/."
+            git checkout --ours -- out || true
+            git add out || true
+            git rebase --continue || true
+          }
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push attempt $i failed; rebasing onto latest main and retrying..."
+            git fetch origin main
+            git rebase origin/main || true
+            sleep $((i*2))
+          done
+          echo "ERROR: Failed to push after multiple attempts."
+          exit 1
