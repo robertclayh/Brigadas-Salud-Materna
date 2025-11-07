@@ -78,6 +78,9 @@ FORCE_REBUILD_POP = os.getenv("FORCE_REBUILD_POP", "false").lower() == "true"
 ACLED_REFRESH = os.getenv("ACLED_REFRESH", "false").lower() == "true"
 CAST_REFRESH  = os.getenv("CAST_REFRESH",  "false").lower() == "true"
 
+# Optional: bootstrap history by replaying previous N days (disabled by default)
+BOOTSTRAP_HISTORY_DAYS = int(os.getenv("BOOTSTRAP_HISTORY_DAYS", "0"))
+
 # Output publishing controls (disabled by default for reproducibility)
 ENABLE_SHEETS = os.getenv("ENABLE_SHEETS", "false").lower() == "true"
 SHEET_NAME = os.getenv("SHEET_NAME", "mx_brigadas_dashboard")
@@ -600,6 +603,9 @@ if end_allowed < dt.date.today():
     print(f"ACLED recency cap in effect; ending at {end_allowed}")
 A = anchors_from_end(end_allowed)
 
+# If BOOTSTRAP_HISTORY_DAYS &gt; 0, a separate one-off backfill script can iterate
+# anchors_from_end(end_allowed - k) to materialize historical snapshots. Default is 0.
+
 #
 # Fetch events for last 90 days and prior 30 days; write cached copies for reuse
 # Determine whether to refresh ACLED calls
@@ -1007,6 +1013,90 @@ geom_lu = pd.DataFrame({
 fact.to_csv(FACT_CSV, index=False)
 geom_lu.to_csv(GEOM_CSV, index=False)
 print(f"Written:\n  {FACT_CSV}\n  {GEOM_CSV}")
+
+# -------------------------------
+# Rolling 90-day history snapshots
+# -------------------------------
+HISTORY_DIR = OUT_DIR / "history"
+HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+
+FACT_HISTORY_CSV = HISTORY_DIR / "adm2_risk_daily_history.csv"
+CAST_HISTORY_CSV = HISTORY_DIR / "cast_state_history.csv"
+EVENTS_SUMMARY_HISTORY_CSV = HISTORY_DIR / "acled_event_counts_history.csv"
+
+def _as_date(x):
+    return pd.to_datetime(x, errors="coerce").dt.date
+
+# 1) Append today's ADM2 snapshot and keep only last 90 days
+today = run_date_today
+min_keep = today - dt.timedelta(days=90)
+
+fact_snap = fact.copy()
+fact_snap["snapshot_date"] = today
+# keep lean schema for dashboard time series
+keep_cols = [
+    "snapshot_date", "data_as_of", "adm2_code", "adm1_name", "adm2_name",
+    "DCR100", "PRS100", "priority100", "v30", "v3m", "dlt_v30_raw", "spillover"
+]
+fact_snap = fact_snap[keep_cols]
+
+if FACT_HISTORY_CSV.exists():
+    hist = pd.read_csv(FACT_HISTORY_CSV)
+    hist["snapshot_date"] = _as_date(hist["snapshot_date"])
+    hist = pd.concat([hist, fact_snap], ignore_index=True)
+    # de-dup per ADM2 per day (keep last)
+    hist = hist.sort_values(["snapshot_date"]).drop_duplicates(["snapshot_date", "adm2_code"], keep="last")
+    # keep rolling 90 days
+    hist = hist[hist["snapshot_date"] >= min_keep]
+else:
+    hist = fact_snap
+
+hist.to_csv(FACT_HISTORY_CSV, index=False)
+
+# 2) Append today's CAST state snapshot (for state trend lines)
+cast_snap = cast.copy() if isinstance(cast, pd.DataFrame) else pd.DataFrame(columns=["adm1_join","cast_state"])
+if not cast_snap.empty:
+    cast_snap = cast_snap.copy()
+    cast_snap["snapshot_date"] = today
+    cast_keep = ["snapshot_date", "adm1_join", "cast_state"]
+    cast_snap = cast_snap[cast_keep]
+
+    if CAST_HISTORY_CSV.exists():
+        cast_hist = pd.read_csv(CAST_HISTORY_CSV)
+        cast_hist["snapshot_date"] = _as_date(cast_hist["snapshot_date"])
+        cast_hist = pd.concat([cast_hist, cast_snap], ignore_index=True)
+        cast_hist = cast_hist.sort_values(["snapshot_date"]).drop_duplicates(["snapshot_date", "adm1_join"], keep="last")
+        cast_hist = cast_hist[cast_hist["snapshot_date"] >= min_keep]
+    else:
+        cast_hist = cast_snap
+
+    cast_hist.to_csv(CAST_HISTORY_CSV, index=False)
+
+# 3) Append a national events summary (for simple time series marks)
+#    Uses counts derived earlier; if missing, computes zeroes.
+total_events_90 = int(events_out.shape[0]) if isinstance(events_out, pd.DataFrame) else 0
+total_events_prev30 = int(events_prev_out.shape[0]) if isinstance(events_prev_out, pd.DataFrame) else 0
+total_events_30 = int(events30_df["events30"].sum()) if isinstance(events30_df, pd.DataFrame) and not events30_df.empty else 0
+
+ev_row = pd.DataFrame([{
+    "snapshot_date": today,
+    "data_as_of": end_allowed,
+    "events_30d": total_events_30,
+    "events_90d": total_events_90,
+    "events_prev30": total_events_prev30
+}])
+
+if EVENTS_SUMMARY_HISTORY_CSV.exists():
+    ev_hist = pd.read_csv(EVENTS_SUMMARY_HISTORY_CSV)
+    ev_hist["snapshot_date"] = _as_date(ev_hist["snapshot_date"])
+    ev_hist = pd.concat([ev_hist, ev_row], ignore_index=True)
+    ev_hist = ev_hist.sort_values(["snapshot_date"]).drop_duplicates(["snapshot_date"], keep="last")
+    ev_hist = ev_hist[ev_hist["snapshot_date"] >= min_keep]
+else:
+    ev_hist = ev_row
+
+ev_hist.to_csv(EVENTS_SUMMARY_HISTORY_CSV, index=False)
+print(f"Updated 90-day history in: {HISTORY_DIR}")
 
 # %%
 # Optional Google Sheets export. Requires ENABLE_SHEETS=true and GOOGLE_CREDS_JSON path in environment.
