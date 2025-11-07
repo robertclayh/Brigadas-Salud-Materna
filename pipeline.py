@@ -378,7 +378,10 @@ def build_clues_if_needed():
         for c in ["adm2_code","entidad","municipio"]:
             if c in fac.columns:
                 fac[c] = fac[c].astype(str)
-        # Ensure the filtered facilities points CSV exists (for distance metric). If missing, rebuild from CLUES with same filters.
+        # Guard: enforce uniqueness per adm2_code in cached file (defensive)
+        if "adm2_code" in fac.columns:
+            fac = fac.sort_values("adm2_code").drop_duplicates("adm2_code", keep="first")
+        # Rebuild facility points file if missing (for distance metric)
         if not FAC_POINTS_CSV.exists():
             df = pd.read_excel(CLUES_XLSX, sheet_name="CLUES_202509")
             df.columns = (
@@ -389,15 +392,13 @@ def build_clues_if_needed():
             public_institutions = {"SSA", "IMB", "IMS", "IST", "SDN", "SMP"}
             def s(x): return "" if pd.isna(x) else str(x).upper()
             df["inst"]   = df["clave_de_la_institucion"].map(s)
-            df["status"] = df["clave_estatus_de_operacion"].map(s)   # '1' = active
-            df["nivel"]  = df["clave_nivel_atencion"].map(s)         # '6' = mobile
+            df["status"] = df["clave_estatus_de_operacion"].map(s)
+            df["nivel"]  = df["clave_nivel_atencion"].map(s)
             for col in ("latitud","longitud"):
                 df[col] = pd.to_numeric(df[col], errors="coerce")
             df = df.dropna(subset=["latitud","longitud"]).copy()
             filtered = df[
-                df["inst"].isin(public_institutions) &
-                (df["status"] == "1") &
-                (df["nivel"] != "6")
+                df["inst"].isin(public_institutions) & (df["status"] == "1") & (df["nivel"] != "6")
             ].copy()
             filtered.rename(columns={"latitud":"lat","longitud":"lon"})[["lon","lat"]].to_csv(FAC_POINTS_CSV, index=False)
         return fac
@@ -438,6 +439,9 @@ def build_clues_if_needed():
         "ADM1_ES": "entidad"
     })[["adm2_code","adm2_name","entidad","geometry"]].copy()
     adm2["adm2_code"] = adm2["adm2_code"].astype(str)
+    # Dissolve to ensure one row per ADM2 (avoid multi-part duplication)
+    adm2["geometry"] = adm2.geometry.buffer(0)
+    adm2 = adm2.dissolve(by=["adm2_code","adm2_name","entidad"], as_index=False)
 
     g = gpd.GeoDataFrame(
         filtered,
@@ -467,6 +471,8 @@ def build_clues_if_needed():
         fac_counts.merge(adm2.drop(columns="geometry"), on="adm2_code", how="left")
         [["adm2_code", "adm2_name", "entidad", "facilities"]]
     )
+    # Enforce uniqueness post merge
+    fac_counts = fac_counts.sort_values("adm2_code").drop_duplicates("adm2_code", keep="first")
 
     # Ensure types
     fac_counts["adm2_code"] = fac_counts["adm2_code"].astype(str)
@@ -599,7 +605,7 @@ fac = build_clues_if_needed()
 mvi = build_coneval_if_needed()
 
 #
-# Geometry once
+# Geometry once (dissolve to ensure one row per ADM2)
 adm2_raw = gpd.read_file(MX_ADM2_SHP)
 if adm2_raw.crs is None or adm2_raw.crs.to_epsg() != 4326:
     adm2_raw = adm2_raw.to_crs(4326)
@@ -609,15 +615,18 @@ ADM2 = adm2_raw.rename(columns={
     "ADM1_PCODE": "adm1_code",
     "ADM1_ES": "adm1_name",
 }).loc[:, ["adm1_name","adm1_code","adm2_name","adm2_code","geometry"]].copy()
+# Fix invalid geometries, dissolve to single multipart per ADM2
+ADM2["geometry"] = ADM2.geometry.buffer(0)
+ADM2 = ADM2.dissolve(by=["adm2_code","adm2_name","adm1_code","adm1_name"], as_index=False)
 # Harmonize key types (avoid object/float mismatches)
 ADM2["adm2_code"] = ADM2["adm2_code"].astype(str)
 ADM2["adm1_code"] = ADM2["adm1_code"].astype(str)
 ADM2["adm1_name"] = ADM2["adm1_name"].astype(str)
 ADM2["adm2_name"] = ADM2["adm2_name"].astype(str)
 
-#
-# Canonical ADM1 join key on ADM2
+# Canonical ADM1 join key on ADM2 and lookup without geometry
 ADM2["adm1_join"] = normalize_adm1_join_name(ADM2["adm1_name"])
+ADM2_LU = ADM2.drop(columns="geometry").copy()
 
 # %%
 # %%
@@ -766,6 +775,10 @@ def build_muni_counts(events_90v, events_prevv):
 
 # Build muni_counts from the processed events data
 muni_counts = build_muni_counts(events_out, events_prev_out)
+if isinstance(muni_counts, pd.DataFrame) and not muni_counts.empty:
+    # Keep unique per adm2_code
+    if "adm2_code" in muni_counts.columns:
+        muni_counts = muni_counts.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 
 # ---------------- CAST one‑month‑ahead fetch & cache ----------------
 if CAST_STATE_CSV.exists() and not CAST_REFRESH:
@@ -797,12 +810,13 @@ def _ensure_str(df, cols):
 pop = _ensure_str(pop, ["adm2_code","adm1_name","adm2_name"])
 fac = _ensure_str(fac, ["adm2_code"])
 mvi = _ensure_str(mvi, ["adm2_code"])
+mvi = mvi.sort_values("adm2_code").drop_duplicates("adm2_code", keep="first")
 
-adm2_lite = ADM2.drop(columns="geometry").copy()
+adm2_lite = ADM2_LU.copy()
 acled_metrics = (
     adm2_lite
-    .merge(pop[["adm1_name","adm2_name","adm2_code","pop_wra"]], on=["adm1_name","adm2_name","adm2_code"], how="left")
-    .merge(muni_counts, on=["adm2_code","adm2_name"], how="left")
+    .merge(pop[["adm2_code","pop_wra"]], on="adm2_code", how="left")
+    .merge(muni_counts[["adm2_code","events_90v","events_prevv"]], on="adm2_code", how="left")
     .fillna({"pop_wra": 0, "events_90v": 0, "events_prevv": 0})
 )
 
@@ -822,17 +836,16 @@ events_out_parsed = _parse_event_dates(events_out, "event_date") if isinstance(e
 if not events_out_parsed.empty:
     events30_df = (
         events_out_parsed[events_out_parsed["event_date"] > A["FROM_30"]]
-        .groupby(["adm2_code", "adm2_name"], dropna=False)
+        .groupby(["adm2_code"], dropna=False)
         .size()
         .reset_index(name="events30")
     )
     events30_df["adm2_code"] = events30_df["adm2_code"].astype(str)
-    events30_df["adm2_name"] = events30_df["adm2_name"].astype(str)
 else:
-    events30_df = pd.DataFrame(columns=["adm2_code", "adm2_name", "events30"])
+    events30_df = pd.DataFrame(columns=["adm2_code", "events30"])
 
 acled_metrics = acled_metrics.merge(
-    events30_df, on=["adm2_code","adm2_name"], how="left"
+    events30_df, on=["adm2_code"], how="left"
 )
 acled_metrics["events30"] = pd.to_numeric(acled_metrics["events30"], errors="coerce").fillna(0).astype(int)
 
@@ -866,12 +879,13 @@ if not zero_pop_anom.empty:
     zero_pop_anom.to_csv(anom_dir / "zero_population_anomalies.csv", index=False)
 
 acled_metrics = acled_metrics[["adm1_name","adm2_name","adm2_code","pop_wra","v30","v3m","dlt_v30_raw"]].copy()
+acled_metrics = acled_metrics.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 
 # %%
 #
 # Compute spatial spillover as Queen-contiguity average of v30
 # Spillover (queen contiguity on ADM2 polygons)
-g = ADM2.merge(acled_metrics, on=["adm1_name","adm2_name","adm2_code"], how="left")
+g = ADM2.merge(acled_metrics[["adm2_code","v30"]], on="adm2_code", how="left")
 g["v30"] = g["v30"].fillna(0)
 # Build Queen contiguity weights; use ADM2 codes as IDs to avoid index warnings
 wq = Queen.from_dataframe(g, ids=g["adm2_code"].tolist())
@@ -885,9 +899,9 @@ spill = pd.DataFrame({"adm2_code": g["adm2_code"].astype(str), "spillover": S})
 # Normalize inputs and compute indices (DCR, PRS, priority) with defined weights
 # Access (A), Strain (H), Vulnerability (MVI), CAST (state-level)
 adm2_base = (
-    ADM2.drop(columns="geometry")
-    .merge(pop, on=["adm1_name","adm2_name","adm2_code"], how="left")
-    .merge(fac, on="adm2_code", how="left")
+    ADM2_LU
+    .merge(pop[["adm2_code","pop_total","pop_wra"]], on="adm2_code", how="left")
+    .merge(fac[["adm2_code","facilities"]], on="adm2_code", how="left")
 )
 
 # Ensure required join keys exist; backfill from ADM2 lookup if needed
@@ -908,7 +922,7 @@ for c in ["adm1_name", "adm2_name", "adm2_code"]:
     if c in adm2_base.columns:
         adm2_base[c] = adm2_base[c].astype(str)
 
-adm2_base["adm1_join"] = ADM2["adm1_join"]
+adm2_base = adm2_base.merge(ADM2_LU[["adm2_code","adm1_join"]], on="adm2_code", how="left")
 
 adm2_base["facilities"] = adm2_base.get("facilities", pd.Series(dtype=float)).fillna(0)
 adm2_base["pop_wra"]    = adm2_base.get("pop_wra", pd.Series(dtype=float)).fillna(0)
@@ -946,16 +960,37 @@ adm2_base["A_blend"] = (ACCESS_BLEND_W * pd.to_numeric(adm2_base["A_distance"], 
                         (1.0 - ACCESS_BLEND_W) * pd.to_numeric(adm2_base["A_density"], errors="coerce").fillna(0.0))
 
 # ...existing code building final...
+# Ensure adm1_join exists for CAST merge
+if "adm1_join" not in adm2_base.columns:
+    adm2_base = adm2_base.merge(ADM2_LU[["adm2_code","adm1_join"]], on="adm2_code", how="left")
 final = (
     adm2_base
-    .merge(acled_metrics, on=["adm1_name","adm2_name","adm2_code","pop_wra"], how="left")
+    .merge(acled_metrics[["adm2_code","v30","v3m","dlt_v30_raw","pop_wra"]], on="adm2_code", how="left")
     .merge(spill, on="adm2_code", how="left")
-    .merge(cast, left_on="adm1_join", right_on="adm1_join", how="left")
+    .merge(cast, on="adm1_join", how="left")
     .merge(mvi[["adm2_code","MVI_raw"]], on="adm2_code", how="left")
 )
+final = final.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 
-for col in ["v30","v3m","dlt_v30_raw","spillover","cast_state","fac_per_100k","MVI_raw"]:
-    final[col] = pd.to_numeric(final[col], errors="coerce").fillna(0.0)
+# Ensure population columns present (guard against upstream loss)
+if "pop_wra" not in final.columns or "pop_total" not in final.columns:
+    final = final.merge(
+        pop[["adm2_code","pop_total","pop_wra"]],
+        on="adm2_code",
+        how="left"
+    )
+
+# If still missing, create zeros to avoid KeyError
+if "pop_wra" not in final.columns:
+    final["pop_wra"] = 0
+if "pop_total" not in final.columns:
+    final["pop_total"] = 0
+
+# (Optional debug)
+# if "pop_wra" not in final.columns: print("DEBUG: pop_wra missing after merge; filled with 0s. Columns:", final.columns.tolist())
+
+for col in ["v30","v3m","dlt_v30_raw","spillover","cast_state","fac_per_100k","MVI_raw","pop_wra","pop_total"]:
+    final[col] = pd.to_numeric(final.get(col, 0), errors="coerce").fillna(0.0)
 
 final["V30"] = winsor01_series(final["v30"])
 final["V3m"] = winsor01_series(final["v3m"])
@@ -969,7 +1004,7 @@ final["dV30"] = winsor01_series(pd.Series(d_unit, index=final.index))
 final["S"]    = winsor01_series(final["spillover"])
 final["CAST"] = final["cast_state"]
 # final["A"] = winsor01_series(inv_fac_density)
-# Use blended accessibility (distance ⊕ inverse-density)
+# Use blended accessibility (distance - inverse-density)
 final["A"] = pd.to_numeric(final.get("A_blend", 0.0), errors="coerce").fillna(
                  pd.to_numeric(final.get("A_density", 0.0), errors="coerce")
              ).fillna(0.0)
@@ -1015,6 +1050,9 @@ fact = final[[
     "v30","v3m","dlt_v30_raw","spillover","CAST","A","MVI",
     "DCR100","PRS100","priority100"
 ]].copy().rename(columns={"CAST":"cast_state","A":"access_A","MVI":"mvi"})
+
+# Final guard: enforce one row per adm2_code in fact
+fact = fact.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 
 #
 # Add data_as_of column to capture last ACLED date available (end_allowed)
