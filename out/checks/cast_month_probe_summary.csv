@@ -1,0 +1,545 @@
+adm1_join,casts,min_lead,max_lead,forecast_date
+Aguascalientes,2,NA,NA,2024-11-01
+Baja California,29,NA,NA,2024-11-01
+Baja California Sur,1,NA,NA,2024-11-01
+Campeche,7,NA,NA,2024-11-01
+Chiapas,16,NA,NA,2024-11-01
+Chihuahua,20,NA,NA,2024-11-01
+Ciudad De Mexico,19,NA,NA,2024-11-01
+Coahuila,1,NA,NA,2024-11-01
+Colima,19,NA,NA,2024-11-01
+Durango,1,NA,NA,2024-11-01
+Guanajuato,66,NA,NA,2024-11-01
+Guerrero,42,NA,NA,2024-11-01
+Hidalgo,9,NA,NA,2024-11-01
+Jalisco,21,NA,NA,2024-11-01
+Mexico,20,NA,NA,2024-11-01
+Michoacan,38,NA,NA,2024-11-01
+Morelos,33,NA,NA,2024-11-01
+Nayarit,1,NA,NA,2024-11-01
+Nuevo Leon,61,NA,NA,2024-11-01
+Oaxaca,14,NA,NA,2024-11-01
+Puebla,20,NA,NA,2024-11-01
+Queretaro,2,NA,NA,2024-11-01
+Quintana Roo,4,NA,NA,2024-11-01
+San Luis Potosi,9,NA,NA,2024-11-01
+Sinaloa,127,NA,NA,2024-11-01
+Sonora,17,NA,NA,2024-11-01
+Tabasco,33,NA,NA,2024-11-01
+Tamaulipas,9,NA,NA,2024-11-01
+Tlaxcala,2,NA,NA,2024-11-01
+Veracruz,24,NA,NA,2024-11-01
+Yucatan,0,NA,NA,2024-11-01
+Zacatecas,11,NA,NA,2024-11-01
+Aguascalientes,0,NA,NA,2024-12-01
+Baja California,40,NA,NA,2024-12-01
+Baja California Sur,1,NA,NA,2024-12-01
+Campeche,8,NA,NA,2024-12-01
+Chiapas,11,NA,NA,2024-12-01
+Chihuahua,16,NA,NA,2024-12-01
+Ciudad De Mexico,20,NA,NA,2024-12-01
+Coahuila,2,NA,NA,2024-12-01
+Colima,21,NA,NA,2024-12-01
+Durango,5,NA,NA,2024-12-01
+Guanajuato,57,NA,NA,2024-12-01
+Guerrero,34,NA,NA,2024-12-01
+Hidalgo,6,NA,NA,2024-12-01
+Jalisco,28,NA,NA,2024-12-01
+Mexico,22,NA,NA,2024-12-01
+Michoacan,53,NA,NA,2024-12-01
+Morelos,19,NA,NA,2024-12-01
+Nayarit,2,NA,NA,2024-12-01
+Nuevo Leon,38,NA,NA,2024-12-01
+Oaxaca,14,NA,NA,2024-12-01
+Puebla,24,NA,NA,2024-12-01
+Queretaro,2,NA,NA,2024-12-01
+Quintana Roo,3,NA,NA,2024-12-01
+San Luis Potosi,5,NA,NA,2024-12-01
+Sinaloa,136,NA,NA,2024-12-01
+Sonora,9,NA,NA,2024-12-01
+Tabasco,18,NA,NA,2024-12-01
+Tamaulipas,17,NA,NA,2024-12-01
+Tlaxcala,0,NA,NA,2024-12-01
+Veracruz,25,NA,NA,2024-12-01
+Yucatan,0,NA,NA,2024-12-01
+Zacatecas,10,NA,NA,2024-12-01
+Aguascalientes,0,NA,NA,2025-01-01
+Baja California,44,NA,NA,2025-01-01
+Baja California Sur,2,NA,NA,2025-01-01
+Campeche,5,NA,NA,2025-01-01
+Chiapas,13,NA,NA,2025-01-01
+Chihuahua,21,NA,NA,2025-01-01
+Ciudad De Mexico,12,NA,NA,2025-01-01
+Coahuila,2,NA,NA,2025-01-01
+Colima,16,NA,NA,2025-01-01
+Durango,1,NA,NA,2025-01-01
+Guanajuato,55,NA,NA,2025-01-01
+Guerrero,22,NA,NA,2025-01-01
+Hidalgo,5,NA,NA,2025-01-01
+Jalisco,27,NA,NA,2025-01-01
+Mexico,14,NA,NA,2025-01-01
+Michoacan,51,NA,NA,2025-01-01
+Morelos,25,NA,NA,2025-01-01
+Nayarit,0,NA,NA,2025-01-01
+Nuevo Leon,46,NA,NA,2025-01-01
+Oaxaca,5,NA,NA,2025-01-01
+Puebla,23,NA,NA,2025-01-01
+Queretaro,0,NA,NA,2025-01-01
+Quintana Roo,6,NA,NA,2025-01-01
+San Luis Potosi,6,NA,NA,2025-01-01
+Sinaloa,110,NA,NA,2025-01-01
+Sonora,19,NA,NA,2025-01-01
+Tabasco,12,NA,NA,2025-01-01
+Tamaulipas,10,NA,NA,2025-01-01
+Tlaxcala,0,NA,NA,2025-01-01
+Veracruz,20,NA,NA,2025-01-01
+Yucatan,0,NA,NA,2025-01-01
+Zacatecas,12,NA,NA,2025-01-01
+Aguascalientes,4,NA,NA,2025-02-01
+Baja California,33,NA,NA,2025-02-01
+Baja California Sur,1,NA,NA,2025-02-01
+Campeche,2,NA,NA,2025-02-01
+Chiapas,9,NA,NA,2025-02-01
+Chihuahua,27,NA,NA,2025-02-01
+Ciudad De Mexico,17,NA,NA,2025-02-01
+Coahuila,1,NA,NA,2025-02-01
+Colima,11,NA,NA,2025-02-01
+Durango,0,NA,NA,2025-02-01
+Guanajuato,56,NA,NA,2025-02-01
+Guerrero,29,NA,NA,2025-02-01
+Hidalgo,9,NA,NA,2025-02-01
+Jalisco,24,NA,NA,2025-02-01
+Mexico,25,NA,NA,2025-02-01
+Michoacan,60,NA,NA,2025-02-01
+Morelos,24,NA,NA,2025-02-01
+Nayarit,2,NA,NA,2025-02-01
+Nuevo Leon,51,NA,NA,2025-02-01
+Oaxaca,6,NA,NA,2025-02-01
+Puebla,30,NA,NA,2025-02-01
+Queretaro,1,NA,NA,2025-02-01
+Quintana Roo,3,NA,NA,2025-02-01
+San Luis Potosi,7,NA,NA,2025-02-01
+Sinaloa,89,NA,NA,2025-02-01
+Sonora,14,NA,NA,2025-02-01
+Tabasco,20,NA,NA,2025-02-01
+Tamaulipas,15,NA,NA,2025-02-01
+Tlaxcala,1,NA,NA,2025-02-01
+Veracruz,20,NA,NA,2025-02-01
+Yucatan,2,NA,NA,2025-02-01
+Zacatecas,12,NA,NA,2025-02-01
+Aguascalientes,2,NA,NA,2025-03-01
+Baja California,40,NA,NA,2025-03-01
+Baja California Sur,1,NA,NA,2025-03-01
+Campeche,4,NA,NA,2025-03-01
+Chiapas,7,NA,NA,2025-03-01
+Chihuahua,22,NA,NA,2025-03-01
+Ciudad De Mexico,22,NA,NA,2025-03-01
+Coahuila,3,NA,NA,2025-03-01
+Colima,12,NA,NA,2025-03-01
+Durango,1,NA,NA,2025-03-01
+Guanajuato,65,NA,NA,2025-03-01
+Guerrero,34,NA,NA,2025-03-01
+Hidalgo,10,NA,NA,2025-03-01
+Jalisco,27,NA,NA,2025-03-01
+Mexico,23,NA,NA,2025-03-01
+Michoacan,75,NA,NA,2025-03-01
+Morelos,23,NA,NA,2025-03-01
+Nayarit,1,NA,NA,2025-03-01
+Nuevo Leon,48,NA,NA,2025-03-01
+Oaxaca,7,NA,NA,2025-03-01
+Puebla,25,NA,NA,2025-03-01
+Queretaro,1,NA,NA,2025-03-01
+Quintana Roo,4,NA,NA,2025-03-01
+San Luis Potosi,6,NA,NA,2025-03-01
+Sinaloa,87,NA,NA,2025-03-01
+Sonora,17,NA,NA,2025-03-01
+Tabasco,21,NA,NA,2025-03-01
+Tamaulipas,11,NA,NA,2025-03-01
+Tlaxcala,2,NA,NA,2025-03-01
+Veracruz,24,NA,NA,2025-03-01
+Yucatan,1,NA,NA,2025-03-01
+Zacatecas,11,NA,NA,2025-03-01
+Aguascalientes,2,NA,NA,2025-04-01
+Baja California,37,NA,NA,2025-04-01
+Baja California Sur,1,NA,NA,2025-04-01
+Campeche,4,NA,NA,2025-04-01
+Chiapas,8,NA,NA,2025-04-01
+Chihuahua,17,NA,NA,2025-04-01
+Ciudad De Mexico,26,NA,NA,2025-04-01
+Coahuila,2,NA,NA,2025-04-01
+Colima,16,NA,NA,2025-04-01
+Durango,1,NA,NA,2025-04-01
+Guanajuato,57,NA,NA,2025-04-01
+Guerrero,30,NA,NA,2025-04-01
+Hidalgo,9,NA,NA,2025-04-01
+Jalisco,33,NA,NA,2025-04-01
+Mexico,26,NA,NA,2025-04-01
+Michoacan,53,NA,NA,2025-04-01
+Morelos,16,NA,NA,2025-04-01
+Nayarit,1,NA,NA,2025-04-01
+Nuevo Leon,59,NA,NA,2025-04-01
+Oaxaca,8,NA,NA,2025-04-01
+Puebla,26,NA,NA,2025-04-01
+Queretaro,3,NA,NA,2025-04-01
+Quintana Roo,6,NA,NA,2025-04-01
+San Luis Potosi,5,NA,NA,2025-04-01
+Sinaloa,96,NA,NA,2025-04-01
+Sonora,24,NA,NA,2025-04-01
+Tabasco,21,NA,NA,2025-04-01
+Tamaulipas,10,NA,NA,2025-04-01
+Tlaxcala,2,NA,NA,2025-04-01
+Veracruz,25,NA,NA,2025-04-01
+Yucatan,2,NA,NA,2025-04-01
+Zacatecas,15,NA,NA,2025-04-01
+Aguascalientes,1,NA,NA,2025-05-01
+Baja California,34,NA,NA,2025-05-01
+Baja California Sur,6,NA,NA,2025-05-01
+Campeche,5,NA,NA,2025-05-01
+Chiapas,7,NA,NA,2025-05-01
+Chihuahua,13,NA,NA,2025-05-01
+Ciudad De Mexico,24,NA,NA,2025-05-01
+Coahuila,2,NA,NA,2025-05-01
+Colima,9,NA,NA,2025-05-01
+Durango,2,NA,NA,2025-05-01
+Guanajuato,50,NA,NA,2025-05-01
+Guerrero,53,NA,NA,2025-05-01
+Hidalgo,7,NA,NA,2025-05-01
+Jalisco,39,NA,NA,2025-05-01
+Mexico,23,NA,NA,2025-05-01
+Michoacan,62,NA,NA,2025-05-01
+Morelos,17,NA,NA,2025-05-01
+Nayarit,0,NA,NA,2025-05-01
+Nuevo Leon,56,NA,NA,2025-05-01
+Oaxaca,8,NA,NA,2025-05-01
+Puebla,35,NA,NA,2025-05-01
+Queretaro,2,NA,NA,2025-05-01
+Quintana Roo,5,NA,NA,2025-05-01
+San Luis Potosi,4,NA,NA,2025-05-01
+Sinaloa,116,NA,NA,2025-05-01
+Sonora,16,NA,NA,2025-05-01
+Tabasco,17,NA,NA,2025-05-01
+Tamaulipas,4,NA,NA,2025-05-01
+Tlaxcala,2,NA,NA,2025-05-01
+Veracruz,31,NA,NA,2025-05-01
+Yucatan,1,NA,NA,2025-05-01
+Zacatecas,13,NA,NA,2025-05-01
+Aguascalientes,1,NA,NA,2025-06-01
+Baja California,37,NA,NA,2025-06-01
+Baja California Sur,7,NA,NA,2025-06-01
+Campeche,8,NA,NA,2025-06-01
+Chiapas,3,NA,NA,2025-06-01
+Chihuahua,13,NA,NA,2025-06-01
+Ciudad De Mexico,12,NA,NA,2025-06-01
+Coahuila,0,NA,NA,2025-06-01
+Colima,11,NA,NA,2025-06-01
+Durango,2,NA,NA,2025-06-01
+Guanajuato,56,NA,NA,2025-06-01
+Guerrero,33,NA,NA,2025-06-01
+Hidalgo,10,NA,NA,2025-06-01
+Jalisco,32,NA,NA,2025-06-01
+Mexico,19,NA,NA,2025-06-01
+Michoacan,55,NA,NA,2025-06-01
+Morelos,20,NA,NA,2025-06-01
+Nayarit,1,NA,NA,2025-06-01
+Nuevo Leon,49,NA,NA,2025-06-01
+Oaxaca,12,NA,NA,2025-06-01
+Puebla,16,NA,NA,2025-06-01
+Queretaro,3,NA,NA,2025-06-01
+Quintana Roo,12,NA,NA,2025-06-01
+San Luis Potosi,3,NA,NA,2025-06-01
+Sinaloa,143,NA,NA,2025-06-01
+Sonora,24,NA,NA,2025-06-01
+Tabasco,18,NA,NA,2025-06-01
+Tamaulipas,7,NA,NA,2025-06-01
+Tlaxcala,0,NA,NA,2025-06-01
+Veracruz,32,NA,NA,2025-06-01
+Yucatan,0,NA,NA,2025-06-01
+Zacatecas,13,NA,NA,2025-06-01
+Aguascalientes,2,NA,NA,2025-07-01
+Baja California,44,NA,NA,2025-07-01
+Baja California Sur,7,NA,NA,2025-07-01
+Campeche,3,NA,NA,2025-07-01
+Chiapas,5,NA,NA,2025-07-01
+Chihuahua,18,NA,NA,2025-07-01
+Ciudad De Mexico,28,NA,NA,2025-07-01
+Coahuila,3,NA,NA,2025-07-01
+Colima,16,NA,NA,2025-07-01
+Durango,3,NA,NA,2025-07-01
+Guanajuato,49,NA,NA,2025-07-01
+Guerrero,38,NA,NA,2025-07-01
+Hidalgo,10,NA,NA,2025-07-01
+Jalisco,26,NA,NA,2025-07-01
+Mexico,24,NA,NA,2025-07-01
+Michoacan,52,NA,NA,2025-07-01
+Morelos,22,NA,NA,2025-07-01
+Nayarit,2,NA,NA,2025-07-01
+Nuevo Leon,60,NA,NA,2025-07-01
+Oaxaca,9,NA,NA,2025-07-01
+Puebla,38,NA,NA,2025-07-01
+Queretaro,2,NA,NA,2025-07-01
+Quintana Roo,7,NA,NA,2025-07-01
+San Luis Potosi,4,NA,NA,2025-07-01
+Sinaloa,163,NA,NA,2025-07-01
+Sonora,23,NA,NA,2025-07-01
+Tabasco,9,NA,NA,2025-07-01
+Tamaulipas,7,NA,NA,2025-07-01
+Tlaxcala,3,NA,NA,2025-07-01
+Veracruz,29,NA,NA,2025-07-01
+Yucatan,2,NA,NA,2025-07-01
+Zacatecas,8,NA,NA,2025-07-01
+Aguascalientes,3,NA,NA,2025-08-01
+Baja California,53,NA,NA,2025-08-01
+Baja California Sur,2,NA,NA,2025-08-01
+Campeche,4,NA,NA,2025-08-01
+Chiapas,11,NA,NA,2025-08-01
+Chihuahua,25,NA,NA,2025-08-01
+Ciudad De Mexico,28,NA,NA,2025-08-01
+Coahuila,1,NA,NA,2025-08-01
+Colima,23,NA,NA,2025-08-01
+Durango,5,NA,NA,2025-08-01
+Guanajuato,45,NA,NA,2025-08-01
+Guerrero,36,NA,NA,2025-08-01
+Hidalgo,10,NA,NA,2025-08-01
+Jalisco,27,NA,NA,2025-08-01
+Mexico,25,NA,NA,2025-08-01
+Michoacan,56,NA,NA,2025-08-01
+Morelos,25,NA,NA,2025-08-01
+Nayarit,0,NA,NA,2025-08-01
+Nuevo Leon,41,NA,NA,2025-08-01
+Oaxaca,10,NA,NA,2025-08-01
+Puebla,29,NA,NA,2025-08-01
+Queretaro,2,NA,NA,2025-08-01
+Quintana Roo,6,NA,NA,2025-08-01
+San Luis Potosi,3,NA,NA,2025-08-01
+Sinaloa,133,NA,NA,2025-08-01
+Sonora,24,NA,NA,2025-08-01
+Tabasco,8,NA,NA,2025-08-01
+Tamaulipas,3,NA,NA,2025-08-01
+Tlaxcala,0,NA,NA,2025-08-01
+Veracruz,38,NA,NA,2025-08-01
+Yucatan,0,NA,NA,2025-08-01
+Zacatecas,5,NA,NA,2025-08-01
+Aguascalientes,2,NA,NA,2025-09-01
+Baja California,36,NA,NA,2025-09-01
+Baja California Sur,5,NA,NA,2025-09-01
+Campeche,5,NA,NA,2025-09-01
+Chiapas,7,NA,NA,2025-09-01
+Chihuahua,23,NA,NA,2025-09-01
+Ciudad De Mexico,21,NA,NA,2025-09-01
+Coahuila,2,NA,NA,2025-09-01
+Colima,15,NA,NA,2025-09-01
+Durango,5,NA,NA,2025-09-01
+Guanajuato,61,NA,NA,2025-09-01
+Guerrero,35,NA,NA,2025-09-01
+Hidalgo,7,NA,NA,2025-09-01
+Jalisco,34,NA,NA,2025-09-01
+Mexico,25,NA,NA,2025-09-01
+Michoacan,45,NA,NA,2025-09-01
+Morelos,26,NA,NA,2025-09-01
+Nayarit,0,NA,NA,2025-09-01
+Nuevo Leon,54,NA,NA,2025-09-01
+Oaxaca,8,NA,NA,2025-09-01
+Puebla,31,NA,NA,2025-09-01
+Queretaro,0,NA,NA,2025-09-01
+Quintana Roo,4,NA,NA,2025-09-01
+San Luis Potosi,2,NA,NA,2025-09-01
+Sinaloa,94,NA,NA,2025-09-01
+Sonora,24,NA,NA,2025-09-01
+Tabasco,9,NA,NA,2025-09-01
+Tamaulipas,4,NA,NA,2025-09-01
+Tlaxcala,1,NA,NA,2025-09-01
+Veracruz,37,NA,NA,2025-09-01
+Yucatan,0,NA,NA,2025-09-01
+Zacatecas,2,NA,NA,2025-09-01
+Aguascalientes,1,NA,NA,2025-10-01
+Baja California,43,NA,NA,2025-10-01
+Baja California Sur,2,NA,NA,2025-10-01
+Campeche,6,NA,NA,2025-10-01
+Chiapas,2,NA,NA,2025-10-01
+Chihuahua,12,NA,NA,2025-10-01
+Ciudad De Mexico,16,NA,NA,2025-10-01
+Coahuila,1,NA,NA,2025-10-01
+Colima,13,NA,NA,2025-10-01
+Durango,2,NA,NA,2025-10-01
+Guanajuato,58,NA,NA,2025-10-01
+Guerrero,29,NA,NA,2025-10-01
+Hidalgo,12,NA,NA,2025-10-01
+Jalisco,20,NA,NA,2025-10-01
+Mexico,9,NA,NA,2025-10-01
+Michoacan,45,NA,NA,2025-10-01
+Morelos,22,NA,NA,2025-10-01
+Nayarit,0,NA,NA,2025-10-01
+Nuevo Leon,48,NA,NA,2025-10-01
+Oaxaca,7,NA,NA,2025-10-01
+Puebla,24,NA,NA,2025-10-01
+Queretaro,1,NA,NA,2025-10-01
+Quintana Roo,1,NA,NA,2025-10-01
+San Luis Potosi,1,NA,NA,2025-10-01
+Sinaloa,117,NA,NA,2025-10-01
+Sonora,15,NA,NA,2025-10-01
+Tabasco,8,NA,NA,2025-10-01
+Tamaulipas,11,NA,NA,2025-10-01
+Tlaxcala,0,NA,NA,2025-10-01
+Veracruz,38,NA,NA,2025-10-01
+Yucatan,0,NA,NA,2025-10-01
+Zacatecas,2,NA,NA,2025-10-01
+Aguascalientes,1,NA,NA,2025-11-01
+Baja California,47,NA,NA,2025-11-01
+Baja California Sur,1,NA,NA,2025-11-01
+Campeche,2,NA,NA,2025-11-01
+Chiapas,4,NA,NA,2025-11-01
+Chihuahua,18,NA,NA,2025-11-01
+Ciudad De Mexico,19,NA,NA,2025-11-01
+Coahuila,2,NA,NA,2025-11-01
+Colima,19,NA,NA,2025-11-01
+Durango,4,NA,NA,2025-11-01
+Guanajuato,69,NA,NA,2025-11-01
+Guerrero,26,NA,NA,2025-11-01
+Hidalgo,5,NA,NA,2025-11-01
+Jalisco,20,NA,NA,2025-11-01
+Mexico,12,NA,NA,2025-11-01
+Michoacan,41,NA,NA,2025-11-01
+Morelos,20,NA,NA,2025-11-01
+Nayarit,3,NA,NA,2025-11-01
+Nuevo Leon,34,NA,NA,2025-11-01
+Oaxaca,5,NA,NA,2025-11-01
+Puebla,29,NA,NA,2025-11-01
+Queretaro,3,NA,NA,2025-11-01
+Quintana Roo,5,NA,NA,2025-11-01
+San Luis Potosi,1,NA,NA,2025-11-01
+Sinaloa,121,NA,NA,2025-11-01
+Sonora,25,NA,NA,2025-11-01
+Tabasco,8,NA,NA,2025-11-01
+Tamaulipas,9,NA,NA,2025-11-01
+Tlaxcala,2,NA,NA,2025-11-01
+Veracruz,26,NA,NA,2025-11-01
+Yucatan,0,NA,NA,2025-11-01
+Zacatecas,2,NA,NA,2025-11-01
+Aguascalientes,1,NA,NA,2025-12-01
+Baja California,47,NA,NA,2025-12-01
+Baja California Sur,1,NA,NA,2025-12-01
+Campeche,2,NA,NA,2025-12-01
+Chiapas,4,NA,NA,2025-12-01
+Chihuahua,18,NA,NA,2025-12-01
+Ciudad De Mexico,19,NA,NA,2025-12-01
+Coahuila,2,NA,NA,2025-12-01
+Colima,19,NA,NA,2025-12-01
+Durango,4,NA,NA,2025-12-01
+Guanajuato,69,NA,NA,2025-12-01
+Guerrero,26,NA,NA,2025-12-01
+Hidalgo,5,NA,NA,2025-12-01
+Jalisco,20,NA,NA,2025-12-01
+Mexico,12,NA,NA,2025-12-01
+Michoacan,41,NA,NA,2025-12-01
+Morelos,20,NA,NA,2025-12-01
+Nayarit,3,NA,NA,2025-12-01
+Nuevo Leon,34,NA,NA,2025-12-01
+Oaxaca,5,NA,NA,2025-12-01
+Puebla,28,NA,NA,2025-12-01
+Queretaro,3,NA,NA,2025-12-01
+Quintana Roo,5,NA,NA,2025-12-01
+San Luis Potosi,1,NA,NA,2025-12-01
+Sinaloa,120,NA,NA,2025-12-01
+Sonora,25,NA,NA,2025-12-01
+Tabasco,8,NA,NA,2025-12-01
+Tamaulipas,9,NA,NA,2025-12-01
+Tlaxcala,2,NA,NA,2025-12-01
+Veracruz,26,NA,NA,2025-12-01
+Yucatan,0,NA,NA,2025-12-01
+Zacatecas,2,NA,NA,2025-12-01
+Aguascalientes,2,NA,NA,2026-01-01
+Baja California,46,NA,NA,2026-01-01
+Baja California Sur,2,NA,NA,2026-01-01
+Campeche,3,NA,NA,2026-01-01
+Chiapas,5,NA,NA,2026-01-01
+Chihuahua,18,NA,NA,2026-01-01
+Ciudad De Mexico,20,NA,NA,2026-01-01
+Coahuila,2,NA,NA,2026-01-01
+Colima,18,NA,NA,2026-01-01
+Durango,4,NA,NA,2026-01-01
+Guanajuato,68,NA,NA,2026-01-01
+Guerrero,28,NA,NA,2026-01-01
+Hidalgo,7,NA,NA,2026-01-01
+Jalisco,22,NA,NA,2026-01-01
+Mexico,14,NA,NA,2026-01-01
+Michoacan,42,NA,NA,2026-01-01
+Morelos,21,NA,NA,2026-01-01
+Nayarit,3,NA,NA,2026-01-01
+Nuevo Leon,38,NA,NA,2026-01-01
+Oaxaca,6,NA,NA,2026-01-01
+Puebla,29,NA,NA,2026-01-01
+Queretaro,3,NA,NA,2026-01-01
+Quintana Roo,5,NA,NA,2026-01-01
+San Luis Potosi,1,NA,NA,2026-01-01
+Sinaloa,117,NA,NA,2026-01-01
+Sonora,24,NA,NA,2026-01-01
+Tabasco,8,NA,NA,2026-01-01
+Tamaulipas,9,NA,NA,2026-01-01
+Tlaxcala,2,NA,NA,2026-01-01
+Veracruz,29,NA,NA,2026-01-01
+Yucatan,0,NA,NA,2026-01-01
+Zacatecas,3,NA,NA,2026-01-01
+Aguascalientes,2,NA,NA,2026-02-01
+Baja California,45,NA,NA,2026-02-01
+Baja California Sur,2,NA,NA,2026-02-01
+Campeche,3,NA,NA,2026-02-01
+Chiapas,5,NA,NA,2026-02-01
+Chihuahua,18,NA,NA,2026-02-01
+Ciudad De Mexico,20,NA,NA,2026-02-01
+Coahuila,2,NA,NA,2026-02-01
+Colima,19,NA,NA,2026-02-01
+Durango,4,NA,NA,2026-02-01
+Guanajuato,68,NA,NA,2026-02-01
+Guerrero,27,NA,NA,2026-02-01
+Hidalgo,6,NA,NA,2026-02-01
+Jalisco,22,NA,NA,2026-02-01
+Mexico,14,NA,NA,2026-02-01
+Michoacan,43,NA,NA,2026-02-01
+Morelos,21,NA,NA,2026-02-01
+Nayarit,3,NA,NA,2026-02-01
+Nuevo Leon,38,NA,NA,2026-02-01
+Oaxaca,6,NA,NA,2026-02-01
+Puebla,29,NA,NA,2026-02-01
+Queretaro,3,NA,NA,2026-02-01
+Quintana Roo,5,NA,NA,2026-02-01
+San Luis Potosi,1,NA,NA,2026-02-01
+Sinaloa,116,NA,NA,2026-02-01
+Sonora,24,NA,NA,2026-02-01
+Tabasco,8,NA,NA,2026-02-01
+Tamaulipas,9,NA,NA,2026-02-01
+Tlaxcala,2,NA,NA,2026-02-01
+Veracruz,29,NA,NA,2026-02-01
+Yucatan,0,NA,NA,2026-02-01
+Zacatecas,3,NA,NA,2026-02-01
+Aguascalientes,2,NA,NA,2026-03-01
+Baja California,45,NA,NA,2026-03-01
+Baja California Sur,2,NA,NA,2026-03-01
+Campeche,3,NA,NA,2026-03-01
+Chiapas,5,NA,NA,2026-03-01
+Chihuahua,18,NA,NA,2026-03-01
+Ciudad De Mexico,20,NA,NA,2026-03-01
+Coahuila,2,NA,NA,2026-03-01
+Colima,19,NA,NA,2026-03-01
+Durango,4,NA,NA,2026-03-01
+Guanajuato,68,NA,NA,2026-03-01
+Guerrero,28,NA,NA,2026-03-01
+Hidalgo,6,NA,NA,2026-03-01
+Jalisco,22,NA,NA,2026-03-01
+Mexico,14,NA,NA,2026-03-01
+Michoacan,42,NA,NA,2026-03-01
+Morelos,21,NA,NA,2026-03-01
+Nayarit,3,NA,NA,2026-03-01
+Nuevo Leon,38,NA,NA,2026-03-01
+Oaxaca,6,NA,NA,2026-03-01
+Puebla,29,NA,NA,2026-03-01
+Queretaro,3,NA,NA,2026-03-01
+Quintana Roo,5,NA,NA,2026-03-01
+San Luis Potosi,1,NA,NA,2026-03-01
+Sinaloa,117,NA,NA,2026-03-01
+Sonora,24,NA,NA,2026-03-01
+Tabasco,8,NA,NA,2026-03-01
+Tamaulipas,9,NA,NA,2026-03-01
+Tlaxcala,2,NA,NA,2026-03-01
+Veracruz,29,NA,NA,2026-03-01
+Yucatan,0,NA,NA,2026-03-01
+Zacatecas,3,NA,NA,2026-03-01

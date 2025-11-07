@@ -198,6 +198,7 @@ for k in ["adm2_code","adm1_name","adm2_name"]:
     static_today[k] = static_today[k].astype(str)
 # minimal static features reused across all days
 static = static_today[["adm2_code","adm1_name","adm2_name","pop_wra","access_A","mvi","cast_state"]].copy()
+static = static.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 static["pop_wra"] = pd.to_numeric(static["pop_wra"], errors="coerce").fillna(0.0)
 static["adm1_join"] = normalize_adm1_join_name(static["adm1_name"])
 
@@ -227,6 +228,7 @@ adm2 = adm2.merge(static[["adm2_code"]].drop_duplicates(), on="adm2_code", how="
 wq = Queen.from_dataframe(adm2, ids=adm2["adm2_code"].tolist())
 wq.transform = "R"
 W = wq.sparse  # scipy csr
+adm2_index = adm2.drop(columns="geometry").copy()
 
 # ----------------- fetch 180d of events -----------------
 print(f"Fetching 180 days of ACLED events (for rolling windows)...")
@@ -239,39 +241,94 @@ end_allowed = pd.to_datetime(cap.get("date"), errors="coerce").date() if cap els
 # After computing end_allowed (ACLED recency cap):
 print(f"ACLED recency cap: {end_allowed}")
 
-# Build snapshot dates ending at the recency cap (true historical reconstruction)
-snapshot_end = end_allowed
-snapshot_dates = [snapshot_end - dt.timedelta(days=i) for i in range(0, 90)]
-snapshot_dates = list(reversed(snapshot_dates))  # oldest -> newest optional
-print(f"Will generate 90 snapshots from {snapshot_dates[0]} to {snapshot_dates[-1]}")
+run_today = dt.date.today()
+snapshot_dates = [run_today - dt.timedelta(days=i) for i in range(0, 90)]
+snapshot_dates = list(reversed(snapshot_dates))
+print(f"Will generate 90 snapshots (run dates) from {snapshot_dates[0]} to {snapshot_dates[-1]}")
 
-# CAST months needed: one-month-ahead of each snapshot month
-needed_months = sorted({ add_month(d.replace(day=1)) for d in snapshot_dates })
+snap_specs = []
+for snap_date in snapshot_dates:
+    offset_days = (run_today - snap_date).days
+    anchor = end_allowed - dt.timedelta(days=offset_days)
+    snap_specs.append({"run_date": snap_date, "anchor": anchor})
+
+needed_months = sorted({ add_month(first_of_month(spec["run_date"])) for spec in snap_specs })
 print(f"CAST one-month-ahead months needed: {[str(x) for x in needed_months]}")
 
-# In the loop replace anchor logic:
-for i, snap_date in enumerate(snapshot_dates):
-    # Use snapshot_date as anchor (simulate what you would have known THAT day)
-    anchor = snap_date
+earliest_anchor = min(spec["anchor"] for spec in snap_specs)
+events_start = earliest_anchor - dt.timedelta(days=89)
+print(f"Event window start: {events_start}")
 
-    # Windows relative to anchor
+event_params = {
+    "country": "Mexico",
+    "event_date": f"{events_start.isoformat()}|{end_allowed.isoformat()}",
+    "event_date_where": "BETWEEN",
+    "fields": ACLED_FIELDS,
+}
+events_raw = acled_fetch(event_params, token)
+if events_raw.empty:
+    print("Warning: ACLED returned no violent events for the backfill window.")
+    j = pd.DataFrame(columns=["adm2_code","adm1_name","adm2_name","event_date"])
+else:
+    events_raw = events_raw[events_raw["event_type"].isin(VIOLENT)].copy()
+    if "country" in events_raw.columns:
+        events_raw = events_raw[events_raw["country"] == "Mexico"]
+    for col in ("latitude","longitude"):
+        events_raw[col] = pd.to_numeric(events_raw[col], errors="coerce")
+    events_raw["event_date"] = pd.to_datetime(events_raw["event_date"], errors="coerce").dt.date
+    events_raw = events_raw.dropna(subset=["event_date","latitude","longitude"])
+    events_gdf = gpd.GeoDataFrame(
+        events_raw,
+        geometry=gpd.points_from_xy(events_raw["longitude"], events_raw["latitude"]),
+        crs=4326,
+    )
+    joined = gpd.sjoin(
+        events_gdf,
+        adm2[["adm2_code","geometry"]],
+        how="left",
+        predicate="intersects",
+    ).drop(columns=["index_right"], errors="ignore")
+    joined = joined.merge(adm2_index, on="adm2_code", how="left")
+    joined["event_date"] = pd.to_datetime(joined["event_date"], errors="coerce").dt.date
+    joined["adm2_code"] = joined["adm2_code"].astype(str)
+    j = joined.dropna(subset=["event_date"]).copy()
+
+if not j.empty:
+    j.to_csv(EVENT_JOIN_CSV, index=False)
+
+cast_by_month = {}
+for month_date in needed_months:
+    cast_df = fetch_cast_for_month(token, month_date.year, month_date.month)
+    cast_by_month[month_date] = cast_df
+    label = month_date.strftime("%Y-%m")
+    if cast_df.empty:
+        print(f"Warning: no CAST rows returned for {label}; falling back to static cast_state.")
+    else:
+        print(f"Fetched {len(cast_df)} CAST rows for {label}.")
+
+rows, cast_hist, ev_hist = [], [], []
+
+for spec in snap_specs:
+    run_date = spec["run_date"]
+    anchor = min(spec["anchor"], end_allowed)
+
     w30_start    = anchor - dt.timedelta(days=29)
     w90_start    = anchor - dt.timedelta(days=89)
     prev30_start = anchor - dt.timedelta(days=59)
     prev30_end   = anchor - dt.timedelta(days=30)
 
-    # Filter events only up to end_allowed (no future leakage)
-    d90  = j[(j["yyyymmdd"] >= w90_start)  & (j["yyyymmdd"] <= end_allowed)]
-    d30  = j[(j["yyyymmdd"] >= w30_start)  & (j["yyyymmdd"] <= end_allowed)]
-    dP30 = j[(j["yyyymmdd"] >= prev30_start) & (j["yyyymmdd"] <= prev30_end)]
-
-    # If a window extends past end_allowed (for newest snapshots), it naturally truncates.
+    mask90 = (j["event_date"] >= w90_start) & (j["event_date"] <= anchor)
+    mask30 = (j["event_date"] >= w30_start) & (j["event_date"] <= anchor)
+    mask_prev = (j["event_date"] >= prev30_start) & (j["event_date"] <= prev30_end)
+    d90  = j[mask90]
+    d30  = j[mask30]
+    dP30 = j[mask_prev]
 
     c90  = d90.groupby("adm2_code").size()
     c30  = d30.groupby("adm2_code").size()
     cP30 = dP30.groupby("adm2_code").size()
 
-    df = adm2_index.copy()
+    df = adm2_index.drop(columns="adm1_join").copy()
     df["events_90v"]   = df["adm2_code"].map(c90).fillna(0).astype(int)
     df["events30"]     = df["adm2_code"].map(c30).fillna(0).astype(int)
     df["events_prevv"] = df["adm2_code"].map(cP30).fillna(0).astype(int)
@@ -279,13 +336,14 @@ for i, snap_date in enumerate(snapshot_dates):
     df = df.merge(static, on=["adm2_code","adm1_name","adm2_name"], how="left")
     df["adm1_join"] = normalize_adm1_join_name(df["adm1_name"])
 
-    cast_month = add_month(anchor.replace(day=1))
+    cast_month = add_month(first_of_month(run_date))
     cast_m = cast_by_month.get(cast_month)
     if cast_m is not None and not cast_m.empty:
         df = df.merge(cast_m[["adm1_join","cast_state"]], on="adm1_join", how="left", suffixes=("", "_dyn"))
         df["cast_state_use"] = df["cast_state_dyn"].fillna(df["cast_state"])
     else:
         df["cast_state_use"] = df["cast_state"]
+    df = df.drop(columns=["cast_state_dyn"], errors="ignore")
 
     den = df["pop_wra"].astype(float).clip(lower=0)
     df["v30"]        = np.where(den > 0, 1e5 * df["events30"]    .astype(float) / den, 0.0)
@@ -317,8 +375,8 @@ for i, snap_date in enumerate(snapshot_dates):
                A_norm*W_PRS_NC["A"] + MVI_norm*W_PRS_NC["MVI"])
 
     rows.append(pd.DataFrame({
-        "snapshot_date": snap_date,
-        "data_as_of": end_allowed,
+        "snapshot_date": run_date,
+        "data_as_of": anchor,
         "adm2_code": df["adm2_code"],
         "adm1_name": df["adm1_name"],
         "adm2_name": df["adm2_name"],
@@ -331,15 +389,19 @@ for i, snap_date in enumerate(snapshot_dates):
         "spillover": df["spillover"]
     }))
 
-    state_cast = df.groupby("adm1_name", as_index=False).agg(
-        cast_state_mean=("cast_state_use", lambda x: float(pd.to_numeric(x, errors="coerce").fillna(0.0).mean()))
+    cast_snapshot = df[["adm1_join","cast_state_use"]].copy()
+    cast_snapshot["cast_state_use"] = pd.to_numeric(cast_snapshot["cast_state_use"], errors="coerce").fillna(0.0)
+    cast_snapshot = (
+        cast_snapshot.groupby("adm1_join", as_index=False)["cast_state_use"]
+        .mean()
+        .rename(columns={"cast_state_use": "cast_state"})
     )
-    state_cast["snapshot_date"] = snap_date
-    cast_hist.append(state_cast[["snapshot_date","adm1_name","cast_state_mean"]])
+    cast_snapshot["snapshot_date"] = run_date
+    cast_hist.append(cast_snapshot[["snapshot_date","adm1_join","cast_state"]])
 
     ev_hist.append(pd.DataFrame({
-        "snapshot_date": [snap_date],
-        "data_as_of": [end_allowed],
+        "snapshot_date": [run_date],
+        "data_as_of": [anchor],
         "events_30d": [int(df["events30"].sum())],
         "events_90d": [int(df["events_90v"].sum())],
         "events_prev30": [int(df["events_prevv"].sum())]
@@ -365,13 +427,3 @@ print(f"    - {len(pd.concat(ev_hist, ignore_index=True)):,} rows")
 print(f"\nDate range: {hist['snapshot_date'].min()} to {hist['snapshot_date'].max()}")
 print(f"\nThe daily pipeline will progressively replace these snapshots")
 print(f"with fresh data over the next 90 days.")
-
-# After hist is built (before printing BACKFILL COMPLETE) add anomaly detection:
-# Simple anomaly flag: extreme v30 (>400) but events_90v == 0 in recomputed set (should not happen)
-anom = hist[(hist["v30"] > 400)]
-if not anom.empty:
-    anom.to_csv(ANOMALIES_CSV, index=False)
-    print(f"\nAnomalies flagged (v30>400): {len(anom)} rows -> {ANOMALIES_CSV}")
-else:
-    print("\nNo extreme v30 anomalies detected (threshold 400).")
-print("=" * 60)
