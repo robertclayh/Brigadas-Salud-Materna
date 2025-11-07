@@ -167,7 +167,7 @@ def normalize_adm1_join_name(s: pd.Series) -> pd.Series:
             "Queretaro": "Queretaro",
             "Veracruz": "Veracruz De Ignacio De La Llave",
             "Yucatan": "Yucatan",
-            "Nuevo Leon": "Nuevo Leon",
+            "Nuevo leon": "Nuevo Leon",
             "San Luis Potosi": "San Luis Potosi",
             "Michoacan De Ocampo": "Michoacan De Ocampo",
         }
@@ -516,8 +516,8 @@ def build_coneval_if_needed():
 # Daily refresh: ACLED events and ACLED CAST
 def cast_fetch_mexico(token: str, *, verify: bool = True, future_only: bool = True) -> pd.DataFrame:
     """
-    Download ACLED CAST forecast for Mexico, optionally filtering to future months only.
-    Returns DataFrame with 'adm1_name', 'cast_raw', and 'cast_state' columns (summed per state).
+    Download ACLED CAST forecast for Mexico and return one-month-ahead per state.
+    Returns DataFrame with 'adm1_name','cast_raw' (for next month), used to derive cast_state.
     """
     headers = {"Authorization": f"Bearer {token}"}
     dfs = []
@@ -539,28 +539,25 @@ def cast_fetch_mexico(token: str, *, verify: bool = True, future_only: bool = Tr
         return cast_raw
 
     cast_raw = cast_raw.rename(columns={"admin1": "adm1_name", "total_forecast": "cast_raw"})
-    month_map = {
-        "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
-        "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12
-    }
+    month_map = {"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
+                 "July":7,"August":8,"September":9,"October":10,"November":11,"December":12}
     cast_raw["month_num"] = cast_raw["month"].map(month_map)
     cast_raw["forecast_date"] = pd.to_datetime(
         dict(year=cast_raw["year"], month=cast_raw["month_num"], day=1), errors="coerce"
     )
 
-    if future_only:
-        today_anchor = pd.Timestamp(dt.date.today().replace(day=1))
-        future = cast_raw[cast_raw["forecast_date"] >= today_anchor].copy()
-        if not future.empty:
-            cast_raw = future
-        else:
-            # fallback: use the latest forecast month present
-            cast_raw = cast_raw.dropna(subset=["forecast_date"])
-            latest = cast_raw["forecast_date"].max()
-            cast_raw = cast_raw[cast_raw["forecast_date"] == latest].copy()
+    # One-month-ahead selection: choose next month relative to run date anchor
+    anchor = dt.date.today().replace(day=1)
+    next_month = (anchor.replace(year=anchor.year + (1 if anchor.month == 12 else 0),
+                                 month=(1 if anchor.month == 12 else anchor.month + 1)))
+    cast_next = cast_raw[cast_raw["forecast_date"] == pd.Timestamp(next_month)]
+    if cast_next.empty:
+        # fallback: earliest forecast_date >= anchor
+        future = cast_raw[cast_raw["forecast_date"] >= pd.Timestamp(anchor)]
+        cast_next = future[future["forecast_date"] == future["forecast_date"].min()] if not future.empty else cast_raw
 
-    # Sum state-month rows and return per-state totals for selected months
-    cast_state = cast_raw.groupby("adm1_name", as_index=False)["cast_raw"].sum()
+    # Return next-month forecast per state
+    cast_state = cast_next.groupby("adm1_name", as_index=False)["cast_raw"].sum()
     cast_state["cast_raw"] = cast_state["cast_raw"].fillna(0).astype(float)
     return cast_state
 
@@ -640,8 +637,14 @@ if do_refresh_acled:
     acled_90 = _clean(acled_90)
     acled_prev = _clean(acled_prev)
 
-    acled_90v = normalize_admin_names(acled_90[acled_90["event_type"].isin(VIOLENT_TYPES)].copy()) if not acled_90.empty else pd.DataFrame(columns=acled_90.columns)
-    acled_prevv = normalize_admin_names(acled_prev[acled_prev["event_type"].isin(VIOLENT_TYPES)].copy()) if not acled_prev.empty else pd.DataFrame(columns=acled_prev.columns)
+    acled_90v = (
+        normalize_admin_names(acled_90[acled_90["event_type"].isin(VIOLENT_TYPES)].copy())
+        if not acled_90.empty else pd.DataFrame(columns=acled_90.columns)
+    )
+    acled_prevv = (
+        normalize_admin_names(acled_prev[acled_prev["event_type"].isin(VIOLENT_TYPES)].copy())
+        if not acled_prev.empty else pd.DataFrame(columns=acled_prev.columns)
+    )
 
     # Points & spatial joins to ADM2
     acled_90v_g = to_points(acled_90v)
