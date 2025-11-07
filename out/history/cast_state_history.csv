@@ -1,5 +1,5 @@
 snapshot_date,adm1_name,cast_state_mean,adm1_join,cast_state
-2025-11-07,,,Nayarit,0.029868942395611105
+2025-11-07,,,Nayarit,0.035778175313059046
 2025-11-07,,,Mexico,0.2157878695519659
 2025-11-07,,,Nuevo Leon,0.6516306004266994
 2025-11-07,,,Oaxaca,0.0786345626333435
@@ -30,4 +30,4 @@ snapshot_date,adm1_name,cast_state_mean,adm1_join,cast_state
 2025-11-07,,,Baja California,0.8162145687290463
 2025-11-07,,,Aguascalientes,0.0054861322767448
 2025-11-07,,,Yucatan,0.0
-2025-11-07,,,Zacatecas,0.023773239865894552
+2025-11-07,,,Zacatecas,0.017889087656529523
