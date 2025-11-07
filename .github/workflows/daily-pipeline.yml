@@ -13,10 +13,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (with Git LFS)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          lfs: true                           # <-- REQUIRED to fetch real .shp/.tif from LFS
+
+      # Optional but nice: limit what LFS pulls to your data folders
+      # - name: Narrow checkout (optional)
+      #   run: |
+      #     git sparse-checkout init --cone
+      #     git sparse-checkout set data out .github pipeline.py README.md requirements.txt
+
+      # Quick sanity check that LFS pulled real files (not pointer text)
+      - name: Verify shapefile and raster are present (not LFS pointers)
+        run: |
+          set -euo pipefail
+          SHPDIR="data/mex_admbnda_govmex_20210618_SHP"
+          SHP="$SHPDIR/mex_admbnda_adm2_govmex_20210618.shp"
+          TIF="data/worldpop/mex_pop_2025_CN_100m_R2025A_v1.tif"
+
+          for f in "$SHP" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.dbf" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.shx" "$TIF"; do
+            if [ ! -f "$f" ]; then
+              echo "Missing required file: $f"
+              exit 1
+            fi
+            if head -n1 "$f" | grep -q "version https://git-lfs.github.com/spec/v1"; then
+              echo "ERROR: $f is a Git LFS pointer, not the real file."
+              echo "This usually means LFS quota wasn't available, or checkout didn't fetch LFS objects."
+              exit 1
+            fi
+            if [ ! -s "$f" ]; then
+              echo "ERROR: $f exists but is zero bytes."
+              exit 1
+            fi
+          done
+          echo "LFS assets look good."
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -39,7 +71,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # NEW: derive a safe flag from secrets without using them in `if:`
+      # Derive a safe flag from secrets without using them directly in `if:`
       - name: Derive flags for creds step
         id: flags
         env:
@@ -59,7 +91,6 @@ jobs:
           GOOGLE_CREDS_CONTENT: ${{ secrets.GOOGLE_CREDS_JSON }}
         run: |
           mkdir -p "$HOME/.config/gcloud"
-          # Accept either raw JSON or base64-encoded JSON
           if echo "$GOOGLE_CREDS_CONTENT" | grep -q '"type": *"service_account"'; then
             printf '%s' "$GOOGLE_CREDS_CONTENT" > "$HOME/.config/gcloud/credentials.json"
           else
@@ -90,8 +121,7 @@ jobs:
           } > .env
 
       - name: Run pipeline
-        run: |
-          python pipeline.py
+        run: python pipeline.py
 
       - name: Configure Git
         run: |
