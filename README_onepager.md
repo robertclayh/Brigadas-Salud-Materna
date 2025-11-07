@@ -7,7 +7,7 @@ This repository contains a reproducible Python data pipeline that builds ADM2-le
 
 **Input Variables**  
 - *Violence (V30, V3m)* (ACLED 30-/90-day event counts)  
-- *Access (A)* (CLUES facility density, inverse scaled)  
+- *Access (A)* (blended: w·distance-to-nearest facility + (1−w)·inverse facility density; w=ACCESS_BLEND_W, default 0.5)  
 - *Poverty (MVI)* (CONEVAL 2020 % pobreza)  
 - *Spillover (S)* (Queen-contiguity neighbor mean of violence)[^1]  
 - *Forecast (CAST)* (ACLED CAST, state-level)  
@@ -30,6 +30,11 @@ $$
 
 The overall **priority score** balances predictive and structural risk:  
 $$priority100 = 100 \times (0.6PRS + 0.4DCR)$$  
+
+### Accessibility Metric
+Accessibility (A) mitigates small-boundary artifacts by blending proximity and capacity signals. Let $A_{distance}$ be the winsorized (5–95%) 0–1 distance to the nearest filtered CLUES facility (higher = worse), and $A_{density}$ the winsorized inverse of facilities per 100k WRA (higher = fewer facilities per capita = worse). The final term:
+$$A = w\,A_{distance} + (1-w)\,A_{density}, \quad w=\texttt{ACCESS\_BLEND\_W}\in[0,1]\ (\text{default }0.5)$$
+Both components use the same filtered facility set (public, active, non-mobile, valid coordinates) for consistency.
 
 ## Automation
 At least one variable—ACLED event data—refreshes daily through automated API calls, along with CAST forecasts. If the API recency cap has not advanced, cached data are reused. Static layers (population, poverty, and facilities) rebuild only when missing.

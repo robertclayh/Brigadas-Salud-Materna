@@ -10,7 +10,7 @@ The risk model combines structural vulnerabilities and dynamic indicators to cap
 
 - **Violence (ACLED event counts):** Violence adversely affects maternal health by disrupting access to care and increasing stress and insecurity. Including recent violent event counts captures acute risk factors impacting communities.
 
-- **Access (CLUES facility density):** Facility density inversely represents healthcare access. Lower density indicates potential barriers to maternal health services, which is critical for identifying underserved areas.
+– **Access (blended proximity and density):** Accessibility is measured as a blend of two components, both scaled 0–1 (higher = worse): (a) distance to the nearest filtered CLUES facility (proximity), and (b) inverse facilities-per-100k WRA within the ADM2 (per‑capita supply). These are combined as A = w·distance_norm + (1−w)·inverse_density_norm with w set by ACCESS_BLEND_W (default 0.5). This reduces boundary artifacts for small ADM2s while retaining capacity signal.
 
 - **Poverty (CONEVAL municipal poverty rates):** Socioeconomic deprivation is a key determinant of health outcomes. Poverty rates contextualize structural vulnerabilities influencing maternal health risks.
 
@@ -46,7 +46,7 @@ The risk scores are constructed by weighting these inputs to reflect their relat
 | `dlt_v30_raw` | v30 minus previous 30-day rate.                                                                  |
 | `spillover`   | Queen-contiguity neighbor average of v30[^1].                                                       |
 | `cast_state`  | State-level CAST forecast (0–1, winsorized 5–95%).                                              |
-| `access_A`    | Inverse facility density (facilities per 100k WRA), scaled 0–1.                                 |
+| `access_A`    | Blended accessibility (0–1): w·distance-to-nearest + (1−w)·inverse facility density (both winsorized 5–95%). w = ACCESS_BLEND_W (default 0.5). |
 | `mvi`         | Municipal poverty (CONEVAL 2020 % pobreza), scaled 0–1.                                         |
 | `DCR100`      | 100 × [0.35·V3m + 0.15·S + 0.30·A + 0.20·MVI].                                                 |
 | `PRS100`      | 100 × [with CAST: 0.30·V30 + 0.25·dV30 + 0.10·S + 0.18·CAST + 0.12·A + 0.05·MVI; without CAST: 0.40·V30 + 0.30·dV30 + 0.10·S + 0.12·A + 0.08·MVI]. |
@@ -90,6 +90,16 @@ The final **priority score** balances predictive and descriptive risk:
 $$
 \text{priority100} = 100 \times (0.6 \times PRS + 0.4 \times DCR)
 $$
+
+### Accessibility blend definition
+
+Let A_distance be the winsorized (5–95%) and scaled 0–1 distance from the ADM2 centroid to the nearest filtered CLUES facility (higher = farther/worse), and A_density be the winsorized (5–95%) inverse of facilities per 100k WRA within the ADM2 (higher = fewer per‑capita/worse). The final accessibility term used in the model is:
+
+$$
+A = w\cdot A_{distance} + (1-w)\cdot A_{density},\quad w=\texttt{ACCESS\_BLEND\_W}\in[0,1],\ \text{default }0.5
+$$
+
+The same CLUES filters (public networks, active, non‑mobile, valid coordinates) are applied for both components to ensure consistency.
 
 ---
 
@@ -169,6 +179,7 @@ ACLED_PASS=your_password
 SSL_VERIFY=true
 ACLED_REFRESH=false
 CAST_REFRESH=false
+ACCESS_BLEND_W=0.5
 FORCE_REBUILD_POP=false
 ENABLE_SHEETS=false
 SHEET_NAME=mx_brigadas_dashboard

@@ -70,6 +70,9 @@ ROOT = pathlib.Path.cwd()
 DATA_DIR = ROOT / "data"
 OUT_DIR = ROOT / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+# Accessibility blend weight (distance vs. inverse-density), 0..1
+ACCESS_BLEND_W = float(os.getenv("ACCESS_BLEND_W", "0.5"))
+ACCESS_BLEND_W = 0.0 if ACCESS_BLEND_W < 0 else 1.0 if ACCESS_BLEND_W > 1 else ACCESS_BLEND_W
 
 # Population build control
 FORCE_REBUILD_POP = os.getenv("FORCE_REBUILD_POP", "false").lower() == "true"
@@ -107,6 +110,7 @@ POP_CSV = DATA_DIR / "pop_adm2.csv"
 
 CLUES_XLSX = DATA_DIR / "CLUES" / "ESTABLECIMIENTO_SALUD_202509.xlsx"
 FAC_CSV = DATA_DIR / "clues_facility_counts_adm2.csv"
+FAC_POINTS_CSV = OUT_DIR / "clues_facilities_filtered.csv"
 
 CONEVAL_XLSX = DATA_DIR / "CONEVAL" / "Concentrado_indicadores_de_pobreza_2020.xlsx"
 MVI_CSV = DATA_DIR / "coneval_muni.csv"
@@ -374,8 +378,29 @@ def build_clues_if_needed():
         for c in ["adm2_code","entidad","municipio"]:
             if c in fac.columns:
                 fac[c] = fac[c].astype(str)
+        # Ensure the filtered facilities points CSV exists (for distance metric). If missing, rebuild from CLUES with same filters.
+        if not FAC_POINTS_CSV.exists():
+            df = pd.read_excel(CLUES_XLSX, sheet_name="CLUES_202509")
+            df.columns = (
+                df.columns.str.strip().str.lower().str.replace(" ", "_")
+                .str.replace("á","a").str.replace("é","e").str.replace("í","i")
+                .str.replace("ó","o").str.replace("ú","u").str.replace("ñ","n")
+            )
+            public_institutions = {"SSA", "IMB", "IMS", "IST", "SDN", "SMP"}
+            def s(x): return "" if pd.isna(x) else str(x).upper()
+            df["inst"]   = df["clave_de_la_institucion"].map(s)
+            df["status"] = df["clave_estatus_de_operacion"].map(s)   # '1' = active
+            df["nivel"]  = df["clave_nivel_atencion"].map(s)         # '6' = mobile
+            for col in ("latitud","longitud"):
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+            df = df.dropna(subset=["latitud","longitud"]).copy()
+            filtered = df[
+                df["inst"].isin(public_institutions) &
+                (df["status"] == "1") &
+                (df["nivel"] != "6")
+            ].copy()
+            filtered.rename(columns={"latitud":"lat","longitud":"lon"})[["lon","lat"]].to_csv(FAC_POINTS_CSV, index=False)
         return fac
-
     # Load CLUES raw
     df = pd.read_excel(CLUES_XLSX, sheet_name="CLUES_202509")
     df.columns = (
@@ -401,7 +426,8 @@ def build_clues_if_needed():
         (df["status"] == "1") &
         (df["nivel"] != "6")
     ].copy()
-
+    # Persist filtered facility points for reuse (ensures same filter for both measures)
+    filtered.rename(columns={"latitud":"lat","longitud":"lon"})[["lon","lat"]].to_csv(FAC_POINTS_CSV, index=False)
     # Spatially assign ADM2 via point-in-polygon
     adm2 = gpd.read_file(MX_ADM2_SHP)
     if adm2.crs is None or adm2.crs.to_epsg() != 4326:
@@ -454,12 +480,15 @@ def build_clues_if_needed():
 #
 # Extract municipal poverty and map to ADM2; reuse cached CSV if present
 def build_coneval_if_needed():
-    """Extract municipal poverty rates from CONEVAL Excel, parse and clean, map to ADM2 codes, output to CSV."""
+    """Extract municipal poverty rates from CONEVAL Excel, map to ADM2, output to CSV."""
     if MVI_CSV.exists():
         mvi = pd.read_csv(MVI_CSV)
         for c in ["adm2_code","entidad","municipio"]:
             if c in mvi.columns:
                 mvi[c] = mvi[c].astype(str)
+        # ensure MVI_raw exists
+        if "MVI_raw" not in mvi.columns and "poverty_rate" in mvi.columns:
+            mvi["MVI_raw"] = pd.to_numeric(mvi["poverty_rate"], errors="coerce")
         return mvi
 
     raw = pd.read_excel(CONEVAL_XLSX, sheet_name="Concentrado municipal", header=None, engine="openpyxl")
@@ -507,6 +536,7 @@ def build_coneval_if_needed():
     out["adm2_code"] = out["adm2_code"].astype(str)
     out["entidad"] = out["entidad"].astype(str)
     out["municipio"] = out["municipio"].astype(str)
+    out["MVI_raw"] = pd.to_numeric(out["poverty_rate"], errors="coerce")
     out.to_csv(MVI_CSV, index=False, encoding="utf-8")
     print(f"Saved municipal poverty records -> {MVI_CSV}")
     return out
@@ -692,33 +722,67 @@ else:
             if "adm2_name" in _df.columns:
                 _df["adm2_name"] = _df["adm2_name"].astype(str)
 # Build muni_counts from cached or freshly computed outputs
-if not events_out.empty:
-    muni_counts_90v = (
-        events_out.groupby(["adm2_code","adm2_name"], dropna=False)["event_id_cnty"]
-        .count().reset_index(name="events_90v")
-    )
+# Aggregate event counts by ADM2 from the ACLED data
+def build_muni_counts(events_90v, events_prevv):
+    """Build municipality event counts from violent events DataFrames."""
+    muni_90 = pd.DataFrame(columns=["adm2_code", "adm2_name", "events_90v"])
+    muni_prev = pd.DataFrame(columns=["adm2_code", "adm2_name", "events_prevv"])
+    
+    if isinstance(events_90v, pd.DataFrame) and not events_90v.empty:
+        muni_90 = (
+            events_90v.groupby(["adm2_code", "adm2_name"], dropna=False)
+            .size()
+            .reset_index(name="events_90v")
+        )
+        for c in ["adm2_code", "adm2_name"]:
+            if c in muni_90.columns:
+                muni_90[c] = muni_90[c].astype(str)
+    
+    if isinstance(events_prevv, pd.DataFrame) and not events_prevv.empty:
+        muni_prev = (
+            events_prevv.groupby(["adm2_code", "adm2_name"], dropna=False)
+            .size()
+            .reset_index(name="events_prevv")
+        )
+        for c in ["adm2_code", "adm2_name"]:
+            if c in muni_prev.columns:
+                muni_prev[c] = muni_prev[c].astype(str)
+    
+    # Merge the two count DataFrames
+    if not muni_90.empty and not muni_prev.empty:
+        muni_counts = muni_90.merge(muni_prev, on=["adm2_code", "adm2_name"], how="outer")
+    elif not muni_90.empty:
+        muni_counts = muni_90.copy()
+        muni_counts["events_prevv"] = 0
+    elif not muni_prev.empty:
+        muni_counts = muni_prev.copy()
+        muni_counts["events_90v"] = 0
+    else:
+        muni_counts = pd.DataFrame(columns=["adm2_code", "adm2_name", "events_90v", "events_prevv"])
+    
+    # Fill NaN values with 0
+    muni_counts = muni_counts.fillna({"events_90v": 0, "events_prevv": 0})
+    return muni_counts
+
+# Build muni_counts from the processed events data
+muni_counts = build_muni_counts(events_out, events_prev_out)
+
+# ---------------- CAST one‑month‑ahead fetch & cache ----------------
+if CAST_STATE_CSV.exists() and not CAST_REFRESH:
+    cast_raw = pd.read_csv(CAST_STATE_CSV)
 else:
-    muni_counts_90v = pd.DataFrame(columns=["adm2_code","adm2_name","events_90v"])
+    cast_raw = cast_fetch_mexico(token, verify=SSL_VERIFY)
+    cast_raw.to_csv(CAST_STATE_CSV, index=False)
 
-if not events_prev_out.empty:
-    muni_counts_prevv = (
-        events_prev_out.groupby(["adm2_code","adm2_name"], dropna=False)["event_id_cnty"]
-        .count().reset_index(name="events_prevv")
-    )
+if cast_raw.empty:
+    cast = pd.DataFrame(columns=["adm1_join","cast_state"])
 else:
-    muni_counts_prevv = pd.DataFrame(columns=["adm2_code","adm2_name","events_prevv"])
-
-for df_ in (muni_counts_90v, muni_counts_prevv):
-    if not df_.empty:
-        df_["adm2_code"] = df_["adm2_code"].astype(str)
-
-muni_counts = pd.merge(
-    muni_counts_90v, muni_counts_prevv,
-    on=["adm2_code","adm2_name"], how="outer"
-)
-for c in ["events_90v", "events_prevv"]:
-    if c in muni_counts.columns:
-        muni_counts[c] = pd.to_numeric(muni_counts[c], errors="coerce").fillna(0).astype(int)
+    cast_raw["adm1_name"] = cast_raw["adm1_name"].astype(str)
+    cast_raw["adm1_join"] = normalize_adm1_join_name(cast_raw["adm1_name"])
+    cast_raw["cast_raw"] = pd.to_numeric(cast_raw["cast_raw"], errors="coerce").fillna(0.0)
+    cast_raw["cast_state"] = winsor01_series(cast_raw["cast_raw"])
+    cast = cast_raw[["adm1_join","cast_state"]].drop_duplicates().copy()
+# --------------------------------------------------------------------
 
 # %%
 #
@@ -851,67 +915,37 @@ adm2_base["pop_wra"]    = adm2_base.get("pop_wra", pd.Series(dtype=float)).filln
 adm2_base["fac_per_100k"] = (1e5 * adm2_base["facilities"] / adm2_base["pop_wra"].clip(lower=1)).replace([np.inf, -np.inf], 0.0).fillna(0.0)
 inv_fac_density = pd.Series(np.where(adm2_base["fac_per_100k"] > 0, 1.0 / adm2_base["fac_per_100k"], np.nan), index=adm2_base.index)
 
-
-mvi = mvi.rename(columns={"poverty_rate":"MVI_raw"}) if "poverty_rate" in mvi.columns else mvi.rename(columns={"rezago_social":"MVI_raw"})
-if "MVI_raw" not in mvi.columns:
-    mvi["MVI_raw"] = 0.0
-mvi["MVI_raw"] = pd.to_numeric(mvi["MVI_raw"], errors="coerce").fillna(0.0)
-
-# CAST (always refreshed unless cache is valid for current month and CAST_REFRESH is false)
-# Determine the current anchor month (first of month)
-current_month_anchor = dt.date.today().replace(day=1)
-use_cast_cache = False
-if CAST_STATE_CSV.exists():
-    _cast_tmp = pd.read_csv(CAST_STATE_CSV)
-    if "forecast_date" in _cast_tmp.columns:
-        try:
-            # If saved forecast_date is >= current month, we can reuse unless forced
-            saved_date = pd.to_datetime(_cast_tmp["forecast_date"].iloc[0]).date()
-            if (not CAST_REFRESH) and (saved_date >= current_month_anchor):
-                use_cast_cache = True
-                cast = _cast_tmp[["adm1_join","cast_state"]].copy()
-        except Exception:
-            pass
-
-if not use_cast_cache:
-    token_cast = get_acled_token(ACLED_USER, ACLED_PASS, verify=SSL_VERIFY)
-    cast_state = cast_fetch_mexico(token_cast, verify=SSL_VERIFY, future_only=True)
-    if cast_state.empty:
-        cast = pd.DataFrame({"adm1_join": [], "cast_state": []})
+# Compute distance-to-nearest facility (same CLUES filter), in km, winsorized 5–95
+try:
+    fac_pts_df = pd.read_csv(FAC_POINTS_CSV)
+    fac_pts_df["lon"] = pd.to_numeric(fac_pts_df["lon"], errors="coerce")
+    fac_pts_df["lat"] = pd.to_numeric(fac_pts_df["lat"], errors="coerce")
+    fac_pts_df = fac_pts_df.dropna(subset=["lon","lat"])
+    if not fac_pts_df.empty:
+        fac_pts_gdf = gpd.GeoDataFrame(
+            fac_pts_df, geometry=gpd.points_from_xy(fac_pts_df["lon"], fac_pts_df["lat"]), crs=4326
+        ).to_crs(3857)
+        adm2_proj = ADM2.to_crs(3857)
+        nearest = gpd.sjoin_nearest(adm2_proj, fac_pts_gdf[["geometry"]], how="left", distance_col="dist_m")
+        dist_km = (nearest["dist_m"].astype(float) / 1000.0).replace([np.inf, -np.inf], np.nan)
+        A_distance_norm = winsor01_series(dist_km)
+        adm2_base = adm2_base.merge(
+            pd.DataFrame({"adm2_code": ADM2["adm2_code"].astype(str), "A_distance": A_distance_norm}),
+            on="adm2_code", how="left"
+        )
     else:
-        a, b = np.nanquantile(cast_state["cast_raw"], 0.05), np.nanquantile(cast_state["cast_raw"], 0.95)
-        x = np.clip(cast_state["cast_raw"].astype(float), a, b)
-        cast_state["cast_state"] = (x - a) / (b - a) if b > a else 0.5
-        cast_state["adm1_join"] = normalize_adm1_join_name(cast_state["adm1_name"])
-        # Persist with the chosen forecast month for cache validation
-        if "forecast_date" not in cast_state.columns:
-            # Add a single forecast_date (use min/first of selected set)
-            if "month_num" in cast_state.columns and "year" in cast_state.columns:
-                cast_state["forecast_date"] = pd.to_datetime(
-                    dict(year=cast_state["year"], month=cast_state["month_num"], day=1), errors="coerce"
-                )
-            else:
-                cast_state["forecast_date"] = pd.Timestamp(current_month_anchor)
-        cast_state.to_csv(CAST_STATE_CSV, index=False)
-        cast = cast_state[["adm1_join","cast_state"]].drop_duplicates().copy()
+        adm2_base["A_distance"] = 0.0
+except Exception:
+    # Fallback if facilities or geopandas nearest not available
+    adm2_base["A_distance"] = 0.0
 
-# %%
-#
-# Defensive: ensure both sides of the merge have the expected keys
-required_keys = ["adm1_name", "adm2_name", "adm2_code", "pop_wra"]
-for k in required_keys:
-    if k not in adm2_base.columns:
-        raise KeyError(f"adm2_base missing required key: {k}")
-    if k not in acled_metrics.columns:
-        raise KeyError(f"acled_metrics missing required key: {k}")
+# Current density-based access (inverse facilities-per-100k), winsorized
+adm2_base["A_density"] = winsor01_series(inv_fac_density)
+# Blend distance vs. density with env-configurable weight (default 0.5)
+adm2_base["A_blend"] = (ACCESS_BLEND_W * pd.to_numeric(adm2_base["A_distance"], errors="coerce").fillna(0.0) +
+                        (1.0 - ACCESS_BLEND_W) * pd.to_numeric(adm2_base["A_density"], errors="coerce").fillna(0.0))
 
-# If any key columns drifted to non-string types, coerce
-for df_ in (adm2_base, acled_metrics):
-    for k in ["adm1_name", "adm2_name", "adm2_code"]:
-        df_[k] = df_[k].astype(str)
-
-#
-# Final table, normalization, indices
+# ...existing code building final...
 final = (
     adm2_base
     .merge(acled_metrics, on=["adm1_name","adm2_name","adm2_code","pop_wra"], how="left")
@@ -934,8 +968,11 @@ final["dV30"] = winsor01_series(pd.Series(d_unit, index=final.index))
 
 final["S"]    = winsor01_series(final["spillover"])
 final["CAST"] = final["cast_state"]
-
-final["A"] = winsor01_series(inv_fac_density)
+# final["A"] = winsor01_series(inv_fac_density)
+# Use blended accessibility (distance ⊕ inverse-density)
+final["A"] = pd.to_numeric(final.get("A_blend", 0.0), errors="coerce").fillna(
+                 pd.to_numeric(final.get("A_density", 0.0), errors="coerce")
+             ).fillna(0.0)
 final["MVI"] = winsor01_series(final["MVI_raw"])
 
 med_wra = final["pop_wra"].replace(0, np.nan).median()
