@@ -259,3 +259,15 @@ Uploaded to Google Sheets tabs (in order):
 ## AI Usage Disclosure
 
 This deliverable was developed with assistance from generative AI tools consistent with SDS program guidelines. GitHub Copilot and the ChatGPT VS Code integration were used to assist with code autocompletion, debugging, and formatting within the development environment. No generative AI tools were used to write descriptive text or interpret readings. All conceptual reasoning, model design, and analytical decisions were made by the author.
+
+---
+
+## Accessibility (A)
+Accessibility blends proximity and capacity signals, using the same filtered CLUES facility set for both components:
+- A_distance: winsorized (5–95%) distance (km) from ADM2 centroid to the nearest facility
+- A_density: winsorized (5–95%) inverse of facilities per 100k WRA in the ADM2
+
+Blended score:
+A = w * A_distance + (1 − w) * A_density
+
+Configure w via `ACCESS_BLEND_W` (0–1, default 0.5) in `.env`.

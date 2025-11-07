@@ -32,9 +32,12 @@ The overall **priority score** balances predictive and structural risk:
 $$priority100 = 100 \times (0.6PRS + 0.4DCR)$$  
 
 ### Accessibility Metric
-Accessibility (A) mitigates small-boundary artifacts by blending proximity and capacity signals. Let $A_{distance}$ be the winsorized (5–95%) 0–1 distance to the nearest filtered CLUES facility (higher = worse), and $A_{density}$ the winsorized inverse of facilities per 100k WRA (higher = fewer facilities per capita = worse). The final term:
-$$A = w\,A_{distance} + (1-w)\,A_{density}, \quad w=\texttt{ACCESS\_BLEND\_W}\in[0,1]\ (\text{default }0.5)$$
-Both components use the same filtered facility set (public, active, non-mobile, valid coordinates) for consistency.
+Accessibility (A) blends two normalized components (0–1; higher = worse), both built from the same filtered CLUES facilities (public, active, non‑mobile, valid coordinates):
+- A_distance: winsorized (5–95%) distance to the nearest filtered facility (km)
+- A_density: winsorized (5–95%) inverse of facilities per 100k WRA within the ADM2
+
+Final blend:
+A = w * A_distance + (1 − w) * A_density, where w = `ACCESS_BLEND_W` in [.env] (default 0.5).
 
 ## Automation
 At least one variable—ACLED event data—refreshes daily through automated API calls, along with CAST forecasts. If the API recency cap has not advanced, cached data are reused. Static layers (population, poverty, and facilities) rebuild only when missing.
