@@ -10,7 +10,7 @@ The risk model combines structural vulnerabilities and dynamic indicators to cap
 
 - **Violence (ACLED event counts):** Violence adversely affects maternal health by disrupting access to care and increasing stress and insecurity. Including recent violent event counts captures acute risk factors impacting communities.
 
-– **Access (blended proximity and density):** Accessibility is measured as a blend of two components, both scaled 0–1 (higher = worse): (a) distance to the nearest filtered CLUES facility (proximity), and (b) inverse facilities-per-100k WRA within the ADM2 (per‑capita supply). These are combined as A = w·distance_norm + (1−w)·inverse_density_norm with w set by ACCESS_BLEND_W (default 0.5). This reduces boundary artifacts for small ADM2s while retaining capacity signal.
+- **Access (blended proximity and density):** Accessibility is measured as a blend of two components, both scaled 0–1 (higher = worse): (a) distance to the nearest filtered CLUES facility (proximity), and (b) inverse facilities-per-100k WRA within the ADM2 (per‑capita supply). These are combined as A = w·distance_norm + (1−w)·inverse_density_norm with w set by ACCESS_BLEND_W (default 0.5). This reduces boundary artifacts for small ADM2s while retaining capacity signal.
 
 - **Poverty (CONEVAL municipal poverty rates):** Socioeconomic deprivation is a key determinant of health outcomes. Poverty rates contextualize structural vulnerabilities influencing maternal health risks.
 
