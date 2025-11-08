@@ -87,6 +87,7 @@ BOOTSTRAP_HISTORY_DAYS = int(os.getenv("BOOTSTRAP_HISTORY_DAYS", "0"))
 # Output publishing controls (disabled by default for reproducibility)
 ENABLE_SHEETS = os.getenv("ENABLE_SHEETS", "false").lower() == "true"
 SHEET_NAME = os.getenv("SHEET_NAME", "mx_brigadas_dashboard")
+HISTORY_SHEET_NAME = os.getenv("HISTORY_SHEET_NAME", f"{SHEET_NAME}_history")
 GOOGLE_CREDS_JSON = pathlib.Path(os.getenv("GOOGLE_CREDS_JSON", "")).expanduser()
 
 # Meta/cache files
@@ -1133,6 +1134,7 @@ hist.to_csv(FACT_HISTORY_CSV, index=False)
 
 # 2) Append today's CAST state snapshot (for state trend lines)
 cast_snap = cast.copy() if isinstance(cast, pd.DataFrame) else pd.DataFrame(columns=["adm1_join","cast_state"])
+cast_hist = None
 if not cast_snap.empty:
     cast_snap = cast_snap.copy()
     cast_snap["snapshot_date"] = today
@@ -1194,27 +1196,27 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
     except gspread.SpreadsheetNotFound:
         sh = gc.create(SHEET_NAME)
 
-    def write_or_replace(df: pd.DataFrame, ws_name: str):
+    def write_or_replace(sheet, df: pd.DataFrame, ws_name: str):
         try:
-            ws = sh.worksheet(ws_name)
+            ws = sheet.worksheet(ws_name)
         except gspread.WorksheetNotFound:
-            ws = sh.add_worksheet(title=ws_name, rows="2", cols="2")
+            ws = sheet.add_worksheet(title=ws_name, rows="2", cols="2")
         ws.clear()
         set_with_dataframe(ws, df)
         return ws
 
     # 1) Main fact table
-    ws_risk = write_or_replace(fact, "adm2_risk_daily")
+    ws_risk = write_or_replace(sh, fact, "adm2_risk_daily")
 
     # 2) ACLED violent events (last 90d) — load from CSV if present
     if EVENTS_CSV.exists():
         events_df = pd.read_csv(EVENTS_CSV)
-        ws_events = write_or_replace(events_df, "acled_events_90d")
+        ws_events = write_or_replace(sh, events_df, "acled_events_90d")
     else:
         ws_events = None
 
     # 3) Geometry lookup (centroids)
-    ws_geom = write_or_replace(geom_lu, "adm2_geometry")
+    ws_geom = write_or_replace(sh, geom_lu, "adm2_geometry")
 
     # Optional: Provenance / sources log
     prov = pd.DataFrame({
@@ -1223,7 +1225,7 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
         "details": ["MX violent events last 90d/prev30", "Municipal poverty", "Facility counts + WRA"],
         "url": ["https://acleddata.com", "https://www.coneval.org.mx", "http://www.dgis.salud.gob.mx"]
     })
-    ws_sources = write_or_replace(prov, "sources_log")
+    ws_sources = write_or_replace(sh, prov, "sources_log")
 
     # Reorder worksheets so risk_daily is first, then events, then geometry, then sources
     # Only include worksheets that actually exist
@@ -1242,6 +1244,33 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
     }
     print(f"Wrote to Google Sheet: {SHEET_NAME}")
     print("Tabs and row counts:", counts)
+
+    history_tables = [
+        ("adm2_risk_daily_history", hist if isinstance(hist, pd.DataFrame) else None),
+        ("cast_state_history", cast_hist if isinstance(cast_hist, pd.DataFrame) else None),
+        ("acled_event_counts_history", ev_hist if isinstance(ev_hist, pd.DataFrame) else None),
+    ]
+    history_tables = [(title, df) for title, df in history_tables if df is not None]
+
+    if history_tables:
+        try:
+            sh_history = gc.open(HISTORY_SHEET_NAME)
+        except gspread.SpreadsheetNotFound:
+            sh_history = gc.create(HISTORY_SHEET_NAME)
+
+        hist_counts = {}
+        for title, df in history_tables:
+            ws = write_or_replace(sh_history, df, title)
+            hist_counts[title] = len(df)
+
+        desired_history = [title for title, _ in history_tables]
+        current_hist = {ws.title: ws for ws in sh_history.worksheets()}
+        ordered_hist = [current_hist[t] for t in desired_history if t in current_hist]
+        if ordered_hist:
+            sh_history.reorder_worksheets(ordered_hist)
+
+        print(f"Wrote history tables to Google Sheet: {HISTORY_SHEET_NAME}")
+        print("History tabs and row counts:", hist_counts)
 elif ENABLE_SHEETS:
     print("Google Sheets export requested but GOOGLE_CREDS_JSON was not found; skipping upload.")
 # %%
