@@ -367,10 +367,10 @@ def build_population_if_needed():
         data[data < 0] = 0
         profile.update(dtype="float32")
         TEMP_RASTER.parent.mkdir(parents=True, exist_ok=True)
-        with rasterio.open(TEMP_RASTER, "w", **profile) as dst:
-            dst.write(data, 1)
+    with rasterio.open(TEMP_RASTER, "w", **profile) as dst:
+        dst.write(data, 1)
 
-adm2 = read_shapefile(MX_ADM2_SHP).to_crs(4326)
+    adm2 = read_shapefile(MX_ADM2_SHP).to_crs(4326)
     adm2 = adm2.rename(columns={"ADM1_ES": "adm1_name", "ADM2_ES": "adm2_name", "ADM2_PCODE": "adm2_code"})
     adm2 = adm2[["adm1_name", "adm2_name", "adm2_code", "geometry"]]
 
@@ -483,7 +483,7 @@ def build_clues_if_needed():
     # Persist filtered facility points for reuse (ensures same filter for both measures)
     filtered.rename(columns={"latitud":"lat","longitud":"lon"})[["lon","lat"]].to_csv(FAC_POINTS_CSV, index=False)
     # Spatially assign ADM2 via point-in-polygon
-adm2 = read_shapefile(MX_ADM2_SHP)
+    adm2 = read_shapefile(MX_ADM2_SHP)
     if adm2.crs is None or adm2.crs.to_epsg() != 4326:
         adm2 = adm2.to_crs(4326)
     adm2 = adm2.rename(columns={
