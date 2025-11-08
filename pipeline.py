@@ -91,12 +91,52 @@ SHEET_NAME = os.getenv("SHEET_NAME", "mx_brigadas_dashboard")
 HISTORY_SHEET_NAME = os.getenv("HISTORY_SHEET_NAME", f"{SHEET_NAME}_history")
 GOOGLE_CREDS_JSON = pathlib.Path(os.getenv("GOOGLE_CREDS_JSON", "")).expanduser()
 
+# Administrative shapefile rebuild toggle
+FORCE_REBUILD_ADM_SHPS = os.getenv("FORCE_REBUILD_ADM_SHPS", "false").lower() == "true"
+
 # Meta/cache files
 META_JSON = OUT_DIR / "acled_meta.json"
 
 # Administrative boundaries (with ADM1 attributes)
 MX_ADM2_SHP = DATA_DIR / "mex_admbnda_govmex_20210618_SHP" / "mex_admbnda_adm2_govmex_20210618.shp"
 assert MX_ADM2_SHP.exists(), f"Missing shapefile: {MX_ADM2_SHP}"
+MX_ADM2_DIR = MX_ADM2_SHP.parent
+MX_ADM1_DIR = DATA_DIR / "mex_admbnda_adm1_govmex_20210618_SHP"
+MX_ADM0_DIR = DATA_DIR / "mex_admbnda_adm0_govmex_20210618_SHP"
+MX_ADM1_SHP = MX_ADM1_DIR / "mex_admbnda_adm1_govmex_20210618.shp"
+MX_ADM0_SHP = MX_ADM0_DIR / "mex_admbnda_adm0_govmex_20210618.shp"
+
+def ensure_admin_shapefiles(force=False):
+    """Create ADM1 and ADM0 shapefiles by dissolving ADM2 geometries when missing."""
+    need_adm1 = force or not MX_ADM1_SHP.exists()
+    need_adm0 = force or not MX_ADM0_SHP.exists()
+    if not (need_adm1 or need_adm0):
+        return
+
+    print("Building derived ADM shapefiles (this runs only when outputs are missing or forced).")
+    adm2 = gpd.read_file(MX_ADM2_SHP)
+
+    if need_adm1:
+        adm1 = adm2.dissolve(by="ADM1_PCODE", as_index=False)
+        adm1["adm1_code"] = adm1["ADM1_PCODE"]
+        adm1["adm1_name"] = adm1["ADM1_ES"]
+        adm1["adm0_code"] = adm1["ADM0_PCODE"]
+        adm1["adm0_name"] = adm1["ADM0_ES"]
+        adm1 = adm1[["adm1_code", "adm1_name", "adm0_code", "adm0_name", "geometry"]].copy()
+        MX_ADM1_DIR.mkdir(parents=True, exist_ok=True)
+        adm1.to_file(MX_ADM1_SHP)
+        print(f"Wrote ADM1 shapefile: {MX_ADM1_SHP} ({len(adm1)} features)")
+
+    if need_adm0:
+        adm0 = adm2.dissolve(by="ADM0_PCODE", as_index=False)
+        adm0["adm0_code"] = adm0["ADM0_PCODE"]
+        adm0["adm0_name"] = adm0["ADM0_ES"]
+        adm0 = adm0[["adm0_code", "adm0_name", "geometry"]].copy()
+        MX_ADM0_DIR.mkdir(parents=True, exist_ok=True)
+        adm0.to_file(MX_ADM0_SHP)
+        print(f"Wrote ADM0 shapefile: {MX_ADM0_SHP} ({len(adm0)} feature{'s' if len(adm0) != 1 else ''})")
+
+ensure_admin_shapefiles(force=FORCE_REBUILD_ADM_SHPS)
 
 # ACLED constants
 ACLED_TOKEN_URL = "https://acleddata.com/oauth/token"

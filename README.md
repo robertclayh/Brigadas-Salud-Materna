@@ -181,8 +181,11 @@ ACLED_REFRESH=false
 CAST_REFRESH=false
 ACCESS_BLEND_W=0.5
 FORCE_REBUILD_POP=false
+FORCE_REBUILD_ADM_SHPS=false
 ENABLE_SHEETS=false
+ENABLE_HISTORY_SHEETS=true
 SHEET_NAME=mx_brigadas_dashboard
+HISTORY_SHEET_NAME=mx_brigadas_history
 GOOGLE_CREDS_JSON=/full/path/to/google-creds-XXXX.json
 ```
 
@@ -192,6 +195,10 @@ GOOGLE_CREDS_JSON=/full/path/to/google-creds-XXXX.json
 - Google Sheets publishing is disabled by default.  
   To enable it, set `ENABLE_SHEETS=true` and ensure `GOOGLE_CREDS_JSON` points to a valid service account JSON file.  
   Share the target Sheet or folder with the service account email.
+- Setting `ENABLE_HISTORY_SHEETS=true` synchronizes the rolling history tables (`adm2`, CAST, ACLED events) to a dedicated Google Sheet (`HISTORY_SHEET_NAME`).  
+  Leave it `true` for CI so the dashboard always has historical context, or flip to `false` locally if quota is tight.
+- The ADM1/ADM0 shapefiles are derived automatically from the ADM2 COD-AB file.  
+  Set `FORCE_REBUILD_ADM_SHPS=true` to regenerate them (e.g., after pulling a newer COD-AB release).
 
 ### Execute
 
@@ -206,6 +213,20 @@ Outputs:
 
 Uploaded to Google Sheets tabs (in order):  
 `adm2_risk_daily`, `acled_events_90d`, `adm2_geometry`, `sources_log`.
+
+### Boundary shapefiles for dashboards
+
+The repository now keeps derived boundary files alongside the COD-AB ADM2 source:
+
+```
+data/
+├── mex_admbnda_govmex_20210618_SHP/      # ADM2 (source from HDX)
+├── mex_admbnda_adm1_govmex_20210618_SHP/ # auto-built via dissolve
+└── mex_admbnda_adm0_govmex_20210618_SHP/ # auto-built via dissolve
+```
+
+`pipeline.py` builds the ADM1 and ADM0 shapefiles on the fly if they are missing (or whenever `FORCE_REBUILD_ADM_SHPS=true`).  
+If you plan to version these derived assets, add the folder contents to Git LFS (`git lfs track '*.shp' '*.dbf' ...'`) before committing because each shapefile family lands in the ~5–15 MB range.
 
 ---
 
