@@ -23,6 +23,11 @@ jobs:
           fetch-depth: 0
           lfs: true
 
+      - name: Ensure Git LFS files are present
+        run: |
+          git lfs install --local
+          git lfs pull
+
       # Optional narrow checkout:
       # - name: Narrow checkout (optional)
       #   run: |
