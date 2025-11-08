@@ -26,7 +26,20 @@ jobs:
       - name: Ensure Git LFS files are present
         run: |
           git lfs install --local
-          git lfs pull
+          # Print LFS status to aid debugging
+          git lfs version || true
+          git lfs env || true
+          git lfs ls-files -l || true
+
+          # Aggressive fetch to ensure all needed objects are available locally
+          # (Useful if refs or bandwidth/permissions previously blocked a standard pull)
+          git lfs fetch --all --verbose || true
+
+          # Try to materialize pointers from any fetched objects
+          git lfs checkout || true
+
+          # Finally, do a targeted pull on the folders we need for the pipeline
+          git lfs pull --include "data/mex_admbnda_govmex_20210618_SHP/*,data/worldpop/*" --exclude "" || true
 
       # Optional narrow checkout:
       # - name: Narrow checkout (optional)
@@ -48,6 +61,8 @@ jobs:
             fi
             if head -n1 "$f" | grep -q "version https://git-lfs.github.com/spec/v1"; then
               echo "ERROR: $f is a Git LFS pointer (not the real file)."
+              echo "--- Git LFS last logs (for diagnosis) ---"
+              git lfs logs last || true
               exit 1
             fi
             if [ ! -s "$f" ]; then
