@@ -106,6 +106,13 @@ MX_ADM0_DIR = DATA_DIR / "mex_admbnda_adm0_govmex_20210618_SHP"
 MX_ADM1_SHP = MX_ADM1_DIR / "mex_admbnda_adm1_govmex_20210618.shp"
 MX_ADM0_SHP = MX_ADM0_DIR / "mex_admbnda_adm0_govmex_20210618.shp"
 
+def read_shapefile(path: pathlib.Path, default_crs: str = "EPSG:4326") -> gpd.GeoDataFrame:
+    """Read shapefile and ensure CRS is set (fallback to default_crs if missing)."""
+    gdf = gpd.read_file(path)
+    if gdf.crs is None and default_crs:
+        gdf = gdf.set_crs(default_crs)
+    return gdf
+
 def ensure_admin_shapefiles(force=False):
     """Create ADM1 and ADM0 shapefiles by dissolving ADM2 geometries when missing."""
     need_adm1 = force or not MX_ADM1_SHP.exists()
@@ -114,10 +121,12 @@ def ensure_admin_shapefiles(force=False):
         return
 
     print("Building derived ADM shapefiles (this runs only when outputs are missing or forced).")
-    adm2 = gpd.read_file(MX_ADM2_SHP)
+    adm2 = read_shapefile(MX_ADM2_SHP)
 
     if need_adm1:
         adm1 = adm2.dissolve(by="ADM1_PCODE", as_index=False)
+        if adm1.crs is None and adm2.crs is not None:
+            adm1 = adm1.set_crs(adm2.crs)
         adm1["adm1_code"] = adm1["ADM1_PCODE"]
         adm1["adm1_name"] = adm1["ADM1_ES"]
         adm1["adm0_code"] = adm1["ADM0_PCODE"]
@@ -129,6 +138,8 @@ def ensure_admin_shapefiles(force=False):
 
     if need_adm0:
         adm0 = adm2.dissolve(by="ADM0_PCODE", as_index=False)
+        if adm0.crs is None and adm2.crs is not None:
+            adm0 = adm0.set_crs(adm2.crs)
         adm0["adm0_code"] = adm0["ADM0_PCODE"]
         adm0["adm0_name"] = adm0["ADM0_ES"]
         adm0 = adm0[["adm0_code", "adm0_name", "geometry"]].copy()
@@ -359,7 +370,7 @@ def build_population_if_needed():
         with rasterio.open(TEMP_RASTER, "w", **profile) as dst:
             dst.write(data, 1)
 
-    adm2 = gpd.read_file(MX_ADM2_SHP).to_crs(4326)
+adm2 = read_shapefile(MX_ADM2_SHP).to_crs(4326)
     adm2 = adm2.rename(columns={"ADM1_ES": "adm1_name", "ADM2_ES": "adm2_name", "ADM2_PCODE": "adm2_code"})
     adm2 = adm2[["adm1_name", "adm2_name", "adm2_code", "geometry"]]
 
@@ -472,7 +483,7 @@ def build_clues_if_needed():
     # Persist filtered facility points for reuse (ensures same filter for both measures)
     filtered.rename(columns={"latitud":"lat","longitud":"lon"})[["lon","lat"]].to_csv(FAC_POINTS_CSV, index=False)
     # Spatially assign ADM2 via point-in-polygon
-    adm2 = gpd.read_file(MX_ADM2_SHP)
+adm2 = read_shapefile(MX_ADM2_SHP)
     if adm2.crs is None or adm2.crs.to_epsg() != 4326:
         adm2 = adm2.to_crs(4326)
     adm2 = adm2.rename(columns={
@@ -648,7 +659,7 @@ mvi = build_coneval_if_needed()
 
 #
 # Geometry once (dissolve to ensure one row per ADM2)
-adm2_raw = gpd.read_file(MX_ADM2_SHP)
+adm2_raw = read_shapefile(MX_ADM2_SHP)
 if adm2_raw.crs is None or adm2_raw.crs.to_epsg() != 4326:
     adm2_raw = adm2_raw.to_crs(4326)
 ADM2 = adm2_raw.rename(columns={
