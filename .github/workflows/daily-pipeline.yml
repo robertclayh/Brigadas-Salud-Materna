@@ -104,6 +104,7 @@ jobs:
           ACLED_PASS: ${{ secrets.ACLED_PASS }}
           ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS || 'false' }}
           SHEET_NAME: ${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
+          HISTORY_SHEET_NAME: ${{ secrets.HISTORY_SHEET_NAME || 'mx_brigadas_history' }}
         run: |
           GOOGLE_CREDS_PATH=""
           if [ "$ENABLE_SHEETS" = "true" ] && [ -f "$HOME/.config/gcloud/credentials.json" ]; then
@@ -118,6 +119,7 @@ jobs:
             printf 'FORCE_REBUILD_POP=false\n'
             printf 'ENABLE_SHEETS=%s\n' "$ENABLE_SHEETS"
             printf 'SHEET_NAME=%s\n' "$SHEET_NAME"
+            printf 'HISTORY_SHEET_NAME=%s\n' "$HISTORY_SHEET_NAME"
             printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
           } > .env
 
