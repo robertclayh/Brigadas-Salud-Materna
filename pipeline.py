@@ -1382,14 +1382,15 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
             if hist is not None and isinstance(hist, pd.DataFrame):
                 ws_combined_lightweight = write_or_replace(sh_combined, hist_lightweight, "lightweight_history")
             
-            # Add events and geometry tabs for convenience
-            if EVENTS_CSV.exists():
-                events_df = pd.read_csv(EVENTS_CSV)
-                ws_combined_events = write_or_replace(sh_combined, events_df, "acled_events_90d")
-            ws_combined_geom = write_or_replace(sh_combined, geom_lu, "adm2_geometry")
+            # Add the two history tables from CSV files
+            if cast_hist is not None and isinstance(cast_hist, pd.DataFrame):
+                ws_combined_cast = write_or_replace(sh_combined, cast_hist, "cast_state_history")
+            
+            if ev_hist is not None and isinstance(ev_hist, pd.DataFrame):
+                ws_combined_events = write_or_replace(sh_combined, ev_hist, "acled_event_counts_history")
 
-            # Reorder tabs
-            combined_tab_order = ["adm2_risk_daily", "lightweight_history", "acled_events_90d", "adm2_geometry"]
+            # Reorder tabs: dashboard, lightweight history, then the two history tables
+            combined_tab_order = ["adm2_risk_daily", "lightweight_history", "cast_state_history", "acled_event_counts_history"]
             current_combined = {ws.title: ws for ws in sh_combined.worksheets()}
             ordered_combined = [current_combined[t] for t in combined_tab_order if t in current_combined]
             if ordered_combined:
