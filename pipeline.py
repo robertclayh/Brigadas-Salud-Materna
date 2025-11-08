@@ -865,6 +865,24 @@ def _ensure_str(df, cols):
             d[c] = d[c].astype(str)
     return d
 
+def _coalesce_population_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize (pop_total, pop_wra) columns after merges that create suffixes."""
+    for col in ("pop_total", "pop_wra"):
+        candidates = [c for c in df.columns if c == col or c.startswith(f"{col}_")]
+        if not candidates:
+            continue
+        merged = (
+            df[candidates]
+            .apply(pd.to_numeric, errors="coerce")
+            .bfill(axis=1)
+            .iloc[:, 0]
+        )
+        df[col] = merged
+        drop_cols = [c for c in candidates if c != col]
+        if drop_cols:
+            df = df.drop(columns=drop_cols, errors="ignore")
+    return df
+
 pop = _ensure_str(pop, ["adm2_code","adm1_name","adm2_name"])
 fac = _ensure_str(fac, ["adm2_code"])
 mvi = _ensure_str(mvi, ["adm2_code"])
@@ -1023,20 +1041,23 @@ if "adm1_join" not in adm2_base.columns:
     adm2_base = adm2_base.merge(ADM2_LU[["adm2_code","adm1_join"]], on="adm2_code", how="left")
 final = (
     adm2_base
-    .merge(acled_metrics[["adm2_code","v30","v3m","dlt_v30_raw","pop_wra"]], on="adm2_code", how="left")
+    .merge(acled_metrics[["adm2_code","v30","v3m","dlt_v30_raw"]], on="adm2_code", how="left")
     .merge(spill, on="adm2_code", how="left")
     .merge(cast, on="adm1_join", how="left")
     .merge(mvi[["adm2_code","MVI_raw"]], on="adm2_code", how="left")
 )
 final = final.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
+final = _coalesce_population_columns(final)
 
 # Ensure population columns present (guard against upstream loss)
-if "pop_wra" not in final.columns or "pop_total" not in final.columns:
+missing_pop = [c for c in ("pop_total","pop_wra") if c not in final.columns]
+if missing_pop:
     final = final.merge(
         pop[["adm2_code","pop_total","pop_wra"]],
         on="adm2_code",
         how="left"
     )
+    final = _coalesce_population_columns(final)
 
 # If still missing, create zeros to avoid KeyError
 if "pop_wra" not in final.columns:
