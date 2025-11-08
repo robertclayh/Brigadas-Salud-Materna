@@ -86,6 +86,7 @@ BOOTSTRAP_HISTORY_DAYS = int(os.getenv("BOOTSTRAP_HISTORY_DAYS", "0"))
 
 # Output publishing controls (disabled by default for reproducibility)
 ENABLE_SHEETS = os.getenv("ENABLE_SHEETS", "false").lower() == "true"
+ENABLE_HISTORY_SHEETS = os.getenv("ENABLE_HISTORY_SHEETS", "true").lower() == "true"
 SHEET_NAME = os.getenv("SHEET_NAME", "mx_brigadas_dashboard")
 HISTORY_SHEET_NAME = os.getenv("HISTORY_SHEET_NAME", f"{SHEET_NAME}_history")
 GOOGLE_CREDS_JSON = pathlib.Path(os.getenv("GOOGLE_CREDS_JSON", "")).expanduser()
@@ -1252,25 +1253,36 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
     ]
     history_tables = [(title, df) for title, df in history_tables if df is not None]
 
-    if history_tables:
+    if ENABLE_HISTORY_SHEETS and history_tables:
+        sh_history = None
         try:
             sh_history = gc.open(HISTORY_SHEET_NAME)
         except gspread.SpreadsheetNotFound:
-            sh_history = gc.create(HISTORY_SHEET_NAME)
+            try:
+                sh_history = gc.create(HISTORY_SHEET_NAME)
+            except gspread.exceptions.APIError as exc:
+                print(f"Warning: failed to create history sheet '{HISTORY_SHEET_NAME}': {exc}")
+                print("Skipping history sheet upload (likely Drive quota exceeded).")
+        except gspread.exceptions.APIError as exc:
+            print(f"Warning: failed to open history sheet '{HISTORY_SHEET_NAME}': {exc}")
+            print("Skipping history sheet upload.")
 
-        hist_counts = {}
-        for title, df in history_tables:
-            ws = write_or_replace(sh_history, df, title)
-            hist_counts[title] = len(df)
+        if sh_history is not None:
+            hist_counts = {}
+            for title, df in history_tables:
+                ws = write_or_replace(sh_history, df, title)
+                hist_counts[title] = len(df)
 
-        desired_history = [title for title, _ in history_tables]
-        current_hist = {ws.title: ws for ws in sh_history.worksheets()}
-        ordered_hist = [current_hist[t] for t in desired_history if t in current_hist]
-        if ordered_hist:
-            sh_history.reorder_worksheets(ordered_hist)
+            desired_history = [title for title, _ in history_tables]
+            current_hist = {ws.title: ws for ws in sh_history.worksheets()}
+            ordered_hist = [current_hist[t] for t in desired_history if t in current_hist]
+            if ordered_hist:
+                sh_history.reorder_worksheets(ordered_hist)
 
-        print(f"Wrote history tables to Google Sheet: {HISTORY_SHEET_NAME}")
-        print("History tabs and row counts:", hist_counts)
+            print(f"Wrote history tables to Google Sheet: {HISTORY_SHEET_NAME}")
+            print("History tabs and row counts:", hist_counts)
+    elif not ENABLE_HISTORY_SHEETS and history_tables:
+        print("History sheet upload disabled via ENABLE_HISTORY_SHEETS=false; skipping.")
 elif ENABLE_SHEETS:
     print("Google Sheets export requested but GOOGLE_CREDS_JSON was not found; skipping upload.")
 # %%
