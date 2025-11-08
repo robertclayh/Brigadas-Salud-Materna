@@ -124,7 +124,9 @@ jobs:
           ACLED_PASS: ${{ secrets.ACLED_PASS }}
           ENABLE_SHEETS: ${{ secrets.ENABLE_SHEETS || 'false' }}
           SHEET_NAME: ${{ secrets.SHEET_NAME || 'mx_brigadas_dashboard' }}
-          HISTORY_SHEET_NAME: ${{ secrets.HISTORY_SHEET_NAME || 'mx_brigadas_history' }}
+          HISTORY_SHEET_NAME: ${{ secrets.HISTORY_SHEET_NAME || 'mx_brigadas_dashboard_history' }}
+          LIGHTWEIGHT_HISTORY_SHEET_NAME: ${{ secrets.LIGHTWEIGHT_HISTORY_SHEET_NAME || 'mx_brigadas_dashboard_lightweight_history' }}
+          COMBINED_SHEET_NAME: ${{ secrets.COMBINED_SHEET_NAME || 'mx_brigadas_dashboard_combined' }}
         run: |
           GOOGLE_CREDS_PATH=""
           if [ "$ENABLE_SHEETS" = "true" ] && [ -f "$HOME/.config/gcloud/credentials.json" ]; then
@@ -140,6 +142,8 @@ jobs:
             printf 'ENABLE_SHEETS=%s\n' "$ENABLE_SHEETS"
             printf 'SHEET_NAME=%s\n' "$SHEET_NAME"
             printf 'HISTORY_SHEET_NAME=%s\n' "$HISTORY_SHEET_NAME"
+            printf 'LIGHTWEIGHT_HISTORY_SHEET_NAME=%s\n' "$LIGHTWEIGHT_HISTORY_SHEET_NAME"
+            printf 'COMBINED_SHEET_NAME=%s\n' "$COMBINED_SHEET_NAME"
             printf 'GOOGLE_CREDS_JSON=%s\n' "$GOOGLE_CREDS_PATH"
           } > .env
 

@@ -18,6 +18,9 @@ See # %% Configuration & environment for toggles.
 # FORCE_REBUILD_POP=false
 # ENABLE_SHEETS=false
 # SHEET_NAME=mx_brigadas_dashboard
+# HISTORY_SHEET_NAME=mx_brigadas_dashboard_history
+# LIGHTWEIGHT_HISTORY_SHEET_NAME=mx_brigadas_dashboard_lightweight_history
+# COMBINED_SHEET_NAME=mx_brigadas_dashboard_combined
 # GOOGLE_CREDS_JSON=/full/path/to/google-creds-XXXX.json
 #
 # 2) By default the script uses cached ACLED events and CAST forecasts.
@@ -89,6 +92,8 @@ ENABLE_SHEETS = os.getenv("ENABLE_SHEETS", "false").lower() == "true"
 ENABLE_HISTORY_SHEETS = os.getenv("ENABLE_HISTORY_SHEETS", "true").lower() == "true"
 SHEET_NAME = os.getenv("SHEET_NAME", "mx_brigadas_dashboard")
 HISTORY_SHEET_NAME = os.getenv("HISTORY_SHEET_NAME", f"{SHEET_NAME}_history")
+LIGHTWEIGHT_HISTORY_SHEET_NAME = os.getenv("LIGHTWEIGHT_HISTORY_SHEET_NAME", f"{SHEET_NAME}_lightweight_history")
+COMBINED_SHEET_NAME = os.getenv("COMBINED_SHEET_NAME", f"{SHEET_NAME}_combined")
 GOOGLE_CREDS_JSON = pathlib.Path(os.getenv("GOOGLE_CREDS_JSON", "")).expanduser()
 
 # Administrative shapefile rebuild toggle
@@ -1305,6 +1310,7 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
     history_tables = [(title, df) for title, df in history_tables if df is not None]
 
     if ENABLE_HISTORY_SHEETS and history_tables:
+        # Create full history sheet
         sh_history = None
         try:
             sh_history = gc.open(HISTORY_SHEET_NAME)
@@ -1332,6 +1338,66 @@ if ENABLE_SHEETS and GOOGLE_CREDS_JSON and GOOGLE_CREDS_JSON.exists():
 
             print(f"Wrote history tables to Google Sheet: {HISTORY_SHEET_NAME}")
             print("History tabs and row counts:", hist_counts)
+
+        # Create lightweight history sheet with just key columns
+        if hist is not None and isinstance(hist, pd.DataFrame):
+            lightweight_cols = ["snapshot_date", "adm2_code", "adm2_name", "DCR100", "PRS100"]
+            # Only include columns that actually exist in the dataframe
+            available_lightweight_cols = [c for c in lightweight_cols if c in hist.columns]
+            hist_lightweight = hist[available_lightweight_cols].copy()
+
+            sh_lightweight = None
+            try:
+                sh_lightweight = gc.open(LIGHTWEIGHT_HISTORY_SHEET_NAME)
+            except gspread.SpreadsheetNotFound:
+                try:
+                    sh_lightweight = gc.create(LIGHTWEIGHT_HISTORY_SHEET_NAME)
+                except gspread.exceptions.APIError as exc:
+                    print(f"Warning: failed to create lightweight history sheet '{LIGHTWEIGHT_HISTORY_SHEET_NAME}': {exc}")
+            except gspread.exceptions.APIError as exc:
+                print(f"Warning: failed to open lightweight history sheet '{LIGHTWEIGHT_HISTORY_SHEET_NAME}': {exc}")
+
+            if sh_lightweight is not None:
+                ws_lightweight = write_or_replace(sh_lightweight, hist_lightweight, "adm2_lightweight_history")
+                print(f"Wrote lightweight history to Google Sheet: {LIGHTWEIGHT_HISTORY_SHEET_NAME}")
+                print(f"  Rows: {len(hist_lightweight)}, Columns: {list(hist_lightweight.columns)}")
+
+        # Create combined sheet with dashboard and lightweight history as tabs
+        sh_combined = None
+        try:
+            sh_combined = gc.open(COMBINED_SHEET_NAME)
+        except gspread.SpreadsheetNotFound:
+            try:
+                sh_combined = gc.create(COMBINED_SHEET_NAME)
+            except gspread.exceptions.APIError as exc:
+                print(f"Warning: failed to create combined sheet '{COMBINED_SHEET_NAME}': {exc}")
+        except gspread.exceptions.APIError as exc:
+            print(f"Warning: failed to open combined sheet '{COMBINED_SHEET_NAME}': {exc}")
+
+        if sh_combined is not None:
+            # Add main dashboard tab
+            ws_combined_risk = write_or_replace(sh_combined, fact, "adm2_risk_daily")
+            
+            # Add lightweight history tab
+            if hist is not None and isinstance(hist, pd.DataFrame):
+                ws_combined_lightweight = write_or_replace(sh_combined, hist_lightweight, "lightweight_history")
+            
+            # Add events and geometry tabs for convenience
+            if EVENTS_CSV.exists():
+                events_df = pd.read_csv(EVENTS_CSV)
+                ws_combined_events = write_or_replace(sh_combined, events_df, "acled_events_90d")
+            ws_combined_geom = write_or_replace(sh_combined, geom_lu, "adm2_geometry")
+
+            # Reorder tabs
+            combined_tab_order = ["adm2_risk_daily", "lightweight_history", "acled_events_90d", "adm2_geometry"]
+            current_combined = {ws.title: ws for ws in sh_combined.worksheets()}
+            ordered_combined = [current_combined[t] for t in combined_tab_order if t in current_combined]
+            if ordered_combined:
+                sh_combined.reorder_worksheets(ordered_combined)
+
+            print(f"Wrote combined sheet to Google Sheet: {COMBINED_SHEET_NAME}")
+            print(f"  Tabs: {[ws.title for ws in sh_combined.worksheets()]}")
+
     elif not ENABLE_HISTORY_SHEETS and history_tables:
         print("History sheet upload disabled via ENABLE_HISTORY_SHEETS=false; skipping.")
 elif ENABLE_SHEETS:
