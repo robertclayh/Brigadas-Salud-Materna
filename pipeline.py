@@ -112,8 +112,8 @@ MX_ADM1_SHP = MX_ADM1_DIR / "mex_admbnda_adm1_govmex_20210618.shp"
 MX_ADM0_SHP = MX_ADM0_DIR / "mex_admbnda_adm0_govmex_20210618.shp"
 
 def read_shapefile(path: pathlib.Path, default_crs: str = "EPSG:4326") -> gpd.GeoDataFrame:
-    """Read shapefile and ensure CRS is set (fallback to default_crs if missing)."""
-    gdf = gpd.read_file(path)
+    """Read shapefile with explicit UTF-8 decoding and ensure CRS fallback when missing."""
+    gdf = gpd.read_file(path, encoding="utf-8")
     if gdf.crs is None and default_crs:
         gdf = gdf.set_crs(default_crs)
     return gdf

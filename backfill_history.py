@@ -213,7 +213,7 @@ if CAST_DAILY_CSV.exists():
 
 # ADM2 + weights matrix
 print("Loading ADM2 polygons and building spatial weights...")
-adm2 = gpd.read_file(ADM2_SHP)
+adm2 = gpd.read_file(ADM2_SHP, encoding="utf-8")
 if adm2.crs is None or adm2.crs.to_epsg() != 4326:
     adm2 = adm2.to_crs(4326)
 adm2 = adm2.rename(columns={"ADM2_PCODE":"adm2_code","ADM2_ES":"adm2_name","ADM1_ES":"adm1_name"})[
