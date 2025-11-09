@@ -46,3 +46,5 @@ deliverable_link.pdf
 
 # Tableau
 tableau/
+
+__pycache__/

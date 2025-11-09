@@ -846,13 +846,13 @@ else:
     cast_raw.to_csv(CAST_STATE_CSV, index=False)
 
 if cast_raw.empty:
-    cast = pd.DataFrame(columns=["adm1_join","cast_state"])
+    cast = pd.DataFrame(columns=["adm1_join","cast_state","cast_raw"])
 else:
     cast_raw["adm1_name"] = cast_raw["adm1_name"].astype(str)
     cast_raw["adm1_join"] = normalize_adm1_join_name(cast_raw["adm1_name"])
     cast_raw["cast_raw"] = pd.to_numeric(cast_raw["cast_raw"], errors="coerce").fillna(0.0)
     cast_raw["cast_state"] = winsor01_series(cast_raw["cast_raw"])
-    cast = cast_raw[["adm1_join","cast_state"]].drop_duplicates().copy()
+    cast = cast_raw[["adm1_join","cast_state","cast_raw"]].drop_duplicates().copy()
 # --------------------------------------------------------------------
 
 # %%
@@ -954,7 +954,20 @@ if not zero_pop_anom.empty:
     anom_dir.mkdir(parents=True, exist_ok=True)
     zero_pop_anom.to_csv(anom_dir / "zero_population_anomalies.csv", index=False)
 
-acled_metrics = acled_metrics[["adm1_name","adm2_name","adm2_code","pop_wra","v30","v3m","dlt_v30_raw"]].copy()
+acled_metrics = acled_metrics[
+    [
+        "adm1_name",
+        "adm2_name",
+        "adm2_code",
+        "pop_wra",
+        "events30",
+        "events_90v",
+        "events_prevv",
+        "v30",
+        "v3m",
+        "dlt_v30_raw",
+    ]
+].copy()
 acled_metrics = acled_metrics.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 
 # %%
@@ -1068,8 +1081,29 @@ if "pop_total" not in final.columns:
 # (Optional debug)
 # if "pop_wra" not in final.columns: print("DEBUG: pop_wra missing after merge; filled with 0s. Columns:", final.columns.tolist())
 
-for col in ["v30","v3m","dlt_v30_raw","spillover","cast_state","fac_per_100k","MVI_raw","pop_wra","pop_total"]:
-    final[col] = pd.to_numeric(final.get(col, 0), errors="coerce").fillna(0.0)
+for col in [
+    "v30",
+    "v3m",
+    "dlt_v30_raw",
+    "spillover",
+    "cast_state",
+    "cast_raw",
+    "fac_per_100k",
+    "MVI_raw",
+    "pop_wra",
+    "pop_total",
+    "events30",
+    "events_90v",
+    "events_prevv",
+    "facilities",
+    "A_distance",
+    "A_density",
+    "A_blend",
+]:
+    if col in final.columns:
+        final[col] = pd.to_numeric(final[col], errors="coerce").fillna(0.0)
+    else:
+        final[col] = 0.0
 
 final["V30"] = winsor01_series(final["v30"])
 final["V3m"] = winsor01_series(final["v3m"])
@@ -1124,11 +1158,37 @@ final["run_date"] = run_date_today
 for c in ["DCR","PRS","DCR100","PRS100","priority100"]:
     final[c] = pd.to_numeric(final[c], errors="coerce").fillna(0.0)
 
-fact = final[[
-    "run_date","adm1_name","adm2_name","adm2_code","pop_total","pop_wra","w_exposure",
-    "v30","v3m","dlt_v30_raw","spillover","CAST","A","MVI",
-    "DCR100","PRS100","priority100"
-]].copy().rename(columns={"CAST":"cast_state","A":"access_A","MVI":"mvi"})
+fact = final[
+    [
+        "run_date",
+        "adm1_name",
+        "adm2_name",
+        "adm2_code",
+        "pop_total",
+        "pop_wra",
+        "w_exposure",
+        "facilities",
+        "fac_per_100k",
+        "A_distance",
+        "A_density",
+        "A_blend",
+        "v30",
+        "v3m",
+        "dlt_v30_raw",
+        "events30",
+        "events_90v",
+        "events_prevv",
+        "spillover",
+        "CAST",
+        "cast_raw",
+        "A",
+        "MVI",
+        "MVI_raw",
+        "DCR100",
+        "PRS100",
+        "priority100",
+    ]
+].copy().rename(columns={"CAST": "cast_state", "A": "access_A", "MVI": "mvi"})
 
 # Final guard: enforce one row per adm2_code in fact
 fact = fact.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
@@ -1138,9 +1198,36 @@ fact = fact.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
 # Note: data_as_of is written to the fact CSV for transparency of ACLED recency.
 fact["data_as_of"] = end_allowed
 
-numeric_cols = ["pop_total","pop_wra","w_exposure","v30","v3m","dlt_v30_raw","spillover","cast_state","access_A","mvi","DCR100","PRS100","priority100"]
+numeric_cols = [
+    "pop_total",
+    "pop_wra",
+    "w_exposure",
+    "facilities",
+    "fac_per_100k",
+    "A_distance",
+    "A_density",
+    "A_blend",
+    "v30",
+    "v3m",
+    "dlt_v30_raw",
+    "events30",
+    "events_90v",
+    "events_prevv",
+    "spillover",
+    "cast_state",
+    "cast_raw",
+    "access_A",
+    "mvi",
+    "MVI_raw",
+    "DCR100",
+    "PRS100",
+    "priority100",
+]
 for c in numeric_cols:
-    fact[c] = pd.to_numeric(fact[c], errors="coerce").fillna(0.0)
+    if c in fact.columns:
+        fact[c] = pd.to_numeric(fact[c], errors="coerce").fillna(0.0)
+    else:
+        fact[c] = 0.0
 
 print("Fact rows:", len(fact))
 n_zero_pop = int((final["pop_wra"] <= 0).sum())
