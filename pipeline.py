@@ -1025,27 +1025,54 @@ try:
     fac_pts_df["lat"] = pd.to_numeric(fac_pts_df["lat"], errors="coerce")
     fac_pts_df = fac_pts_df.dropna(subset=["lon","lat"])
     if not fac_pts_df.empty:
-        fac_pts_gdf = gpd.GeoDataFrame(
-            fac_pts_df, geometry=gpd.points_from_xy(fac_pts_df["lon"], fac_pts_df["lat"]), crs=4326
+        fac_pts_proj = gpd.GeoDataFrame(
+            fac_pts_df,
+            geometry=gpd.points_from_xy(fac_pts_df["lon"], fac_pts_df["lat"]),
+            crs=4326,
         ).to_crs(3857)
         adm2_proj = ADM2.to_crs(3857)
-        nearest = gpd.sjoin_nearest(adm2_proj, fac_pts_gdf[["geometry"]], how="left", distance_col="dist_m")
-        dist_km = (nearest["dist_m"].astype(float) / 1000.0).replace([np.inf, -np.inf], np.nan)
-        A_distance_norm = winsor01_series(dist_km)
-        adm2_base = adm2_base.merge(
-            pd.DataFrame({"adm2_code": ADM2["adm2_code"].astype(str), "A_distance": A_distance_norm}),
-            on="adm2_code", how="left"
+        centroids_proj = adm2_proj.geometry.centroid
+        adm2_centroids = gpd.GeoDataFrame(
+            {"adm2_code": ADM2["adm2_code"].astype(str).to_numpy()},
+            geometry=centroids_proj,
+            crs=adm2_proj.crs,
         )
+        nearest = gpd.sjoin_nearest(
+            adm2_centroids,
+            fac_pts_proj[["geometry"]],
+            how="left",
+            distance_col="dist_m",
+        ).drop(columns=["index_right"], errors="ignore")
+        nearest["dist_km"] = (
+            nearest["dist_m"].astype(float) / 1000.0
+        ).replace([np.inf, -np.inf], np.nan)
+        dist_km = nearest.set_index("adm2_code")["dist_km"]
+        dist_norm_raw = winsor01_series(dist_km)
+        dist_norm = pd.Series(dist_norm_raw, index=dist_km.index)
+        dist_df = (
+            pd.concat(
+                [dist_norm.rename("A_distance_norm"), dist_km.rename("A_distance_km")],
+                axis=1,
+            )
+            .reset_index()
+            .rename(columns={"index": "adm2_code"})
+            .drop_duplicates("adm2_code", keep="last")
+        )
+        adm2_base = adm2_base.merge(dist_df, on="adm2_code", how="left")
     else:
-        adm2_base["A_distance"] = 0.0
+        adm2_base["A_distance_norm"] = 0.0
+        adm2_base["A_distance_km"] = np.nan
 except Exception:
     # Fallback if facilities or geopandas nearest not available
-    adm2_base["A_distance"] = 0.0
+    adm2_base["A_distance_norm"] = 0.0
+    adm2_base["A_distance_km"] = np.nan
 
 # Current density-based access (inverse facilities-per-100k), winsorized
 adm2_base["A_density"] = winsor01_series(inv_fac_density)
 # Blend distance vs. density with env-configurable weight (default 0.5)
-adm2_base["A_blend"] = (ACCESS_BLEND_W * pd.to_numeric(adm2_base["A_distance"], errors="coerce").fillna(0.0) +
+adm2_base["A_distance_norm"] = pd.to_numeric(adm2_base.get("A_distance_norm", 0.0), errors="coerce").fillna(0.0)
+adm2_base["A_distance_km"] = pd.to_numeric(adm2_base.get("A_distance_km", np.nan), errors="coerce")
+adm2_base["A_blend"] = (ACCESS_BLEND_W * adm2_base["A_distance_norm"] +
                         (1.0 - ACCESS_BLEND_W) * pd.to_numeric(adm2_base["A_density"], errors="coerce").fillna(0.0))
 
 # ...existing code building final...
@@ -1054,7 +1081,21 @@ if "adm1_join" not in adm2_base.columns:
     adm2_base = adm2_base.merge(ADM2_LU[["adm2_code","adm1_join"]], on="adm2_code", how="left")
 final = (
     adm2_base
-    .merge(acled_metrics[["adm2_code","v30","v3m","dlt_v30_raw"]], on="adm2_code", how="left")
+    .merge(
+        acled_metrics[
+            [
+                "adm2_code",
+                "v30",
+                "v3m",
+                "dlt_v30_raw",
+                "events30",
+                "events_90v",
+                "events_prevv",
+            ]
+        ],
+        on="adm2_code",
+        how="left",
+    )
     .merge(spill, on="adm2_code", how="left")
     .merge(cast, on="adm1_join", how="left")
     .merge(mvi[["adm2_code","MVI_raw"]], on="adm2_code", how="left")
@@ -1096,7 +1137,8 @@ for col in [
     "events_90v",
     "events_prevv",
     "facilities",
-    "A_distance",
+    "A_distance_norm",
+    "A_distance_km",
     "A_density",
     "A_blend",
 ]:
@@ -1169,7 +1211,7 @@ fact = final[
         "w_exposure",
         "facilities",
         "fac_per_100k",
-        "A_distance",
+        "A_distance_km",
         "A_density",
         "A_blend",
         "v30",
@@ -1188,7 +1230,12 @@ fact = final[
         "PRS100",
         "priority100",
     ]
-].copy().rename(columns={"CAST": "cast_state", "A": "access_A", "MVI": "mvi"})
+].copy().rename(columns={
+    "CAST": "cast_state",
+    "A": "access_A",
+    "MVI": "mvi",
+    "A_distance_km": "A_distance",
+})
 
 # Final guard: enforce one row per adm2_code in fact
 fact = fact.sort_values("adm2_code").drop_duplicates("adm2_code", keep="last")
