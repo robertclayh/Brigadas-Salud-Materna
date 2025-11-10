@@ -1,38 +1,15 @@
 event_id_cnty,event_date,event_type,country,admin1,admin2,latitude,longitude,geometry,adm2_code,adm1_name,adm2_name,adm1_join
 MEX87298,2024-05-17,Violence against civilians,Mexico,Tamaulipas,Matamoros,25.8799,-97.5048,POINT (-97.5048 25.8799),MX28022,Tamaulipas,Matamoros,Tamaulipas
-MEX87311,2024-05-14,Battles,Mexico,Colima,Manzanillo,19.0532,-104.3164,POINT (-104.3164 19.0532),MX06007,Colima,Manzanillo,Colima
-MEX87312,2024-05-14,Battles,Mexico,Tamaulipas,Matamoros,25.8799,-97.5048,POINT (-97.5048 25.8799),MX28022,Tamaulipas,Matamoros,Tamaulipas
-MEX87325,2024-05-13,Battles,Mexico,Chiapas,Chicomuselo,15.7625,-92.4501,POINT (-92.45010000000001 15.7625),MX07030,Chiapas,Chicomuselo,Chiapas
-MEX87345,2024-05-13,Violence against civilians,Mexico,Nuevo Leon,Garcia,25.8005,-100.5855,POINT (-100.5855 25.8005),MX19018,Nuevo León,García,Nuevo Leon
-MEX87352,2024-05-14,Violence against civilians,Mexico,Chiapas,Marques de Comillas,16.3323,-90.7653,POINT (-90.7653 16.3323),MX07116,Chiapas,Marqués de Comillas,Chiapas
-MEX87356,2024-05-14,Violence against civilians,Mexico,Nuevo Leon,Juarez,25.6513,-100.106,POINT (-100.106 25.6513),MX19031,Nuevo León,Juárez,Nuevo Leon
-MEX87357,2024-05-15,Violence against civilians,Mexico,Nuevo Leon,Juarez,25.6513,-100.106,POINT (-100.106 25.6513),MX19031,Nuevo León,Juárez,Nuevo Leon
-MEX87359,2024-05-15,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87361,2024-05-16,Violence against civilians,Mexico,Michoacan de Ocampo,Morelia,19.7034,-101.192,POINT (-101.192 19.7034),MX16053,Michoacán de Ocampo,Morelia,Michoacan
 MEX87362,2024-05-16,Violence against civilians,Mexico,Nuevo Leon,General Zuazua,25.897,-100.1082,POINT (-100.1082 25.897),MX19025,Nuevo León,General Zuazua,Nuevo Leon
 MEX87369,2024-05-16,Violence against civilians,Mexico,Nuevo Leon,Cienega de Flores,25.9521,-100.1681,POINT (-100.1681 25.9521),MX19012,Nuevo León,Ciénega de Flores,Nuevo Leon
 MEX87371,2024-05-16,Violence against civilians,Mexico,Ciudad de Mexico,Coyoacan,19.3502,-99.1621,POINT (-99.1621 19.3502),MX09003,Distrito Federal,Coyoacán,Ciudad De Mexico
-MEX87387,2024-05-13,Violence against civilians,Mexico,Quintana Roo,Othon P. Blanco,18.5001,-88.2948,POINT (-88.2948 18.5001),MX23004,Quintana Roo,Othón P. Blanco,Quintana Roo
-MEX87424,2024-05-13,Battles,Mexico,Sonora,Cajeme,27.4965,-109.9327,POINT (-109.9327 27.4965),MX26018,Sonora,Cajeme,Sonora
-MEX87436,2024-05-14,Violence against civilians,Mexico,Ciudad de Mexico,Iztapalapa,19.359,-99.0926,POINT (-99.0926 19.359),MX09007,Distrito Federal,Iztapalapa,Ciudad De Mexico
-MEX87443,2024-05-13,Violence against civilians,Mexico,Chiapas,Rayon,17.2005,-93.0112,POINT (-93.0112 17.2005),MX07073,Chiapas,Rayón,Chiapas
-MEX87444,2024-05-15,Battles,Mexico,Colima,Tecoman,19.0198,-103.8301,POINT (-103.8301 19.0198),MX06009,Colima,Tecomán,Colima
-MEX87448,2024-05-13,Violence against civilians,Mexico,Durango,Nuevo Ideal,24.8877,-105.0889,POINT (-105.0889 24.8877),MX10039,Durango,Nuevo Ideal,Durango
-MEX87480,2024-05-13,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87481,2024-05-17,Battles,Mexico,Nuevo Leon,General Zuazua,25.897,-100.1082,POINT (-100.1082 25.897),MX19025,Nuevo León,General Zuazua,Nuevo Leon
-MEX87482,2024-05-13,Violence against civilians,Mexico,Sonora,Cajeme,27.4965,-109.9327,POINT (-109.9327 27.4965),MX26018,Sonora,Cajeme,Sonora
-MEX87486,2024-05-14,Violence against civilians,Mexico,Jalisco,El Salto,20.5194,-103.1817,POINT (-103.1817 20.5194),MX14070,Jalisco,El Salto,Jalisco
 MEX87494,2024-05-16,Violence against civilians,Mexico,Chiapas,Ocozocoautla de Espinosa,16.7596,-93.3739,POINT (-93.37390000000001 16.7596),MX07061,Chiapas,Ocozocoautla de Espinosa,Chiapas
-MEX87495,2024-05-14,Violence against civilians,Mexico,Jalisco,El Salto,20.5194,-103.1817,POINT (-103.1817 20.5194),MX14070,Jalisco,El Salto,Jalisco
-MEX87496,2024-05-14,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
-MEX87505,2024-05-15,Battles,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
-MEX87506,2024-05-14,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87514,2024-05-16,Violence against civilians,Mexico,Zacatecas,Guadalupe,22.7468,-102.5188,POINT (-102.5188 22.7468),MX32017,Zacatecas,Guadalupe,Zacatecas
-MEX87518,2024-05-15,Violence against civilians,Mexico,Aguascalientes,Tepezala,22.2235,-102.1713,POINT (-102.1713 22.2235),MX01009,Aguascalientes,Tepezalá,Aguascalientes
 MEX87520,2024-05-17,Battles,Mexico,Baja California,Mexicali,32.6412,-115.476,POINT (-115.476 32.6412),MX02002,Baja California,Mexicali,Baja California
 MEX87523,2024-05-16,Violence against civilians,Mexico,Baja California,Playas de Rosarito,32.3637,-117.0545,POINT (-117.0545 32.3637),MX02005,Baja California,Playas de Rosarito,Baja California
 MEX87525,2024-05-23,Violence against civilians,Mexico,Baja California,Tecate,32.5727,-116.6266,POINT (-116.6266 32.5727),MX02003,Baja California,Tecate,Baja California
-MEX87526,2024-05-15,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87529,2024-05-19,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87531,2024-05-19,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX87532,2024-05-21,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
@@ -86,7 +63,6 @@ MEX87759,2024-05-23,Violence against civilians,Mexico,Puebla,Chilchotla,19.2789,
 MEX87761,2024-05-19,Violence against civilians,Mexico,Puebla,Cuayuca de Andrade,18.4841,-98.1853,POINT (-98.1853 18.4841),MX21042,Puebla,Cuayuca de Andrade,Puebla
 MEX87781,2024-05-17,Violence against civilians,Mexico,Puebla,Zoquitlan,18.3363,-97.0201,POINT (-97.0201 18.3363),MX21217,Puebla,Zoquitlán,Puebla
 MEX87785,2024-05-19,Violence against civilians,Mexico,Quintana Roo,Solidaridad,20.6281,-87.0755,POINT (-87.07550000000001 20.6281),MX23008,Quintana Roo,Solidaridad,Quintana Roo
-MEX87787,2024-05-15,Battles,Mexico,San Luis Potosi,El Naranjo,22.522,-99.3225,POINT (-99.32250000000001 22.522),MX24058,San Luis Potosí,El Naranjo,San Luis Potosi
 MEX87793,2024-05-20,Battles,Mexico,San Luis Potosi,Tamuin,22.0059,-98.7795,POINT (-98.7795 22.0059),MX24040,San Luis Potosí,Tamuín,San Luis Potosi
 MEX87807,2024-05-21,Battles,Mexico,Sonora,Bacum,27.5501,-110.083,POINT (-110.083 27.5501),MX26012,Sonora,Bácum,Sonora
 MEX87808,2024-05-20,Battles,Mexico,Sonora,Cajeme,27.4965,-109.9327,POINT (-109.9327 27.4965),MX26018,Sonora,Cajeme,Sonora
@@ -761,7 +737,6 @@ MEX88207,2024-05-25,Battles,Mexico,Mexico,Tlalnepantla de Baz,19.5385,-99.1952,P
 MEX88229,2024-05-25,Violence against civilians,Mexico,Tabasco,Centro,18.1167,-92.8876,POINT (-92.88760000000001 18.1167),MX27004,Tabasco,Centro,Tabasco
 MEX87726,2024-05-24,Violence against civilians,Mexico,Nuevo Leon,Linares,24.8597,-99.5679,POINT (-99.56789999999999 24.8597),MX19033,Nuevo León,Linares,Nuevo Leon
 MEX87725,2024-05-20,Violence against civilians,Mexico,Nuevo Leon,Linares,24.8597,-99.5679,POINT (-99.56789999999999 24.8597),MX19033,Nuevo León,Linares,Nuevo Leon
-MEX87368,2024-05-13,Violence against civilians,Mexico,Ciudad de Mexico,Miguel Hidalgo,19.4073,-99.1908,POINT (-99.1908 19.4073),MX09016,Distrito Federal,Miguel Hidalgo,Ciudad De Mexico
 MEX88141,2024-06-18,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Tuxpan,20.9518,-97.4045,POINT (-97.4045 20.9518),nan,,,
 MEX88992,2024-06-11,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Tuxpan,20.9518,-97.4045,POINT (-97.4045 20.9518),nan,,,
 MEX90273,2024-07-15,Violence against civilians,Mexico,Chiapas,Montecristo de Guerrero,15.6467,-92.6383,POINT (-92.6383 15.6467),MX07117,Chiapas,Montecristo de Guerrero,Chiapas
@@ -1122,10 +1097,7 @@ MEX91308,2024-08-10,Violence against civilians,Mexico,Baja California,Tijuana,32
 MEX91309,2024-08-10,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX89471,2024-06-30,Violence against civilians,Mexico,Ciudad de Mexico,Coyoacan,19.3502,-99.1621,POINT (-99.1621 19.3502),MX09003,Distrito Federal,Coyoacán,Ciudad De Mexico
 MEX90931,2024-08-02,Violence against civilians,Mexico,Tlaxcala,Tenancingo,19.1476,-98.2013,POINT (-98.2013 19.1476),MX29027,Tlaxcala,Tenancingo,Tlaxcala
-MEX87346,2024-05-13,Violence against civilians,Mexico,Nuevo Leon,Pesqueria,25.7833,-100.0537,POINT (-100.0537 25.7833),MX19041,Nuevo León,Pesquería,Nuevo Leon
-MEX87498,2024-05-14,Violence against civilians,Mexico,Morelos,Cuernavaca,18.9218,-99.2349,POINT (-99.2349 18.9218),MX17007,Morelos,Cuernavaca,Morelos
 MEX87504,2024-05-16,Battles,Mexico,Tabasco,Comalcalco,18.2625,-93.1821,POINT (-93.18210000000001 18.2625),MX27005,Tabasco,Comalcalco,Tabasco
-MEX87507,2024-05-15,Violence against civilians,Mexico,Jalisco,San Pedro Tlaquepaque,20.6386,-103.3072,POINT (-103.3072 20.6386),MX14098,Jalisco,San Pedro Tlaquepaque,Jalisco
 MEX87700,2024-05-16,Violence against civilians,Mexico,Morelos,Cuernavaca,18.9218,-99.2349,POINT (-99.2349 18.9218),MX17007,Morelos,Cuernavaca,Morelos
 MEX87706,2024-05-22,Violence against civilians,Mexico,Morelos,Emiliano Zapata,18.8394,-99.1856,POINT (-99.18559999999999 18.8394),MX17008,Morelos,Emiliano Zapata,Morelos
 MEX87707,2024-05-18,Violence against civilians,Mexico,Morelos,Emiliano Zapata,18.8678,-99.2087,POINT (-99.20869999999999 18.8678),MX17008,Morelos,Emiliano Zapata,Morelos
@@ -1430,7 +1402,6 @@ MEX88820,2024-06-06,Violence against civilians,Mexico,Tabasco,Centro,17.9878,-92
 MEX88802,2024-05-31,Violence against civilians,Mexico,Puebla,Izucar de Matamoros,18.5511,-98.503,POINT (-98.503 18.5511),MX21085,Puebla,Izúcar de Matamoros,Puebla
 MEX87821,2024-05-20,Violence against civilians,Mexico,Tabasco,Centro,17.9878,-92.9194,POINT (-92.9194 17.9878),MX27004,Tabasco,Centro,Tabasco
 MEX91925,2024-08-29,Battles,Mexico,Jalisco,Yahualica de Gonzalez Gallo,21.1798,-102.8858,POINT (-102.8858 21.1798),MX14118,Jalisco,Yahualica de González Gallo,Jalisco
-MEX87487,2024-05-13,Violence against civilians,Mexico,Tabasco,Centro,17.9936,-92.9829,POINT (-92.9829 17.9936),MX27004,Tabasco,Centro,Tabasco
 MEX87913,2024-06-18,Violence against civilians,Mexico,Chihuahua,Cusihuiriachi,28.2411,-106.8367,POINT (-106.8367 28.2411),MX08018,Chihuahua,Cusihuiriachi,Chihuahua
 MEX88267,2024-05-26,Violence against civilians,Mexico,Tabasco,Centro,17.9718,-93.1282,POINT (-93.12820000000001 17.9718),MX27004,Tabasco,Centro,Tabasco
 MEX88905,2024-06-09,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Perote,19.5612,-97.2428,POINT (-97.2428 19.5612),MX30128,Veracruz de Ignacio de la Llave,Perote,Veracruz
@@ -1523,7 +1494,6 @@ MEX92599,2024-08-31,Battles,Mexico,Zacatecas,Pinos,22.1537,-101.7096,POINT (-101
 MEX92600,2024-08-31,Battles,Mexico,Zacatecas,Sombrerete,23.6204,-103.5331,POINT (-103.5331 23.6204),MX32042,Zacatecas,Sombrerete,Zacatecas
 MEX92602,2024-09-03,Battles,Mexico,Zacatecas,Zacatecas,22.7761,-102.5718,POINT (-102.5718 22.7761),MX32056,Zacatecas,Zacatecas,Zacatecas
 MEX91852,2024-08-19,Violence against civilians,Mexico,Nuevo Leon,Los Ramones,25.6968,-99.6237,POINT (-99.6237 25.6968),MX19042,Nuevo León,Los Ramones,Nuevo Leon
-MEX87354,2024-05-14,Violence against civilians,Mexico,Hidalgo,Tepeji del Rio de Ocampo,19.9048,-99.3437,POINT (-99.3437 19.9048),MX13063,Hidalgo,Tepeji del Río de Ocampo,Hidalgo
 MEX87554,2024-05-18,Violence against civilians,Mexico,Chiapas,Villa Corzo,16.1851,-93.2688,POINT (-93.2688 16.1851),MX07107,Chiapas,Villa Corzo,Chiapas
 MEX88004,2024-06-17,Violence against civilians,Mexico,Jalisco,Lagos de Moreno,21.8472,-101.9634,POINT (-101.9634 21.8472),MX14053,Jalisco,Lagos de Moreno,Jalisco
 MEX88713,2024-06-04,Violence against civilians,Mexico,Mexico,Cuautitlan Izcalli,19.6776,-99.2599,POINT (-99.2599 19.6776),MX15121,México,Cuautitlán Izcalli,Mexico
@@ -2337,6 +2307,22 @@ MEX94310,2024-10-13,Violence against civilians,Mexico,Jalisco,Ojuelos de Jalisco
 MEX95026,2024-10-31,Violence against civilians,Mexico,Guerrero,Atoyac de Alvarez,17.1775,-100.5103,POINT (-100.5103 17.1775),MX12011,Guerrero,Atoyac de Álvarez,Guerrero
 MEX95058,2024-11-01,Violence against civilians,Mexico,Guerrero,Chilpancingo de los Bravo,17.5516,-99.5011,POINT (-99.50109999999999 17.5516),MX12029,Guerrero,Chilpancingo de los Bravo,Guerrero
 MEX95063,2024-11-01,Violence against civilians,Mexico,Nuevo Leon,Garcia,25.8005,-100.5855,POINT (-100.5855 25.8005),MX19018,Nuevo León,García,Nuevo Leon
+MEX95331,2024-11-08,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
+MEX95335,2024-11-08,Violence against civilians,Mexico,Colima,Manzanillo,19.0532,-104.3164,POINT (-104.3164 19.0532),MX06007,Colima,Manzanillo,Colima
+MEX95338,2024-11-08,Violence against civilians,Mexico,Guanajuato,Apaseo el Grande,20.4856,-100.6564,POINT (-100.6564 20.4856),MX11005,Guanajuato,Apaseo el Grande,Guanajuato
+MEX95339,2024-11-08,Violence against civilians,Mexico,Guanajuato,Celaya,20.5215,-100.814,POINT (-100.814 20.5215),MX11007,Guanajuato,Celaya,Guanajuato
+MEX95340,2024-11-08,Violence against civilians,Mexico,Guanajuato,Celaya,20.5142,-100.8832,POINT (-100.8832 20.5142),MX11007,Guanajuato,Celaya,Guanajuato
+MEX95345,2024-11-08,Violence against civilians,Mexico,Hidalgo,Tepeji del Rio de Ocampo,19.9048,-99.3437,POINT (-99.3437 19.9048),MX13063,Hidalgo,Tepeji del Río de Ocampo,Hidalgo
+MEX95347,2024-11-08,Violence against civilians,Mexico,Michoacan de Ocampo,Alvaro Obregon,19.8263,-101.0385,POINT (-101.0385 19.8263),MX16003,Michoacán de Ocampo,Álvaro Obregón,Michoacan
+MEX95348,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Apatzingan,19.0889,-102.4092,POINT (-102.4092 19.0889),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
+MEX95349,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Apatzingan,18.9583,-102.4589,POINT (-102.4589 18.9583),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
+MEX95353,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Buenavista,19.0217,-102.5084,POINT (-102.5084 19.0217),MX16012,Michoacán de Ocampo,Buenavista,Michoacan
+MEX95354,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Gabriel Zamora,19.1235,-102.0162,POINT (-102.0162 19.1235),MX16033,Michoacán de Ocampo,Gabriel Zamora,Michoacan
+MEX95355,2024-11-08,Violence against civilians,Mexico,Michoacan de Ocampo,Jacona,19.9563,-102.306,POINT (-102.306 19.9563),MX16043,Michoacán de Ocampo,Jacona,Michoacan
+MEX95360,2024-11-08,Violence against civilians,Mexico,Oaxaca,San Andres Teotilalpam,17.9167,-96.6167,POINT (-96.61669999999999 17.9167),MX20098,Oaxaca,San Andrés Teotilálpam,Oaxaca
+MEX95364,2024-11-08,Violence against civilians,Mexico,San Luis Potosi,Villa de Arista,22.7655,-100.8123,POINT (-100.8123 22.7655),MX24056,San Luis Potosí,Villa de Arista,San Luis Potosi
+MEX95365,2024-11-08,Violence against civilians,Mexico,Sinaloa,Culiacan,24.7757,-107.2461,POINT (-107.2461 24.7757),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95366,2024-11-08,Violence against civilians,Mexico,Sinaloa,Culiacan,24.7757,-107.2461,POINT (-107.2461 24.7757),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX95270,2024-11-07,Violence against civilians,Mexico,Campeche,Carmen,18.6138,-92.223,POINT (-92.223 18.6138),MX04003,Campeche,Carmen,Campeche
 MEX95275,2024-11-07,Violence against civilians,Mexico,Guanajuato,Celaya,20.5215,-100.814,POINT (-100.814 20.5215),MX11007,Guanajuato,Celaya,Guanajuato
 MEX95276,2024-11-07,Violence against civilians,Mexico,Guanajuato,Celaya,20.5215,-100.814,POINT (-100.814 20.5215),MX11007,Guanajuato,Celaya,Guanajuato
@@ -2425,6 +2411,7 @@ MEX91062,2024-07-20,Violence against civilians,Mexico,Puebla,Ocoyucan,18.9768,-9
 MEX94493,2024-10-14,Violence against civilians,Mexico,Puebla,Ocoyucan,18.9768,-98.3024,POINT (-98.30240000000001 18.9768),MX21106,Puebla,Ocoyucan,Puebla
 MEX92820,2024-09-12,Battles,Mexico,Puebla,Tehuacan,18.4622,-97.392,POINT (-97.392 18.4622),MX21156,Puebla,Tehuacán,Puebla
 MEX88653,2024-06-12,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
+MEX95330,2024-11-08,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
 MEX94262,2024-10-17,Violence against civilians,Mexico,Ciudad de Mexico,Cuauhtemoc,19.4313,-99.1531,POINT (-99.15309999999999 19.4313),MX09015,Distrito Federal,Cuauhtémoc,Ciudad De Mexico
 MEX93942,2024-10-05,Violence against civilians,Mexico,Guerrero,Tixtla de Guerrero,17.5667,-99.3983,POINT (-99.39830000000001 17.5667),MX12061,Guerrero,Tixtla de Guerrero,Guerrero
 MEX95297,2024-11-07,Violence against civilians,Mexico,Morelos,Cuernavaca,18.9218,-99.2349,POINT (-99.2349 18.9218),MX17007,Morelos,Cuernavaca,Morelos
@@ -2449,14 +2436,47 @@ MEX93416,2024-09-25,Battles,Mexico,Nuevo Leon,General Teran,25.2586,-99.6837,POI
 MEX93922,2024-10-09,Violence against civilians,Mexico,Guanajuato,Leon,21.0193,-101.6439,POINT (-101.6439 21.0193),MX11020,Guanajuato,León,Guanajuato
 MEX94147,2024-10-17,Battles,Mexico,Nuevo Leon,General Teran,25.2586,-99.6837,POINT (-99.6837 25.2586),MX19022,Nuevo León,General Terán,Nuevo Leon
 MEX95155,2024-11-04,Violence against civilians,Mexico,Mexico,Almoloya de Juarez,19.3697,-99.7589,POINT (-99.7589 19.3697),MX15005,México,Almoloya de Juárez,Mexico
+MEX95369,2024-11-08,Violence against civilians,Mexico,Tamaulipas,Reynosa,26.0281,-98.1973,POINT (-98.1973 26.0281),MX28032,Tamaulipas,Reynosa,Tamaulipas
+MEX95370,2024-11-08,Battles,Mexico,Tamaulipas,Rio Bravo,25.981,-98.0901,POINT (-98.09010000000001 25.981),MX28033,Tamaulipas,Río Bravo,Tamaulipas
+MEX95372,2024-11-10,Violence against civilians,Mexico,Baja California,Mexicali,32.7133,-114.7358,POINT (-114.7358 32.7133),MX02002,Baja California,Mexicali,Baja California
+MEX95374,2024-11-08,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
+MEX95375,2024-11-09,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
+MEX95376,2024-11-10,Violence against civilians,Mexico,Baja California,Tijuana,32.5325,-117.019,POINT (-117.019 32.5325),MX02004,Baja California,Tijuana,Baja California
+MEX95397,2024-11-10,Violence against civilians,Mexico,Campeche,Escarcega,18.6065,-90.738,POINT (-90.738 18.6065),MX04009,Campeche,Escárcega,Campeche
+MEX95410,2024-11-10,Violence against civilians,Mexico,Chihuahua,Chihuahua,28.6368,-106.0763,POINT (-106.0763 28.6368),MX08019,Chihuahua,Chihuahua,Chihuahua
+MEX95422,2024-11-09,Violence against civilians,Mexico,Ciudad de Mexico,Tlalpan,19.2883,-99.1671,POINT (-99.1671 19.2883),MX09012,Distrito Federal,Tlalpan,Ciudad De Mexico
+MEX95440,2024-11-10,Violence against civilians,Mexico,Guanajuato,Leon,21.0382,-101.5961,POINT (-101.5961 21.0382),MX11020,Guanajuato,León,Guanajuato
+MEX95449,2024-11-08,Violence against civilians,Mexico,Guanajuato,Romita,20.9148,-101.6339,POINT (-101.6339 20.9148),MX11026,Guanajuato,Romita,Guanajuato
 MEX95463,2024-10-27,Violence against civilians,Mexico,Guerrero,Chilpancingo de los Bravo,17.5516,-99.5011,POINT (-99.50109999999999 17.5516),MX12029,Guerrero,Chilpancingo de los Bravo,Guerrero
 MEX95464,2024-11-06,Violence against civilians,Mexico,Guerrero,Chilpancingo de los Bravo,17.5516,-99.5011,POINT (-99.50109999999999 17.5516),MX12029,Guerrero,Chilpancingo de los Bravo,Guerrero
+MEX95465,2024-11-08,Violence against civilians,Mexico,Guerrero,Chilpancingo de los Bravo,17.5516,-99.5011,POINT (-99.50109999999999 17.5516),MX12029,Guerrero,Chilpancingo de los Bravo,Guerrero
+MEX95490,2024-11-09,Violence against civilians,Mexico,Jalisco,San Pedro Tlaquepaque,20.6386,-103.3072,POINT (-103.3072 20.6386),MX14098,Jalisco,San Pedro Tlaquepaque,Jalisco
+MEX95494,2024-11-08,Violence against civilians,Mexico,Jalisco,Tlajomulco de Zuniga,20.4736,-103.4431,POINT (-103.4431 20.4736),MX14097,Jalisco,Tlajomulco de Zúñiga,Jalisco
+MEX95498,2024-11-09,Violence against civilians,Mexico,Jalisco,Zapopan,20.7206,-103.3883,POINT (-103.3883 20.7206),MX14120,Jalisco,Zapopan,Jalisco
 MEX95504,2024-08-26,Violence against civilians,Mexico,Mexico,Cuautitlan Izcalli,19.657,-99.2093,POINT (-99.2093 19.657),MX15121,México,Cuautitlán Izcalli,Mexico
+MEX95522,2024-11-10,Violence against civilians,Mexico,Michoacan de Ocampo,Zamora,19.9836,-102.286,POINT (-102.286 19.9836),MX16108,Michoacán de Ocampo,Zamora,Michoacan
+MEX95525,2024-11-09,Violence against civilians,Mexico,Morelos,Cuautla,18.8128,-98.9553,POINT (-98.95529999999999 18.8128),MX17006,Morelos,Cuautla,Morelos
+MEX95527,2024-11-10,Violence against civilians,Mexico,Morelos,Cuernavaca,18.9218,-99.2349,POINT (-99.2349 18.9218),MX17007,Morelos,Cuernavaca,Morelos
 MEX95535,2024-08-27,Violence against civilians,Mexico,Nuevo Leon,Allende,25.2869,-100.0083,POINT (-100.0083 25.2869),MX19004,Nuevo León,Allende,Nuevo Leon
 MEX95536,2024-08-26,Violence against civilians,Mexico,Nuevo Leon,Apodaca,25.7813,-100.1892,POINT (-100.1892 25.7813),MX19006,Nuevo León,Apodaca,Nuevo Leon
 MEX95541,2024-08-23,Violence against civilians,Mexico,Nuevo Leon,Garcia,25.8005,-100.5855,POINT (-100.5855 25.8005),MX19018,Nuevo León,García,Nuevo Leon
 MEX95542,2024-08-25,Violence against civilians,Mexico,Nuevo Leon,General Escobedo,25.808,-100.3226,POINT (-100.3226 25.808),MX19021,Nuevo León,General Escobedo,Nuevo Leon
 MEX95543,2024-08-29,Battles,Mexico,Nuevo Leon,General Escobedo,25.808,-100.3226,POINT (-100.3226 25.808),MX19021,Nuevo León,General Escobedo,Nuevo Leon
+MEX95545,2024-11-09,Battles,Mexico,Nuevo Leon,General Teran,25.2755,-99.6417,POINT (-99.6417 25.2755),MX19022,Nuevo León,General Terán,Nuevo Leon
+MEX95558,2024-11-09,Violence against civilians,Mexico,Oaxaca,Heroica Ciudad de Juchitan de Zaragoza,16.4333,-95.0216,POINT (-95.02160000000001 16.4333),MX20043,Oaxaca,Heroica Ciudad de Juchitán de Zaragoza,Oaxaca
+MEX95564,2024-11-09,Violence against civilians,Mexico,Oaxaca,San Lorenzo Cacaotepec,17.1278,-96.8017,POINT (-96.8017 17.1278),MX20227,Oaxaca,San Lorenzo Cacaotepec,Oaxaca
+MEX95567,2024-11-10,Violence against civilians,Mexico,Puebla,Chiautla,18.2997,-98.6028,POINT (-98.6028 18.2997),MX21047,Puebla,Chiautla,Puebla
+MEX95574,2024-11-10,Battles,Mexico,Puebla,Puebla,19.044,-98.1975,POINT (-98.19750000000001 19.044),MX21114,Puebla,Puebla,Puebla
+MEX95584,2024-11-09,Violence against civilians,Mexico,Puebla,Tochtepec,18.8393,-97.8228,POINT (-97.8228 18.8393),MX21189,Puebla,Tochtepec,Puebla
+MEX95593,2024-11-09,Violence against civilians,Mexico,Sinaloa,Angostura,25.1254,-108.0138,POINT (-108.0138 25.1254),MX25002,Sinaloa,Angostura,Sinaloa
+MEX95594,2024-11-10,Violence against civilians,Mexico,Sinaloa,Angostura,25.1254,-108.0138,POINT (-108.0138 25.1254),MX25002,Sinaloa,Angostura,Sinaloa
+MEX95639,2024-11-09,Violence against civilians,Mexico,Sonora,Cajeme,27.4965,-109.9327,POINT (-109.9327 27.4965),MX26018,Sonora,Cajeme,Sonora
+MEX95651,2024-11-09,Violence against civilians,Mexico,Tabasco,Centro,17.9878,-92.9194,POINT (-92.9194 17.9878),MX27004,Tabasco,Centro,Tabasco
+MEX95652,2024-11-09,Violence against civilians,Mexico,Tabasco,Centro,17.9878,-92.9194,POINT (-92.9194 17.9878),MX27004,Tabasco,Centro,Tabasco
+MEX95662,2024-11-09,Battles,Mexico,Tamaulipas,San Fernando,24.9775,-98.3219,POINT (-98.3219 24.9775),MX28035,Tamaulipas,San Fernando,Tamaulipas
+MEX95672,2024-11-10,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Espinal,20.2759,-97.5509,POINT (-97.5509 20.2759),MX30066,Veracruz de Ignacio de la Llave,Espinal,Veracruz
+MEX95680,2024-11-10,Battles,Mexico,Veracruz de Ignacio de la Llave,Tuxpan,20.9518,-97.4045,POINT (-97.4045 20.9518),nan,,,
+MEX95505,2024-11-10,Battles,Mexico,Mexico,Cuautitlan Izcalli,19.657,-99.2093,POINT (-99.2093 19.657),MX15121,México,Cuautitlán Izcalli,Mexico
 MEX95099,2024-11-02,Battles,Mexico,Oaxaca,Oaxaca de Juarez,17.06,-96.7255,POINT (-96.7255 17.06),MX20067,Oaxaca,Oaxaca de Juárez,Oaxaca
 MEX88506,2024-06-01,Battles,Mexico,Campeche,Campeche,19.9151,-90.4166,POINT (-90.4166 19.9151),MX04002,Campeche,Campeche,Campeche
 MEX89147,2024-06-22,Violence against civilians,Mexico,Durango,Durango,24.024,-104.6702,POINT (-104.6702 24.024),MX10005,Durango,Durango,Durango
@@ -2482,14 +2502,12 @@ MEX95977,2024-10-15,Violence against civilians,Mexico,Chiapas,Oxchuc,16.7861,-92
 MEX95978,2024-10-26,Violence against civilians,Mexico,Chihuahua,Juarez,31.7465,-106.485,POINT (-106.485 31.7465),MX08037,Chihuahua,Juárez,Chihuahua
 MEX95168,2024-11-04,Battles,Mexico,Tabasco,Centro,17.9878,-92.9194,POINT (-92.9194 17.9878),MX27004,Tabasco,Centro,Tabasco
 MEX95210,2024-11-05,Violence against civilians,Mexico,Oaxaca,Oaxaca de Juarez,17.06,-96.7255,POINT (-96.7255 17.06),MX20067,Oaxaca,Oaxaca de Juárez,Oaxaca
-MEX88158,2024-05-15,Explosions/Remote violence,Mexico,Guerrero,Petatlan,17.5382,-101.2746,POINT (-101.2746 17.5382),MX12048,Guerrero,Petatlán,Guerrero
 MEX88256,2024-05-26,Violence against civilians,Mexico,Guerrero,Petatlan,17.5382,-101.2746,POINT (-101.2746 17.5382),MX12048,Guerrero,Petatlán,Guerrero
 MEX89129,2024-06-23,Violence against civilians,Mexico,Guerrero,Petatlan,17.5382,-101.2746,POINT (-101.2746 17.5382),MX12048,Guerrero,Petatlán,Guerrero
 MEX93190,2024-09-18,Battles,Mexico,Veracruz de Ignacio de la Llave,Rafael Delgado,18.8105,-97.0719,POINT (-97.0719 18.8105),MX30135,Veracruz de Ignacio de la Llave,Rafael Delgado,Veracruz
 MEX95003,2024-10-30,Battles,Mexico,Sinaloa,Rosario,22.9262,-105.6121,POINT (-105.6121 22.9262),MX25014,Sinaloa,Rosario,Sinaloa
 MEX95217,2024-11-05,Violence against civilians,Mexico,Sinaloa,Rosario,23.0118,-105.6672,POINT (-105.6672 23.0118),MX25014,Sinaloa,Rosario,Sinaloa
 MEX96307,2024-10-22,Violence against civilians,Mexico,Guerrero,Taxco de Alarcon,18.5574,-99.6046,POINT (-99.6046 18.5574),MX12055,Guerrero,Taxco de Alarcón,Guerrero
-MEX87788,2024-05-15,Violence against civilians,Mexico,San Luis Potosi,San Luis Potosi,22.1517,-100.977,POINT (-100.977 22.1517),MX24028,San Luis Potosí,San Luis Potosí,San Luis Potosi
 MEX87791,2024-05-22,Violence against civilians,Mexico,San Luis Potosi,San Luis Potosi,22.1517,-100.977,POINT (-100.977 22.1517),MX24028,San Luis Potosí,San Luis Potosí,San Luis Potosi
 MEX88036,2024-06-15,Battles,Mexico,Michoacan de Ocampo,Paracuaro,19.0138,-102.265,POINT (-102.265 19.0138),MX16064,Michoacán de Ocampo,Parácuaro,Michoacan
 MEX88047,2024-06-21,Violence against civilians,Mexico,Morelos,Cuernavaca,18.9716,-99.2367,POINT (-99.2367 18.9716),MX17007,Morelos,Cuernavaca,Morelos
@@ -2535,9 +2553,9 @@ MEX94996,2024-10-30,Violence against civilians,Mexico,Oaxaca,Matias Romero Avend
 MEX94998,2024-10-30,Violence against civilians,Mexico,San Luis Potosi,San Luis Potosi,22.1517,-100.977,POINT (-100.977 22.1517),MX24028,San Luis Potosí,San Luis Potosí,San Luis Potosi
 MEX95033,2024-10-31,Violence against civilians,Mexico,Michoacan de Ocampo,Buenavista,19.2117,-102.588,POINT (-102.588 19.2117),MX16012,Michoacán de Ocampo,Buenavista,Michoacan
 MEX95075,2024-11-01,Violence against civilians,Mexico,San Luis Potosi,San Luis Potosi,22.1517,-100.977,POINT (-100.977 22.1517),MX24028,San Luis Potosí,San Luis Potosí,San Luis Potosi
+MEX95352,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Apatzingan,19.0922,-102.3208,POINT (-102.3208 19.0922),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
 MEX96671,2024-06-09,Battles,Mexico,Baja California,Ensenada,30.5626,-115.9433,POINT (-115.9433 30.5626),MX02001,Baja California,Ensenada,Baja California
 MEX94961,2024-10-29,Violence against civilians,Mexico,Michoacan de Ocampo,Uruapan,19.4209,-102.0628,POINT (-102.0628 19.4209),MX16102,Michoacán de Ocampo,Uruapan,Michoacan
-MEX87350,2024-05-13,Violence against civilians,Mexico,Jalisco,Tonala,20.6233,-103.2456,POINT (-103.2456 20.6233),MX14101,Jalisco,Tonalá,Jalisco
 MEX87619,2024-05-18,Battles,Mexico,Guanajuato,Moroleon,20.1262,-101.1938,POINT (-101.1938 20.1262),MX11021,Guanajuato,Moroleón,Guanajuato
 MEX87780,2024-05-18,Battles,Mexico,Puebla,Tlapanala,18.6706,-98.5309,POINT (-98.5309 18.6706),MX21185,Puebla,Tlapanalá,Puebla
 MEX87817,2024-05-18,Violence against civilians,Mexico,Tabasco,Centla,18.3903,-92.7978,POINT (-92.7978 18.3903),MX27003,Tabasco,Centla,Tabasco
@@ -2578,6 +2596,7 @@ MEX94290,2024-10-14,Violence against civilians,Mexico,Jalisco,Tonala,20.6233,-10
 MEX94826,2024-10-26,Violence against civilians,Mexico,Guanajuato,San Miguel de Allende,20.904,-100.7134,POINT (-100.7134 20.904),MX11003,Guanajuato,San Miguel de Allende,Guanajuato
 MEX94960,2024-10-29,Violence against civilians,Mexico,Michoacan de Ocampo,Uruapan,19.3523,-102.074,POINT (-102.074 19.3523),MX16102,Michoacán de Ocampo,Uruapan,Michoacan
 MEX95092,2024-11-02,Violence against civilians,Mexico,Jalisco,Tonala,20.6233,-103.2456,POINT (-103.2456 20.6233),MX14101,Jalisco,Tonalá,Jalisco
+MEX95497,2024-11-08,Violence against civilians,Mexico,Jalisco,Tonala,20.6233,-103.2456,POINT (-103.2456 20.6233),MX14101,Jalisco,Tonalá,Jalisco
 MEX89951,2024-07-07,Explosions/Remote violence,Mexico,Sonora,Caborca,30.7166,-112.1562,POINT (-112.1562 30.7166),MX26017,Sonora,Caborca,Sonora
 MEX95086,2024-11-02,Explosions/Remote violence,Mexico,Durango,Rodeo,25.2287,-104.5737,POINT (-104.5737 25.2287),MX10024,Durango,Rodeo,Durango
 MEX94795,2024-10-24,Violence against civilians,Mexico,Oaxaca,Santo Domingo Teojomulco,16.5886,-97.2258,POINT (-97.22580000000001 16.5886),MX20516,Oaxaca,Santo Domingo Teojomulco,Oaxaca
@@ -2590,7 +2609,6 @@ MEX98048,2024-10-13,Explosions/Remote violence,Mexico,Tamaulipas,Rio Bravo,25.98
 MEX94901,2024-10-28,Explosions/Remote violence,Mexico,Durango,Santiago Papasquiaro,24.8958,-106.3808,POINT (-106.3808 24.8958),MX10032,Durango,Santiago Papasquiaro,Durango
 MEX94116,2024-10-07,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Chocaman,19.0109,-97.0332,POINT (-97.03319999999999 19.0109),MX30062,Veracruz de Ignacio de la Llave,Chocamán,Veracruz
 MEX95054,2024-11-01,Violence against civilians,Mexico,Guanajuato,Leon,20.9573,-101.578,POINT (-101.578 20.9573),MX11020,Guanajuato,León,Guanajuato
-MEX87806,2024-05-15,Violence against civilians,Mexico,Sinaloa,Mazatlan,23.2003,-106.4222,POINT (-106.4222 23.2003),MX25012,Sinaloa,Mazatlán,Sinaloa
 MEX87980,2024-06-20,Violence against civilians,Mexico,Guerrero,Malinaltepec,17.2828,-98.6353,POINT (-98.6353 17.2828),MX12041,Guerrero,Malinaltepec,Guerrero
 MEX88871,2024-06-02,Violence against civilians,Mexico,Sinaloa,Mazatlan,23.2003,-106.4222,POINT (-106.4222 23.2003),MX25012,Sinaloa,Mazatlán,Sinaloa
 MEX89885,2024-06-18,Explosions/Remote violence,Mexico,Michoacan de Ocampo,Apatzingan,19.0792,-102.3633,POINT (-102.3633 19.0792),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
@@ -2619,6 +2637,7 @@ MEX94900,2024-10-28,Violence against civilians,Mexico,Colima,Coquimatlan,19.2037
 MEX94964,2024-10-29,Violence against civilians,Mexico,Puebla,San Martin Texmelucan,19.2826,-98.4156,POINT (-98.4156 19.2826),MX21132,Puebla,San Martín Texmelucan,Puebla
 MEX95051,2024-11-01,Violence against civilians,Mexico,Colima,Colima,19.2945,-103.7046,POINT (-103.7046 19.2945),MX06002,Colima,Colima,Colima
 MEX95166,2024-11-04,Violence against civilians,Mexico,Sinaloa,Mazatlan,23.2003,-106.4222,POINT (-106.4222 23.2003),MX25012,Sinaloa,Mazatlán,Sinaloa
+MEX95633,2024-11-09,Violence against civilians,Mexico,Sinaloa,Mazatlan,23.2003,-106.4222,POINT (-106.4222 23.2003),MX25012,Sinaloa,Mazatlán,Sinaloa
 MEX98318,2024-06-30,Violence against civilians,Mexico,Baja California Sur,La Paz,24.1487,-110.307,POINT (-110.307 24.1487),MX03003,Baja California Sur,La Paz,Baja California Sur
 MEX98320,2024-10-01,Violence against civilians,Mexico,Baja California Sur,La Paz,24.1487,-110.307,POINT (-110.307 24.1487),MX03003,Baja California Sur,La Paz,Baja California Sur
 MEX98328,2024-10-08,Battles,Mexico,Jalisco,Encarnacion de Diaz,21.5244,-102.2331,POINT (-102.2331 21.5244),MX14035,Jalisco,Encarnación de Díaz,Jalisco
@@ -2685,7 +2704,6 @@ MEX94041,2024-10-08,Battles,Mexico,Puebla,San Matias Tlalancaleca,19.3697,-98.47
 MEX94756,2024-10-21,Violence against civilians,Mexico,Mexico,Ecatepec de Morelos,19.5991,-99.0492,POINT (-99.0492 19.5991),MX15033,México,Ecatepec de Morelos,Mexico
 MEX94851,2024-10-26,Violence against civilians,Mexico,Sinaloa,Navolato,24.6574,-107.5451,POINT (-107.5451 24.6574),MX25018,Sinaloa,Navolato,Sinaloa
 MEX94931,2024-10-28,Battles,Mexico,Sinaloa,Culiacan,24.8839,-107.4165,POINT (-107.4165 24.8839),MX25006,Sinaloa,Culiacán,Sinaloa
-MEX95064,2024-05-14,Violence against civilians,Mexico,Mexico,Huehuetoca,19.8336,-99.2041,POINT (-99.2041 19.8336),MX15035,México,Huehuetoca,Mexico
 MEX95145,2024-11-04,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8305,-99.7769,POINT (-99.7769 16.8305),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX98330,2024-10-08,Violence against civilians,Mexico,Mexico,Ecatepec de Morelos,19.5991,-99.0492,POINT (-99.0492 19.5991),MX15033,México,Ecatepec de Morelos,Mexico
 MEX91904,2024-08-24,Battles,Mexico,Michoacan de Ocampo,Coahuayana,18.845,-103.6163,POINT (-103.6163 18.845),MX16014,Michoacán de Ocampo,Coahuayana,Michoacan
@@ -2731,10 +2749,8 @@ MEX100959,2024-10-11,Violence against civilians,Mexico,Guerrero,Cuajinicuilapa,1
 MEX100987,2024-09-09,Violence against civilians,Mexico,Jalisco,San Pedro Tlaquepaque,20.6386,-103.3072,POINT (-103.3072 20.6386),MX14098,Jalisco,San Pedro Tlaquepaque,Jalisco
 MEX101068,2024-10-10,Battles,Mexico,Nuevo Leon,General Bravo,25.7955,-99.1787,POINT (-99.17870000000001 25.7955),MX19020,Nuevo León,General Bravo,Nuevo Leon
 MEX101110,2024-10-10,Violence against civilians,Mexico,Puebla,Tepexco,18.6431,-98.6894,POINT (-98.68940000000001 18.6431),MX21168,Puebla,Tepexco,Puebla
-MEX87347,2024-05-13,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX87360,2024-05-16,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX87375,2024-05-17,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
-MEX87479,2024-05-13,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX87508,2024-05-16,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX87625,2024-05-19,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX87626,2024-05-20,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
@@ -2891,6 +2907,8 @@ MEX95144,2024-11-04,Violence against civilians,Mexico,Guerrero,Acapulco de Juare
 MEX95189,2024-11-05,Battles,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX95237,2024-11-06,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX95281,2024-11-07,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
+MEX95451,2024-11-09,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
+MEX95452,2024-11-10,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX97916,2024-10-24,Violence against civilians,Mexico,Guerrero,Acapulco de Juarez,16.8619,-99.8866,POINT (-99.8866 16.8619),MX12001,Guerrero,Acapulco de Juárez,Guerrero
 MEX88104,2024-06-16,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8017,-107.1391,POINT (-107.1391 24.8017),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX88448,2024-05-30,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8017,-107.1391,POINT (-107.1391 24.8017),MX25006,Sinaloa,Culiacán,Sinaloa
@@ -2902,6 +2920,7 @@ MEX92850,2024-09-13,Battles,Mexico,Sinaloa,Culiacan,24.6058,-107.115,POINT (-107
 MEX93480,2024-09-26,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8883,-107.1673,POINT (-107.1673 24.8883),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX94076,2024-10-09,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8017,-107.1391,POINT (-107.1391 24.8017),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX94850,2024-10-26,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8017,-107.1391,POINT (-107.1391 24.8017),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95537,2024-11-10,Violence against civilians,Mexico,Nuevo Leon,Cadereyta Jimenez,25.591,-100.0016,POINT (-100.0016 25.591),MX19009,Nuevo León,Cadereyta Jiménez,Nuevo Leon
 MEX92785,2024-09-13,Violence against civilians,Mexico,Mexico,Tepotzotlan,19.6842,-99.2887,POINT (-99.28870000000001 19.6842),MX15095,México,Tepotzotlán,Mexico
 MEX87679,2024-05-17,Violence against civilians,Mexico,Michoacan de Ocampo,Apatzingan,19.0872,-102.3553,POINT (-102.3553 19.0872),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
 MEX87680,2024-05-23,Battles,Mexico,Michoacan de Ocampo,Apatzingan,19.0872,-102.3553,POINT (-102.3553 19.0872),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
@@ -2943,6 +2962,7 @@ MEX94505,2024-10-21,Battles,Mexico,Sinaloa,Culiacan,24.7473,-107.2072,POINT (-10
 MEX94808,2024-10-25,Violence against civilians,Mexico,Mexico,Naucalpan de Juarez,19.4788,-99.2332,POINT (-99.2332 19.4788),MX15057,México,Naucalpan de Juárez,Mexico
 MEX95120,2024-11-03,Battles,Mexico,Michoacan de Ocampo,Apatzingan,19.0872,-102.3553,POINT (-102.3553 19.0872),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
 MEX95121,2024-11-03,Battles,Mexico,Michoacan de Ocampo,Apatzingan,19.0872,-102.3553,POINT (-102.3553 19.0872),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
+MEX95515,2024-11-09,Violence against civilians,Mexico,Michoacan de Ocampo,Apatzingan,19.0872,-102.3553,POINT (-102.3553 19.0872),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
 MEX94348,2024-10-12,Violence against civilians,Mexico,Tamaulipas,Nuevo Laredo,27.4863,-99.5085,POINT (-99.5085 27.4863),MX28027,Tamaulipas,Nuevo Laredo,Tamaulipas
 MEX101098,2024-10-30,Violence against civilians,Mexico,Puebla,Huejotzingo,19.2111,-98.3807,POINT (-98.3807 19.2111),MX21074,Puebla,Huejotzingo,Puebla
 MEX87762,2024-05-20,Violence against civilians,Mexico,Puebla,Huejotzingo,19.2111,-98.3807,POINT (-98.3807 19.2111),MX21074,Puebla,Huejotzingo,Puebla
@@ -3088,6 +3108,8 @@ MEX95182,2024-11-05,Violence against civilians,Mexico,Colima,Colima,19.2429,-103
 MEX95184,2024-11-05,Violence against civilians,Mexico,Colima,Cuauhtemoc,19.2778,-103.6608,POINT (-103.6608 19.2778),MX06005,Colima,Cuauhtémoc,Colima
 MEX95185,2024-11-05,Violence against civilians,Mexico,Colima,Villa de Alvarez,19.2648,-103.7368,POINT (-103.7368 19.2648),MX06010,Colima,Villa de Álvarez,Colima
 MEX95274,2024-11-07,Violence against civilians,Mexico,Colima,Colima,19.2429,-103.7281,POINT (-103.7281 19.2429),MX06002,Colima,Colima,Colima
+MEX95336,2024-11-08,Violence against civilians,Mexico,Colima,Villa de Alvarez,19.2648,-103.7368,POINT (-103.7368 19.2648),MX06010,Colima,Villa de Álvarez,Colima
+MEX95427,2024-11-10,Violence against civilians,Mexico,Colima,Colima,19.2429,-103.7281,POINT (-103.7281 19.2429),MX06002,Colima,Colima,Colima
 MEX95627,2024-11-07,Battles,Mexico,Sinaloa,Culiacan,24.5426,-107.1993,POINT (-107.1993 24.5426),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX92482,2024-09-04,Violence against civilians,Mexico,Nuevo Leon,Galeana,25.0305,-100.5505,POINT (-100.5505 25.0305),MX19017,Nuevo León,Galeana,Nuevo Leon
 MEX87682,2024-05-23,Violence against civilians,Mexico,Michoacan de Ocampo,Copandaro,19.8988,-101.1655,POINT (-101.1655 19.8988),MX16018,Michoacán de Ocampo,Copándaro,Michoacan
@@ -3155,8 +3177,10 @@ MEX95004,2024-10-30,Battles,Mexico,Sonora,Altar,30.717,-111.838,POINT (-111.838 
 MEX95009,2024-10-30,Battles,Mexico,Veracruz de Ignacio de la Llave,Martinez de la Torre,20.0734,-97.0538,POINT (-97.0538 20.0734),MX30102,Veracruz de Ignacio de la Llave,Martínez de la Torre,Veracruz
 MEX95239,2024-11-06,Violence against civilians,Mexico,Guerrero,Chilpancingo de los Bravo,17.5516,-99.5011,POINT (-99.50109999999999 17.5516),MX12029,Guerrero,Chilpancingo de los Bravo,Guerrero
 MEX95308,2024-11-07,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8104,-107.2887,POINT (-107.2887 24.8104),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95350,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Apatzingan,18.9906,-102.4858,POINT (-102.4858 18.9906),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
+MEX95351,2024-11-08,Battles,Mexico,Michoacan de Ocampo,Apatzingan,18.9906,-102.4858,POINT (-102.4858 18.9906),MX16006,Michoacán de Ocampo,Apatzingán,Michoacan
+MEX95585,2024-11-09,Battles,Mexico,Queretaro,Queretaro,20.5934,-100.39,POINT (-100.39 20.5934),MX22014,Querétaro de Arteaga,Querétaro,Queretaro De Arteaga
 MEX100100,2024-10-16,Violence against civilians,Mexico,Mexico,Ocuilan,19.0107,-99.3851,POINT (-99.38509999999999 19.0107),MX15063,México,Ocuilan,Mexico
-MEX87349,2024-05-13,Violence against civilians,Mexico,Guanajuato,Irapuato,20.7697,-101.34,POINT (-101.34 20.7697),MX11017,Guanajuato,Irapuato,Guanajuato
 MEX87843,2024-05-23,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Amatlan de los Reyes,18.8476,-96.9155,POINT (-96.91549999999999 18.8476),MX30014,Veracruz de Ignacio de la Llave,Amatlán de los Reyes,Veracruz
 MEX87849,2024-05-22,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Cordoba,18.8944,-96.9353,POINT (-96.9353 18.8944),MX30044,Veracruz de Ignacio de la Llave,Córdoba,Veracruz
 MEX88179,2024-05-24,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Nogales,18.8219,-97.1628,POINT (-97.1628 18.8219),MX30115,Veracruz de Ignacio de la Llave,Nogales,Veracruz
@@ -3221,7 +3245,6 @@ MEX94723,2024-10-23,Battles,Mexico,Sinaloa,Culiacan,24.3228,-107.3629,POINT (-10
 MEX94731,2024-10-19,Violence against civilians,Mexico,Mexico,Apaxco,19.9756,-99.1716,POINT (-99.1716 19.9756),MX15010,México,Apaxco,Mexico
 MEX95325,2024-11-07,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Acajete,19.6107,-97.027,POINT (-97.027 19.6107),MX30001,Veracruz de Ignacio de la Llave,Acajete,Veracruz
 MEX105941,2024-10-17,Violence against civilians,Mexico,Nuevo Leon,Mina,26.1072,-100.7302,POINT (-100.7302 26.1072),MX19037,Nuevo León,Mina,Nuevo Leon
-MEX87763,2024-05-13,Violence against civilians,Mexico,Puebla,Oriental,19.3757,-97.6196,POINT (-97.61960000000001 19.3757),MX21108,Puebla,Oriental,Puebla
 MEX87764,2024-05-16,Violence against civilians,Mexico,Puebla,Oriental,19.3757,-97.6196,POINT (-97.61960000000001 19.3757),MX21108,Puebla,Oriental,Puebla
 MEX87765,2024-05-17,Violence against civilians,Mexico,Puebla,Oriental,19.3757,-97.6196,POINT (-97.61960000000001 19.3757),MX21108,Puebla,Oriental,Puebla
 MEX88363,2024-05-28,Violence against civilians,Mexico,Veracruz de Ignacio de la Llave,Emiliano Zapata,19.3635,-96.6578,POINT (-96.65779999999999 19.3635),MX30065,Veracruz de Ignacio de la Llave,Emiliano Zapata,Veracruz
@@ -3249,10 +3272,10 @@ MEX93839,2024-09-28,Battles,Mexico,Sinaloa,Culiacan,24.2599,-107.0716,POINT (-10
 MEX94507,2024-10-20,Battles,Mexico,Sinaloa,Culiacan,24.2599,-107.0716,POINT (-107.0716 24.2599),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX94791,2024-10-25,Violence against civilians,Mexico,Puebla,Puebla,18.9657,-98.1529,POINT (-98.1529 18.9657),MX21114,Puebla,Puebla,Puebla
 MEX95107,2024-11-02,Battles,Mexico,Zacatecas,Villanueva,22.357,-102.8833,POINT (-102.8833 22.357),MX32055,Zacatecas,Villanueva,Zacatecas
+MEX95690,2024-11-09,Violence against civilians,Mexico,Zacatecas,Villanueva,22.357,-102.8833,POINT (-102.8833 22.357),MX32055,Zacatecas,Villanueva,Zacatecas
 MEX100170,2024-10-24,Violence against civilians,Mexico,Nuevo Leon,Monterrey,25.6647,-100.311,POINT (-100.311 25.6647),MX19039,Nuevo León,Monterrey,Nuevo Leon
 MEX103751,2024-09-04,Violence against civilians,Mexico,Nuevo Leon,Guadalupe,25.6773,-100.2599,POINT (-100.2599 25.6773),MX19026,Nuevo León,Guadalupe,Nuevo Leon
 MEX106609,2024-06-18,Violence against civilians,Mexico,Nuevo Leon,Garcia,25.8005,-100.5855,POINT (-100.5855 25.8005),MX19018,Nuevo León,García,Nuevo Leon
-MEX87460,2024-05-15,Battles,Mexico,Nuevo Leon,Guadalupe,25.6773,-100.2599,POINT (-100.2599 25.6773),MX19026,Nuevo León,Guadalupe,Nuevo Leon
 MEX87475,2024-05-17,Battles,Mexico,Nuevo Leon,Guadalupe,25.6773,-100.2599,POINT (-100.2599 25.6773),MX19026,Nuevo León,Guadalupe,Nuevo Leon
 MEX87509,2024-05-16,Violence against civilians,Mexico,Nuevo Leon,Monterrey,25.6647,-100.311,POINT (-100.311 25.6647),MX19039,Nuevo León,Monterrey,Nuevo Leon
 MEX87510,2024-05-16,Violence against civilians,Mexico,Nuevo Leon,Monterrey,25.6647,-100.311,POINT (-100.311 25.6647),MX19039,Nuevo León,Monterrey,Nuevo Leon
@@ -3403,6 +3426,9 @@ MEX95253,2024-11-06,Battles,Mexico,Sinaloa,Culiacan,24.5895,-107.392,POINT (-107
 MEX95546,2024-08-12,Violence against civilians,Mexico,Nuevo Leon,Guadalupe,25.6773,-100.2599,POINT (-100.2599 25.6773),MX19026,Nuevo León,Guadalupe,Nuevo Leon
 MEX95547,2024-08-27,Violence against civilians,Mexico,Nuevo Leon,Guadalupe,25.6773,-100.2599,POINT (-100.2599 25.6773),MX19026,Nuevo León,Guadalupe,Nuevo Leon
 MEX95552,2024-08-24,Violence against civilians,Mexico,Nuevo Leon,Monterrey,25.6647,-100.311,POINT (-100.311 25.6647),MX19039,Nuevo León,Monterrey,Nuevo Leon
+MEX95602,2024-11-09,Violence against civilians,Mexico,Sinaloa,Culiacan,24.5895,-107.392,POINT (-107.392 24.5895),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95603,2024-11-09,Violence against civilians,Mexico,Sinaloa,Culiacan,24.5895,-107.392,POINT (-107.392 24.5895),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95604,2024-11-10,Violence against civilians,Mexico,Sinaloa,Culiacan,24.5895,-107.392,POINT (-107.392 24.5895),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX98334,2024-10-08,Violence against civilians,Mexico,Nuevo Leon,Monterrey,25.6647,-100.311,POINT (-100.311 25.6647),MX19039,Nuevo León,Monterrey,Nuevo Leon
 MEX105458,2024-10-04,Violence against civilians,Mexico,Ciudad de Mexico,Milpa Alta,19.1925,-99.0232,POINT (-99.0232 19.1925),MX09009,Distrito Federal,Milpa Alta,Ciudad De Mexico
 MEX88206,2024-05-27,Violence against civilians,Mexico,Baja California,Tecate,32.5727,-116.6266,POINT (-116.6266 32.5727),MX02003,Baja California,Tecate,Baja California
@@ -3411,9 +3437,6 @@ MEX100305,2024-10-20,Violence against civilians,Mexico,Sinaloa,Navolato,24.7672,
 MEX100970,2024-10-13,Violence against civilians,Mexico,Hidalgo,Pachuca de Soto,20.1224,-98.737,POINT (-98.73699999999999 20.1224),MX13048,Hidalgo,Pachuca de Soto,Hidalgo
 MEX101127,2024-10-10,Battles,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX106782,2024-08-21,Violence against civilians,Mexico,Mexico,Tlatlaya,18.6178,-100.2077,POINT (-100.2077 18.6178),MX15105,México,Tlatlaya,Mexico
-MEX87351,2024-05-13,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
-MEX87353,2024-05-14,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
-MEX87497,2024-05-14,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
 MEX87610,2024-05-17,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
 MEX87611,2024-05-17,Battles,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
 MEX87612,2024-05-18,Battles,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
@@ -3807,6 +3830,14 @@ MEX95236,2024-11-06,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-10
 MEX95279,2024-11-07,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
 MEX95280,2024-11-07,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
 MEX95309,2024-11-07,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95341,2024-11-08,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
+MEX95367,2024-11-08,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95441,2024-11-09,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
+MEX95442,2024-11-09,Violence against civilians,Mexico,Guanajuato,Leon,21.122,-101.6832,POINT (-101.6832 21.122),MX11020,Guanajuato,León,Guanajuato
+MEX95608,2024-11-09,Explosions/Remote violence,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95609,2024-11-09,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95610,2024-11-09,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
+MEX95612,2024-11-10,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX96308,2024-10-28,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX99159,2024-10-08,Violence against civilians,Mexico,Sinaloa,Culiacan,24.8088,-107.394,POINT (-107.394 24.8088),MX25006,Sinaloa,Culiacán,Sinaloa
 MEX99999,2024-10-16,Violence against civilians,Mexico,Guanajuato,Apaseo el Alto,20.5131,-100.5599,POINT (-100.5599 20.5131),MX11004,Guanajuato,Apaseo el Alto,Guanajuato
