@@ -24,6 +24,10 @@ DATA_DIR = ROOT / "data"
 ADM2_DIR = DATA_DIR / "mex_admbnda_govmex_20210618_SHP"
 HDX_PACKAGE_ID = "cod-ab-mex"
 HDX_API_URL = f"https://data.humdata.org/api/3/action/package_show?id={HDX_PACKAGE_ID}"
+HDX_DIRECT_URL = (
+    "https://data.humdata.org/dataset/9721eaf0-5663-4137-b3a2-c21dc8fac15a/resource/"
+    "f151b1c1-1353-4f57-bdb2-b1b1c18a1fd1/download/mex_admbnda_govmex_20210618_shp.zip"
+)
 MIN_SHAPEFILE_BYTES = 5_000_000  # pointer files are only a few hundred bytes
 
 
@@ -45,19 +49,25 @@ def _request_json(url: str) -> dict:
 
 def _find_hdx_resource(tokens: Iterable[str]) -> str:
     tokens = [t.lower() for t in tokens]
-    payload = _request_json(HDX_API_URL)
-    result = payload.get("result") or {}
-    resources = result.get("resources") or []
-    for resource in resources:
-        blob = " ".join(
-            str(resource.get(k) or "")
-            for k in ("name", "description", "format", "url", "download_url")
-        ).lower()
-        if all(token in blob for token in tokens):
-            url = resource.get("download_url") or resource.get("url")
-            if url:
-                return url
-    raise RuntimeError(f"Unable to locate ADM2 shapefile download in HDX dataset '{HDX_PACKAGE_ID}'.")
+    try:
+        payload = _request_json(HDX_API_URL)
+        result = payload.get("result") or {}
+        resources = result.get("resources") or []
+        for resource in resources:
+            blob = " ".join(
+                str(resource.get(k) or "")
+                for k in ("name", "description", "format", "url", "download_url")
+            ).lower()
+            if all(token in blob for token in tokens):
+                url = resource.get("download_url") or resource.get("url")
+                if url:
+                    return url
+        raise RuntimeError(f"Unable to locate ADM2 shapefile download in HDX dataset '{HDX_PACKAGE_ID}'.")
+    except Exception as exc:
+        if HDX_DIRECT_URL:
+            print(f"[adm2] Falling back to direct HDX download URL due to error: {exc}")
+            return HDX_DIRECT_URL
+        raise
 
 
 def _download_file(url: str) -> Path:
