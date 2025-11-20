@@ -228,6 +228,8 @@ data/
 `pipeline.py` builds the ADM1 and ADM0 shapefiles on the fly if they are missing (or whenever `FORCE_REBUILD_ADM_SHPS=true`).  
 If you plan to version these derived assets, add the folder contents to Git LFS (`git lfs track '*.shp' '*.dbf' ...'`) before committing because each shapefile family lands in the ~5–15 MB range.
 
+When Git LFS quotas block the ADM2 download (e.g., in CI), run `python scripts/fetch_spatial_assets.py` to pull the latest COD-AB ADM2 package directly from HDX and populate `data/mex_admbnda_govmex_20210618_SHP/`. The GitHub Actions workflow now uses the same helper before executing the pipeline.
+
 ---
 
 ## Citations

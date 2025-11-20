@@ -17,29 +17,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository (with Git LFS)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: true
+          lfs: false
 
-      - name: Ensure Git LFS files are present
-        run: |
-          git lfs install --local
-          # Print LFS status to aid debugging
-          git lfs version || true
-          git lfs env || true
-          git lfs ls-files -l || true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
 
-          # Aggressive fetch to ensure all needed objects are available locally
-          # (Useful if refs or bandwidth/permissions previously blocked a standard pull)
-          git lfs fetch --all --verbose || true
-
-          # Try to materialize pointers from any fetched objects
-          git lfs checkout || true
-
-          # Finally, do a targeted pull on the folders we need for the pipeline
-          git lfs pull --include "data/mex_admbnda_govmex_20210618_SHP/*,data/worldpop/*" --exclude "" || true
+      - name: Fetch ADM2 shapefile from HDX
+        run: python scripts/fetch_spatial_assets.py
 
       # Optional narrow checkout:
       # - name: Narrow checkout (optional)
@@ -47,14 +38,13 @@ jobs:
       #     git sparse-checkout init --cone
       #     git sparse-checkout set data out .github pipeline.py README.md requirements.txt
 
-      - name: Verify shapefile and raster are present (not LFS pointers)
+      - name: Verify ADM2 shapefile is present (not an LFS pointer)
         run: |
           set -euo pipefail
           SHPDIR="data/mex_admbnda_govmex_20210618_SHP"
           SHP="$SHPDIR/mex_admbnda_adm2_govmex_20210618.shp"
-          TIF="data/worldpop/mex_pop_2025_CN_100m_R2025A_v1.tif"
 
-          for f in "$SHP" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.dbf" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.shx" "$TIF"; do
+          for f in "$SHP" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.dbf" "$SHPDIR/mex_admbnda_adm2_govmex_20210618.shx"; do
             if [ ! -f "$f" ]; then
               echo "Missing required file: $f"
               exit 1
@@ -70,13 +60,7 @@ jobs:
               exit 1
             fi
           done
-          echo "LFS assets look good."
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
+          echo "ADM2 shapefile assets look good."
 
       - name: Install system dependencies
         run: |
